@@ -46,6 +46,8 @@ dependencies:
   google_maps_flutter: ^2.5.0
   fl_chart: ^0.69.2
   syncfusion_flutter_calendar:
+  geolocator: ^14.0.1
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:

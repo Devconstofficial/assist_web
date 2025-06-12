@@ -1,51 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_images.dart';
 import '../utils/app_strings.dart';
 import '../utils/app_styles.dart';
+import 'dart:typed_data';
 
-class PageHeader extends StatelessWidget {
+// ignore: must_be_immutable
+class PageHeader extends StatefulWidget {
   String pageName;
-  PageHeader({super.key,required this.pageName});
+  PageHeader({super.key, required this.pageName});
 
   @override
+  State<PageHeader> createState() => _PageHeaderState();
+}
+
+class _PageHeaderState extends State<PageHeader> {
+  Uint8List? webImage;
+  @override
   Widget build(BuildContext context) {
+    Future<void> pickImage() async {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        final bytes = await pickedFile.readAsBytes();
+        setState(() {
+          webImage = bytes;
+        });
+      }
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: kGreyShade9Color,
         borderRadius: BorderRadius.circular(34),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 37,vertical: 28),
+        padding: const EdgeInsets.symmetric(horizontal: 37, vertical: 28),
         child: Row(
           children: [
             Text(
-              pageName,
-              style: AppStyles.blackTextStyle()
-                  .copyWith(
+              widget.pageName,
+              style: AppStyles.blackTextStyle().copyWith(
                 fontSize: 28.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
             Spacer(),
-            Container(
-              height: 68,
-              width: 68,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Image.asset(
-                kAvatar,
-                fit: BoxFit.contain,
+            GestureDetector(
+              onTap: () {
+                pickImage();
+              },
+              child: Container(
+                height: 68,
+                width: 68,
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                child:
+                    webImage != null
+                        ? Image.memory(webImage!, fit: BoxFit.cover)
+                        : Image.asset(kAvatar, fit: BoxFit.cover),
               ),
             ),
             SizedBox(width: 7.w),
             Text(
-              "Luckey ",
-              style: AppStyles.blackTextStyle()
-                  .copyWith(
+              "Admin",
+              style: AppStyles.blackTextStyle().copyWith(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
               ),

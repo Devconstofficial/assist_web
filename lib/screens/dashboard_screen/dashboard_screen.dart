@@ -22,14 +22,19 @@ import 'package:fl_chart/fl_chart.dart' as fl;
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
 
-  Widget insightContainer(title, detail, {bool isDonation = false}){
+  Widget insightContainer(title, detail, {bool isDonation = false}) {
     return Container(
       decoration: BoxDecoration(
         color: kWhiteColor,
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 45.h,bottom: 45.h, left: 18.0.w,right: 40.w),
+        padding: EdgeInsets.only(
+          top: 45.h,
+          bottom: 45.h,
+          left: 18.0.w,
+          right: 40.w,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 28.h,
@@ -38,9 +43,7 @@ class DashboardScreen extends GetView<DashboardController> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
-                style:
-                AppStyles.blackTextStyle()
-                    .copyWith(
+                style: AppStyles.blackTextStyle().copyWith(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -51,27 +54,23 @@ class DashboardScreen extends GetView<DashboardController> {
               children: [
                 Text(
                   detail,
-                  style:
-                  AppStyles.blackTextStyle()
-                      .copyWith(
+                  style: AppStyles.blackTextStyle().copyWith(
                     fontSize: 34.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                if(isDonation == true)
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0.w),
-                  child: Text(
-                    "per person",
-                    style:
-                    AppStyles.greyTextStyle()
-                        .copyWith(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w500,
-                      color: kGreyShade10Color
+                if (isDonation == true)
+                  Padding(
+                    padding: EdgeInsets.only(left: 8.0.w),
+                    child: Text(
+                      "per person",
+                      style: AppStyles.greyTextStyle().copyWith(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w500,
+                        color: kGreyShade10Color,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ],
@@ -80,108 +79,202 @@ class DashboardScreen extends GetView<DashboardController> {
     );
   }
 
-  approvalDialog(){
+  approvalDialog() {
     return CustomDialog(
-        content: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 69),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          child: GestureDetector(
-                            onTap: (){
-                              Get.back();
-                            },
-                            child: Container(
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                      color: kPrimaryColor,
-                                      width: 0.5
-                                  )
-                              ),
-                              child: Center(child: Icon(Icons.arrow_back,size: 16,color: kPrimaryColor,)),
-                            ),
+      content: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 69),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(color: kPrimaryColor, width: 0.5),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.arrow_back,
+                            size: 16,
+                            color: kPrimaryColor,
                           ),
                         ),
-                        SizedBox(width: 13.w,),
-                        Text("Application Details",style: AppStyles.blackTextStyle().copyWith(fontSize: 24),)
-                      ],
-                    ),
-                    SizedBox(height: 34.h,),
-                    Text("Contact Information",style: AppStyles.blackTextStyle().copyWith(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 24.h,),
-                    Column(
-                      spacing: 16.h,
-                      children: [
-                        fieldContainer("Tayyaba"),
-                        fieldContainer("tayyaba@gmail.com"),
-                        fieldContainer("+92123456789"),
-                      ],
-                    ),
-                    SizedBox(height: 40.h,),
-                    Text("Application Bill",style: AppStyles.blackTextStyle().copyWith(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 24.h,),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: kGreyShade13Color,
-                        )
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 30),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 22),
-                              child: SvgPicture.asset(kPdfIcon,height: 24,width: 24,),
-                            ),
-                            SizedBox(width: 13.w,),
-                            Text("billss-pdf",style: AppStyles.blackTextStyle().copyWith(fontSize: 18,fontWeight: FontWeight.w400),),
-                            Spacer(),
-                            CustomButton(title: "Open", onTap: (){},height: 41,width: 100,textColor: kPrimaryColor,color: kWhiteColor,textSize: 14,)
-                          ],
+                    ),
+                  ),
+                  SizedBox(width: 13.w),
+                  Text(
+                    "Application Details",
+                    style: AppStyles.blackTextStyle().copyWith(fontSize: 24),
+                  ),
+                ],
+              ),
+              SizedBox(height: 34.h),
+              Text(
+                "Contact Information",
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 24.h),
+              Column(
+                spacing: 16.h,
+                children: [
+                  fieldContainer("Tayyaba"),
+                  fieldContainer("tayyaba@gmail.com"),
+                  fieldContainer("+92123456789"),
+                ],
+              ),
+              SizedBox(height: 40.h),
+              Text(
+                "Application Bill",
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 24.h),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: kGreyShade13Color),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 30,
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 22),
+                        child: SvgPicture.asset(
+                          kPdfIcon,
+                          height: 24,
+                          width: 24,
                         ),
                       ),
-                    ),
-                    SizedBox(height: 24.h,),
-                    Text("Application Stats",style: AppStyles.blackTextStyle().copyWith(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 24.h,),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 21,
-                      children: [
-                        CustomButton(title: "Submitted", onTap: (){},textSize: 14,width: 119,height: 46,),
-                        CustomButton(title: "In Pool", onTap: (){},textSize: 14,width: 94,height: 46,),
-                        CustomButton(title: "Selected", onTap: (){},textSize: 14,width: 94,height: 46,),
-                        CustomButton(title: "Paid", onTap: (){},textSize: 14,width: 94,height: 46,),
-                        CustomButton(title: "Denied", onTap: (){},textSize: 14,width: 94,height: 46,)
-                      ],
-                    ),
-                    SizedBox(height: 24.h,),
-                    Text("Add Notes",style: AppStyles.blackTextStyle().copyWith(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 24.h,),
-                    CustomTextField(
-                        hintText: "Type here...",
-                      maxLines: 5,
-                      borderRadius: 24,
-                    ),
-                    SizedBox(height: 24.h,),
-                    CustomButton(title: "Approve", onTap: (){},height: 61,textSize: 16,fontWeight: FontWeight.w700,),
-                    SizedBox(height: 14.h,),
-                    CustomButton(title: "Reject", onTap: (){},height: 61,color: kGreyShade13Color,borderColor: kGreyShade13Color,textColor: kPrimaryColor,textSize: 16,fontWeight: FontWeight.w700,),
-          
-                  ],
+                      SizedBox(width: 13.w),
+                      Text(
+                        "billss-pdf",
+                        style: AppStyles.blackTextStyle().copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Spacer(),
+                      CustomButton(
+                        title: "Open",
+                        onTap: () {},
+                        height: 41,
+                        width: 100,
+                        textColor: kPrimaryColor,
+                        color: kWhiteColor,
+                        textSize: 14,
+                      ),
+                    ],
+                  ),
                 ),
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                "Application Stats",
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 24.h),
+              Wrap(
+                spacing: 8,
+                runSpacing: 21,
+                children: [
+                  CustomButton(
+                    title: "Submitted",
+                    onTap: () {},
+                    textSize: 14,
+                    width: 119,
+                    height: 46,
+                  ),
+                  CustomButton(
+                    title: "In Pool",
+                    onTap: () {},
+                    textSize: 14,
+                    width: 94,
+                    height: 46,
+                  ),
+                  CustomButton(
+                    title: "Selected",
+                    onTap: () {},
+                    textSize: 14,
+                    width: 94,
+                    height: 46,
+                  ),
+                  CustomButton(
+                    title: "Paid",
+                    onTap: () {},
+                    textSize: 14,
+                    width: 94,
+                    height: 46,
+                  ),
+                  CustomButton(
+                    title: "Denied",
+                    onTap: () {},
+                    textSize: 14,
+                    width: 94,
+                    height: 46,
+                  ),
+                ],
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                "Add Notes",
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 24.h),
+              CustomTextField(
+                hintText: "Type here...",
+                maxLines: 5,
+                borderRadius: 24,
+              ),
+              SizedBox(height: 24.h),
+              CustomButton(
+                title: "Approve",
+                onTap: () {},
+                height: 61,
+                textSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+              SizedBox(height: 14.h),
+              CustomButton(
+                title: "Reject",
+                onTap: () {},
+                height: 61,
+                color: kGreyShade13Color,
+                borderColor: kGreyShade13Color,
+                textColor: kPrimaryColor,
+                textSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   @override
@@ -222,33 +315,52 @@ class DashboardScreen extends GetView<DashboardController> {
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 32.h,horizontal: 29.w),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 32.h,
+                                  horizontal: 29.w,
+                                ),
                                 child: Column(
                                   children: [
                                     Row(
                                       children: [
                                         Text(
                                           "Matrices",
-                                          style:
-                                              AppStyles.blackTextStyle()
-                                                  .copyWith(
-                                                    fontSize: 32.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                                          style: AppStyles.blackTextStyle()
+                                              .copyWith(
+                                                fontSize: 32.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                         ),
                                         Spacer(),
-                                        CustomButton(title: "Application Approval", onTap: (){
-                                          Get.dialog(approvalDialog());
-                                        },textSize: 25.sp,fontWeight: FontWeight.w400,height: 62.h,width: 300.w,)
+                                        CustomButton(
+                                          title: "Application Approval",
+                                          onTap: () {
+                                            Get.dialog(approvalDialog());
+                                          },
+                                          textSize: 25.sp,
+                                          fontWeight: FontWeight.w400,
+                                          height: 62.h,
+                                          width: 300.w,
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 28.h),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        insightContainer("Total funds raised", "\$12,700"),
-                                        insightContainer("Number of applicants helped", "1,0000"),
-                                        insightContainer("Avg donation per user", "\$5,00"),
+                                        insightContainer(
+                                          "Total funds raised",
+                                          "\$12,700",
+                                        ),
+                                        insightContainer(
+                                          "Number of applicants helped",
+                                          "1,0000",
+                                        ),
+                                        insightContainer(
+                                          "Avg donation per user",
+                                          "\$5,00",
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 28.h),
@@ -260,49 +372,101 @@ class DashboardScreen extends GetView<DashboardController> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(24),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(height: 8,),
+                                            SizedBox(height: 8),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   "User growth over time",
-                                                  style: AppStyles.blackTextStyle()
-                                                      .copyWith(
-                                                    fontSize: 24.sp,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                                  style:
+                                                      AppStyles.blackTextStyle()
+                                                          .copyWith(
+                                                            fontSize: 24.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                 ),
-                                                Obx((){
-                                                  bool monthly = controller.isMonthly.value;
+                                                Obx(() {
+                                                  bool monthly =
+                                                      controller
+                                                          .isMonthly
+                                                          .value;
 
                                                   return Container(
                                                     height: 45.h,
                                                     width: 186,
                                                     decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(100),
-                                                        color: kWhiteColor,
-                                                        border: Border.all(
-                                                            width: 0.5,
-                                                            color: kGreyShade12Color
-                                                        )
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            100,
+                                                          ),
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 0.5,
+                                                        color:
+                                                            kGreyShade12Color,
+                                                      ),
                                                     ),
                                                     child: Row(
                                                       children: [
-                                                        Expanded(child: CustomButton(title: "Monthly", onTap: (){
-                                                          controller.selectMonthly();
-                                                        },height: 45,textSize: 12,color: monthly ? kPrimaryColor : kWhiteColor,borderColor: monthly ? kPrimaryColor : kWhiteColor,textColor: monthly ? kWhiteColor : kPrimaryColor,)),
-                                                        Expanded(child: CustomButton(title: "Yearly", onTap: (){
-                                                          controller.selectYearly();
-                                                        },height: 45,textSize: 12,color: monthly ? kWhiteColor : kPrimaryColor,borderColor: monthly ? kWhiteColor : kPrimaryColor,textColor: monthly ? kPrimaryColor : kWhiteColor,)),
+                                                        Expanded(
+                                                          child: CustomButton(
+                                                            title: "Monthly",
+                                                            onTap: () {
+                                                              controller
+                                                                  .selectMonthly();
+                                                            },
+                                                            height: 45,
+                                                            textSize: 12,
+                                                            color:
+                                                                monthly
+                                                                    ? kPrimaryColor
+                                                                    : kWhiteColor,
+                                                            borderColor:
+                                                                monthly
+                                                                    ? kPrimaryColor
+                                                                    : kWhiteColor,
+                                                            textColor:
+                                                                monthly
+                                                                    ? kWhiteColor
+                                                                    : kPrimaryColor,
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          child: CustomButton(
+                                                            title: "Yearly",
+                                                            onTap: () {
+                                                              controller
+                                                                  .selectYearly();
+                                                            },
+                                                            height: 45,
+                                                            textSize: 12,
+                                                            color:
+                                                                monthly
+                                                                    ? kWhiteColor
+                                                                    : kPrimaryColor,
+                                                            borderColor:
+                                                                monthly
+                                                                    ? kWhiteColor
+                                                                    : kPrimaryColor,
+                                                            textColor:
+                                                                monthly
+                                                                    ? kPrimaryColor
+                                                                    : kWhiteColor,
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   );
-                                                })
+                                                }),
                                               ],
                                             ),
-                                            SizedBox(height: 46.h,),
+                                            SizedBox(height: 46.h),
                                             Obx(
                                               () => SizedBox(
                                                 height: 250,
@@ -313,7 +477,10 @@ class DashboardScreen extends GetView<DashboardController> {
                                                       drawVerticalLine: false,
                                                       getDrawingHorizontalLine:
                                                           (value) => FlLine(
-                                                            color: Colors.grey.shade300,
+                                                            color:
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
                                                             strokeWidth: 1,
                                                           ),
                                                     ),
@@ -331,19 +498,18 @@ class DashboardScreen extends GetView<DashboardController> {
                                                                     .months
                                                                     .length) {
                                                               return Text(
-                                                                controller.months[value
+                                                                controller
+                                                                    .months[value
                                                                     .toInt()],
-                                                                style:
-                                                                    AppStyles.blackTextStyle()
-                                                                        .copyWith(
-                                                                          fontSize:
-                                                                              14.sp,
-                                                                          color:
-                                                                          kGreyShade11Color,
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .w400,
-                                                                        ),
+                                                                style: AppStyles.blackTextStyle().copyWith(
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  color:
+                                                                      kGreyShade11Color,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
                                                               );
                                                             }
                                                             return const SizedBox.shrink();
@@ -356,21 +522,22 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           interval: 20,
                                                           reservedSize: 40,
                                                           getTitlesWidget:
-                                                              (value, meta) => Text(
+                                                              (
+                                                                value,
+                                                                meta,
+                                                              ) => Text(
                                                                 value
                                                                     .toInt()
                                                                     .toString(),
-                                                                style:
-                                                                    AppStyles.blackTextStyle()
-                                                                        .copyWith(
-                                                                          fontSize:
-                                                                              13.sp,
-                                                                          color:
-                                                                          kGreyShade11Color,
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .w400,
-                                                                        ),
+                                                                style: AppStyles.blackTextStyle().copyWith(
+                                                                  fontSize:
+                                                                      13.sp,
+                                                                  color:
+                                                                      kGreyShade11Color,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
                                                               ),
                                                         ),
                                                       ),
@@ -398,27 +565,35 @@ class DashboardScreen extends GetView<DashboardController> {
                                                     lineBarsData: [
                                                       LineChartBarData(
                                                         spots:
-                                                            controller.completedSpots,
+                                                            controller
+                                                                .completedSpots,
                                                         isCurved: true,
                                                         color: kBlackColor,
                                                         barWidth: 2,
-                                                        dotData: FlDotData(show: false),
-                                                        belowBarData: BarAreaData(
+                                                        dotData: FlDotData(
                                                           show: false,
                                                         ),
+                                                        belowBarData:
+                                                            BarAreaData(
+                                                              show: false,
+                                                            ),
                                                       ),
                                                     ],
                                                     lineTouchData: LineTouchData(
-                                                      handleBuiltInTouches: true,
+                                                      handleBuiltInTouches:
+                                                          true,
                                                       touchCallback:
                                                           (
                                                             FlTouchEvent event,
-                                                            LineTouchResponse? response,
+                                                            LineTouchResponse?
+                                                            response,
                                                           ) {},
                                                       touchTooltipData: LineTouchTooltipData(
                                                         tooltipRoundedRadius: 8,
-                                                        fitInsideHorizontally: true,
-                                                        fitInsideVertically: true,
+                                                        fitInsideHorizontally:
+                                                            true,
+                                                        fitInsideVertically:
+                                                            true,
                                                         getTooltipColor:
                                                             (touchedSpots) =>
                                                                 kWhiteColor,
@@ -428,19 +603,27 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           return touchedSpots.map((
                                                             spot,
                                                           ) {
-                                                            if (spot.barIndex == 0) {
+                                                            if (spot.barIndex ==
+                                                                0) {
                                                               final date =
-                                                                  controller.months[spot
+                                                                  controller
+                                                                      .months[spot
                                                                       .x
                                                                       .toInt()];
-                                                              final value = spot.y
-                                                                  .toStringAsFixed(2);
+                                                              final value = spot
+                                                                  .y
+                                                                  .toStringAsFixed(
+                                                                    2,
+                                                                  );
                                                               return LineTooltipItem(
                                                                 '$date\n$value',
                                                                 const TextStyle(
-                                                                  color: Colors.black,
+                                                                  color:
+                                                                      Colors
+                                                                          .black,
                                                                   fontWeight:
-                                                                      FontWeight.w500,
+                                                                      FontWeight
+                                                                          .w500,
                                                                   fontSize: 12,
                                                                 ),
                                                               );
@@ -460,7 +643,8 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           ) {
                                                             return TouchedSpotIndicatorData(
                                                               FlLine(
-                                                                color: kPrimaryColor,
+                                                                color:
+                                                                    kPrimaryColor,
                                                                 strokeWidth: 2,
                                                               ),
                                                               FlDotData(
@@ -475,20 +659,28 @@ class DashboardScreen extends GetView<DashboardController> {
                                                                       radius: 6,
                                                                       color:
                                                                           kPrimaryColor,
-                                                                      strokeWidth: 2,
+                                                                      strokeWidth:
+                                                                          2,
                                                                       strokeColor:
-                                                                          Colors.white,
+                                                                          Colors
+                                                                              .white,
                                                                     ),
                                                               ),
                                                             );
                                                           }).toList();
                                                         }
-                                                        return spotIndexes.map((_) {
+                                                        return spotIndexes.map((
+                                                          _,
+                                                        ) {
                                                           return TouchedSpotIndicatorData(
                                                             FlLine(
-                                                              color: Colors.transparent,
+                                                              color:
+                                                                  Colors
+                                                                      .transparent,
                                                             ),
-                                                            FlDotData(show: false),
+                                                            FlDotData(
+                                                              show: false,
+                                                            ),
                                                           );
                                                         }).toList();
                                                       },
@@ -507,73 +699,135 @@ class DashboardScreen extends GetView<DashboardController> {
                                         Expanded(
                                           flex: 3,
                                           child: Container(
-                                            height: 432.h,
+                                            height: 435.h,
                                             decoration: BoxDecoration(
                                               color: kWhiteColor,
-                                              borderRadius: BorderRadius.circular(24),
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(24),
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(
                                                         "Subscription summary",
-                                                        style: AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 30.sp,
-                                                          fontWeight: FontWeight.w600,
-                                                        ),
+                                                        style:
+                                                            AppStyles.blackTextStyle()
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      30.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
                                                       ),
-                                                      Obx((){
-                                                        bool monthly = controller.isMonthly1.value;
+                                                      Obx(() {
+                                                        bool monthly =
+                                                            controller
+                                                                .isMonthly1
+                                                                .value;
                                                         return Container(
                                                           height: 45.h,
                                                           width: 186,
                                                           decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(100),
-                                                              color: kWhiteColor,
-                                                              border: Border.all(
-                                                                  width: 0.5,
-                                                                  color: kGreyShade12Color
-                                                              )
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  100,
+                                                                ),
+                                                            color: kWhiteColor,
+                                                            border: Border.all(
+                                                              width: 0.5,
+                                                              color:
+                                                                  kGreyShade12Color,
+                                                            ),
                                                           ),
                                                           child: Row(
                                                             children: [
-                                                              Expanded(child: CustomButton(title: "Monthly", onTap: (){
-                                                                controller.selectMonthly1();
-                                                              },height: 45,textSize: 12,color: monthly ? kPrimaryColor : kWhiteColor,borderColor: monthly ? kPrimaryColor : kWhiteColor,textColor: monthly ? kWhiteColor : kPrimaryColor,)),
-                                                              Expanded(child: CustomButton(title: "Yearly", onTap: (){
-                                                                controller.selectYearly1();
-                                                              },height: 45,textSize: 12,color: monthly ? kWhiteColor : kPrimaryColor,borderColor: monthly ? kWhiteColor : kPrimaryColor,textColor: monthly ? kPrimaryColor : kWhiteColor,)),
+                                                              Expanded(
+                                                                child: CustomButton(
+                                                                  title:
+                                                                      "Monthly",
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .selectMonthly1();
+                                                                  },
+                                                                  height: 45,
+                                                                  textSize: 12,
+                                                                  color:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                  borderColor:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                  textColor:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: CustomButton(
+                                                                  title:
+                                                                      "Yearly",
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .selectYearly1();
+                                                                  },
+                                                                  height: 45,
+                                                                  textSize: 12,
+                                                                  color:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                  borderColor:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                  textColor:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         );
-                                                      })
+                                                      }),
                                                     ],
                                                   ),
-                                                  SizedBox(height: 21.h,),
-                                                  SubscriptionGraph(isMonthly: true),
+                                                  SizedBox(height: 21.h),
+                                                  SubscriptionGraph(
+                                                    isMonthly: true,
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 18.w,),
+                                        SizedBox(width: 18.w),
                                         Expanded(
                                           flex: 2,
                                           child: Container(
                                             height: 432.h,
                                             decoration: BoxDecoration(
                                               color: kWhiteColor,
-                                              borderRadius: BorderRadius.circular(24),
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(24),
-                                              child: DonorMetricsChart(selectedPercentage: 75),
+                                              child: DonorMetricsChart(
+                                                selectedPercentage: 75,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -597,5 +851,4 @@ class DashboardScreen extends GetView<DashboardController> {
       ),
     );
   }
-
 }

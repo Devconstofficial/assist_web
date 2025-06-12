@@ -10,7 +10,6 @@ import '../../utils/app_strings.dart';
 import '../../utils/app_styles.dart';
 import 'controller/sidemenu_controller.dart';
 
-
 class SideMenu extends StatefulWidget {
   const SideMenu({super.key});
 
@@ -18,44 +17,76 @@ class SideMenu extends StatefulWidget {
   State<SideMenu> createState() => _SideMenuState();
 }
 
-
 class _SideMenuState extends State<SideMenu> {
   final menuController = Get.put(SideMenuController());
 
-  logoutDialog(){
+  logoutDialog() {
     return CustomDialog(
-        content: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 61),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  height: 105,width: 105,
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,borderRadius: BorderRadius.circular(100)
+      content: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 61),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 105,
+              width: 105,
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  kLogoutIcon,
+                  height: 65,
+                  width: 65,
+                  color: kWhiteColor,
+                ),
+              ),
+            ),
+            SizedBox(height: 26.h),
+            Text(
+              "Are you sure to logout this app?",
+              style: AppStyles.blackTextStyle().copyWith(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 35.h),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    title: "Cancel",
+                    onTap: () {
+                      Get.back();
+                    },
+                    color: kGreyShade5Color.withOpacity(0.22),
+                    borderColor: kGreyShade5Color.withOpacity(0.22),
+                    textColor: kPrimaryColor,
+                    textSize: 16,
+                    fontWeight: FontWeight.w700,
+                    height: 56.h,
                   ),
-                  child: Center(child: SvgPicture.asset(kLogoutIcon,height: 65,width: 65,color: kWhiteColor,))),
-              SizedBox(height: 26.h,),
-              Text("Are you sure to logout this app?",style: AppStyles.blackTextStyle().copyWith(fontSize: 24,fontWeight: FontWeight.w600),),
-              SizedBox(height: 35.h,),
-              Row(
-                children: [
-                  Expanded(child: CustomButton(title: "Cancel", onTap: (){
-                    Get.back();
-                  },color: kGreyShade5Color.withOpacity(0.22),borderColor: kGreyShade5Color.withOpacity(0.22),textColor: kPrimaryColor,textSize: 16,fontWeight: FontWeight.w700,height: 56.h,)),
-                  SizedBox(width: 8.w),
-                  Expanded(child: CustomButton(title: "Yes Logout", onTap: (){
-                    Get.offAllNamed(kAuthScreenRoute);
-                  },textSize: 16,fontWeight: FontWeight.w700,height: 56.h,)),
-                ],
-              )
-
-            ],
-          ),
-        ));
+                ),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: CustomButton(
+                    title: "Yes Logout",
+                    onTap: () {
+                      Get.offAllNamed(kAuthScreenRoute);
+                    },
+                    textSize: 16,
+                    fontWeight: FontWeight.w700,
+                    height: 56.h,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +96,7 @@ class _SideMenuState extends State<SideMenu> {
     return Padding(
       padding: const EdgeInsets.all(23),
       child: Drawer(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24)
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: kBlackColor,
         width: 316.w,
         child: SizedBox(
@@ -81,13 +110,14 @@ class _SideMenuState extends State<SideMenu> {
                   child: Row(
                     children: [
                       SizedBox(
-                          height: 142.h,
-                          child: Center(
-                            child: Image.asset(
-                              kLogo,
-                              fit: BoxFit.cover,
-                              color: kWhiteColor,
-                            ),)
+                        height: 142.h,
+                        child: Center(
+                          child: Image.asset(
+                            kLogo,
+                            fit: BoxFit.cover,
+                            color: kWhiteColor,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -115,28 +145,48 @@ class _SideMenuState extends State<SideMenu> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               kDashboardIcon,
                                               height: 26,
                                               width: 26,
                                               colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 0 ? kWhiteColor : kGreyShade8Color,
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        0
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
                                                 BlendMode.srcIn,
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
                                             Text(
                                               kDashboard,
-                                              style: AppStyles.blackTextStyle().copyWith(
-                                                  color: menuController.selectedIndex.value == 0
-                                                      ? kWhiteColor : kGreyShade8Color,
-                                                  fontSize: 16,
-                                                fontWeight: FontWeight.w600
-                                              ),
+                                              style: AppStyles.blackTextStyle()
+                                                  .copyWith(
+                                                    color:
+                                                        menuController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                0
+                                                            ? kWhiteColor
+                                                            : kGreyShade8Color,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -148,7 +198,7 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -164,28 +214,48 @@ class _SideMenuState extends State<SideMenu> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               kUserIcon,
                                               height: 26,
                                               width: 26,
                                               colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 1 ? kWhiteColor : kGreyShade8Color,
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        1
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
                                                 BlendMode.srcIn,
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
                                             Text(
                                               "User Management",
-                                              style: AppStyles.blackTextStyle().copyWith(
-                                                  color: menuController.selectedIndex.value == 1
-                                                      ? kWhiteColor : kGreyShade8Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600
-                                              ),
+                                              style: AppStyles.blackTextStyle()
+                                                  .copyWith(
+                                                    color:
+                                                        menuController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                1
+                                                            ? kWhiteColor
+                                                            : kGreyShade8Color,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -197,7 +267,7 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -213,28 +283,48 @@ class _SideMenuState extends State<SideMenu> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               kClipboardIcon,
                                               height: 26,
                                               width: 26,
                                               colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 2 ? kWhiteColor : kGreyShade8Color,
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        2
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
                                                 BlendMode.srcIn,
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
                                             Text(
                                               "Feed Control",
-                                              style: AppStyles.blackTextStyle().copyWith(
-                                                  color: menuController.selectedIndex.value == 2
-                                                      ? kWhiteColor : kGreyShade8Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600
-                                              ),
+                                              style: AppStyles.blackTextStyle()
+                                                  .copyWith(
+                                                    color:
+                                                        menuController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                2
+                                                            ? kWhiteColor
+                                                            : kGreyShade8Color,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -246,7 +336,7 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -262,29 +352,50 @@ class _SideMenuState extends State<SideMenu> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               kSubscriptionIcon,
                                               height: 26,
                                               width: 26,
                                               colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 3 ? kWhiteColor : kGreyShade8Color,
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        3
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
                                                 BlendMode.srcIn,
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
                                             Flexible(
                                               child: Text(
                                                 "Subscriptions & Donations",
-                                                style: AppStyles.blackTextStyle().copyWith(
-                                                    color: menuController.selectedIndex.value == 3
-                                                        ? kWhiteColor : kGreyShade8Color,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600
-                                                ),
+                                                style: AppStyles.blackTextStyle()
+                                                    .copyWith(
+                                                      color:
+                                                          menuController
+                                                                      .selectedIndex
+                                                                      .value ==
+                                                                  3
+                                                              ? kWhiteColor
+                                                              : kGreyShade8Color,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                               ),
                                             ),
                                           ],
@@ -297,7 +408,7 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return MouseRegion(
                             cursor: SystemMouseCursors.click,
@@ -313,28 +424,48 @@ class _SideMenuState extends State<SideMenu> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
                                         child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
                                             SvgPicture.asset(
                                               kCalendarIcon,
                                               height: 26,
                                               width: 26,
                                               colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 4 ? kWhiteColor : kGreyShade8Color,
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        4
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
                                                 BlendMode.srcIn,
                                               ),
                                             ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
                                             Text(
                                               "Calendar",
-                                              style: AppStyles.blackTextStyle().copyWith(
-                                                  color: menuController.selectedIndex.value == 4
-                                                      ? kWhiteColor : kGreyShade8Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600
-                                              ),
+                                              style: AppStyles.blackTextStyle()
+                                                  .copyWith(
+                                                    color:
+                                                        menuController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                4
+                                                            ? kWhiteColor
+                                                            : kGreyShade8Color,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                             ),
                                           ],
                                         ),
@@ -346,55 +477,55 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20,),
-                        Obx(() {
-                          return MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: GestureDetector(
-                              onTap: () {
-                                menuController.onItemTapped(5);
-                                Get.toNamed(kSettingScreenRoute);
-                              },
-                              child: SizedBox(
-                                width: width,
-                                height: 58,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only( left: 24),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                              kCalendarIcon,
-                                              height: 26,
-                                              width: 26,
-                                              colorFilter: ColorFilter.mode(
-                                                menuController.selectedIndex.value == 5 ? kWhiteColor : kGreyShade8Color,
-                                                BlendMode.srcIn,
-                                              ),
-                                            ),
-                                            SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-                                            Text(
-                                              "Settings",
-                                              style: AppStyles.blackTextStyle().copyWith(
-                                                  color: menuController.selectedIndex.value == 5
-                                                      ? kWhiteColor : kGreyShade8Color,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
+                        // const SizedBox(height: 20,),
+                        // Obx(() {
+                        //   return MouseRegion(
+                        //     cursor: SystemMouseCursors.click,
+                        //     child: GestureDetector(
+                        //       onTap: () {
+                        //         menuController.onItemTapped(5);
+                        //         Get.toNamed(kSettingScreenRoute);
+                        //       },
+                        //       child: SizedBox(
+                        //         width: width,
+                        //         height: 58,
+                        //         child: Row(
+                        //           children: [
+                        //             Expanded(
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.only( left: 24),
+                        //                 child: Row(
+                        //                   crossAxisAlignment: CrossAxisAlignment.center,
+                        //                   children: [
+                        //                     SvgPicture.asset(
+                        //                       kCalendarIcon,
+                        //                       height: 26,
+                        //                       width: 26,
+                        //                       colorFilter: ColorFilter.mode(
+                        //                         menuController.selectedIndex.value == 5 ? kWhiteColor : kGreyShade8Color,
+                        //                         BlendMode.srcIn,
+                        //                       ),
+                        //                     ),
+                        //                     SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+                        //                     Text(
+                        //                       "Settings",
+                        //                       style: AppStyles.blackTextStyle().copyWith(
+                        //                           color: menuController.selectedIndex.value == 5
+                        //                               ? kWhiteColor : kGreyShade8Color,
+                        //                           fontSize: 16,
+                        //                           fontWeight: FontWeight.w600
+                        //                       ),
+                        //                     ),
+                        //                   ],
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   );
+                        // }),
                       ],
                     ),
                   ),
@@ -402,7 +533,7 @@ class _SideMenuState extends State<SideMenu> {
               ),
               // const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(bottom: 15.0,right: 15),
+                padding: const EdgeInsets.only(bottom: 15.0, right: 15),
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
@@ -416,46 +547,52 @@ class _SideMenuState extends State<SideMenu> {
                         children: [
                           Expanded(
                             child: Container(
-                                height: 58,
-                                decoration: BoxDecoration(
-                                    color: kBlackColor,
-                                    borderRadius: BorderRadius.horizontal(right: Radius.circular(24))
+                              height: 58,
+                              decoration: BoxDecoration(
+                                color: kBlackColor,
+                                borderRadius: BorderRadius.horizontal(
+                                  right: Radius.circular(24),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only( left: 24),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        kLogoutIcon,
-                                        height: 26,
-                                        width: 26,
-                                        colorFilter: ColorFilter.mode(
-                                          kGreyShade8Color,
-                                          BlendMode.srcIn,
-                                        ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 24),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      kLogoutIcon,
+                                      height: 26,
+                                      width: 26,
+                                      colorFilter: ColorFilter.mode(
+                                        kGreyShade8Color,
+                                        BlendMode.srcIn,
                                       ),
-                                      SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-                                      Text(
-                                        "Logout",
-                                        style: AppStyles.blackTextStyle().copyWith(
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.01,
+                                    ),
+                                    Text(
+                                      "Logout",
+                                      style: AppStyles.blackTextStyle()
+                                          .copyWith(
                                             color: kGreyShade8Color,
                                             fontSize: 20,
-                                            fontWeight: FontWeight.w600
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                )
+                ),
               ),
-
             ],
           ),
         ),

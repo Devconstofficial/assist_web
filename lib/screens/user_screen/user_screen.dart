@@ -59,222 +59,325 @@ class UserScreen extends GetView<UserController> {
                                     borderRadius: BorderRadius.circular(45),
                                   ),
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 32.h,horizontal: 29.w),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 32.h,
+                                      horizontal: 29.w,
+                                    ),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             SizedBox(
-                                              width: 290.w,
+                                              width: 280.w,
                                               child: CustomTextField(
-                                                  hintText: "Search by name...",
+                                                hintText: "Search by name...",
                                                 hintColor: kGreyShade5Color,
-                                                prefix: SvgPicture.asset(kSearchIcon,height: 24,width: 24,),
-                                                borderColor: kGreyShade5Color.withOpacity(0.22),
+                                                prefix: SvgPicture.asset(
+                                                  kSearchIcon,
+                                                  height: 24,
+                                                  width: 24,
+                                                ),
+                                                borderColor: kGreyShade5Color
+                                                    .withOpacity(0.22),
                                               ),
                                             ),
                                             Spacer(),
                                             Container(
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(100),
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
                                                 border: Border.all(
-                                                  color: kGreyShade5Color.withOpacity(0.22),
+                                                  color: kGreyShade5Color
+                                                      .withOpacity(0.22),
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 21,horizontal: 35),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 21,
+                                                      horizontal: 35,
+                                                    ),
                                                 child: Row(
                                                   children: [
-                                                    SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                    SizedBox(width: 4,),
-                                                    Text("by email...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                    SvgPicture.asset(
+                                                      kFilterIcon,
+                                                      height: 24,
+                                                      width: 24,
+                                                    ),
+                                                    SizedBox(width: 4),
+                                                    Text(
+                                                      "by email...",
+                                                      style: AppStyles.greyTextStyle()
+                                                          .copyWith(
+                                                            color:
+                                                                kGreyShade5Color,
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 13.w,),
+                                            SizedBox(width: 13.w),
                                             Container(
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(100),
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
                                                 border: Border.all(
-                                                  color: kGreyShade5Color.withOpacity(0.22),
+                                                  color: kGreyShade5Color
+                                                      .withOpacity(0.22),
                                                 ),
-
                                               ),
                                               child: Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 21,horizontal: 35),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 21,
+                                                      horizontal: 35,
+                                                    ),
                                                 child: Row(
                                                   children: [
-                                                    SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                    SizedBox(width: 4,),
-                                                    Text("by phone number...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                    SvgPicture.asset(
+                                                      kFilterIcon,
+                                                      height: 24,
+                                                      width: 24,
+                                                    ),
+                                                    SizedBox(width: 4),
+                                                    Text(
+                                                      "by phone number...",
+                                                      style: AppStyles.greyTextStyle()
+                                                          .copyWith(
+                                                            color:
+                                                                kGreyShade5Color,
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 13.w,),
+                                            SizedBox(width: 13.w),
                                             Container(
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(100),
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
                                                 border: Border.all(
-                                                  color: kGreyShade5Color.withOpacity(0.22),
+                                                  color: kGreyShade5Color
+                                                      .withOpacity(0.22),
                                                 ),
                                               ),
                                               child: Padding(
-                                                padding: EdgeInsets.symmetric(vertical: 21.h,horizontal: 35.w),
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: 21.h,
+                                                  horizontal: 35.w,
+                                                ),
                                                 child: Row(
                                                   children: [
-                                                    SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                    SizedBox(width: 4,),
-                                                    Text("by role...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                    SvgPicture.asset(
+                                                      kFilterIcon,
+                                                      height: 24,
+                                                      width: 24,
+                                                    ),
+                                                    SizedBox(width: 4),
+                                                    Text(
+                                                      "by role...",
+                                                      style: AppStyles.greyTextStyle()
+                                                          .copyWith(
+                                                            color:
+                                                                kGreyShade5Color,
+                                                            fontSize: 18.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 37.h,),
-                                        Obx(() => Stack(
-                                          children: [
-                                            Container(
-                                              height: 70,
-                                              decoration: BoxDecoration(
-                                                color: kGreyShade5Color.withOpacity(0.22),
-                                                borderRadius: BorderRadius.circular(12),
+                                        SizedBox(height: 37.h),
+                                        Obx(
+                                          () => Stack(
+                                            children: [
+                                              Container(
+                                                height: 70,
+                                                decoration: BoxDecoration(
+                                                  color: kGreyShade5Color
+                                                      .withOpacity(0.22),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: width,
-                                              child: DataTable(
-                                                columnSpacing: 0,
-                                                headingRowHeight: 70,
-                                                dividerThickness: 0,
-                                                columns: [
-                                                  DataColumn(
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Name",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                              SizedBox(
+                                                width: width,
+                                                child: DataTable(
+                                                  columnSpacing: 0,
+                                                  headingRowHeight: 70,
+                                                  dividerThickness: 0,
+                                                  columns: [
+                                                    DataColumn(
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Name",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  DataColumn(
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Email",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                                    DataColumn(
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Email",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  DataColumn(
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Birth date",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                                    DataColumn(
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Birth date",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  DataColumn(
-                                                    headingRowAlignment:
-                                                    MainAxisAlignment.center,
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Phone number",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                                    DataColumn(
+                                                      headingRowAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Phone number",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  DataColumn(
-                                                    headingRowAlignment:
-                                                    MainAxisAlignment.center,
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Role",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                                    DataColumn(
+                                                      headingRowAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Role",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  DataColumn(
-                                                    headingRowAlignment:
-                                                    MainAxisAlignment.center,
-                                                    label: Flexible(
-                                                      child: Text(
-                                                        "Actions",
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style:
-                                                        AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 16.sp,
-                                                          fontWeight: FontWeight.w600,
+                                                    DataColumn(
+                                                      headingRowAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      label: Flexible(
+                                                        child: Text(
+                                                          "Actions",
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                          maxLines: 1,
+                                                          style: AppStyles.blackTextStyle()
+                                                              .copyWith(
+                                                                fontSize: 16.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                                rows: controller.pagedUsers.asMap().entries.map((entry) {
-                                                  final i = entry.key;
-                                                  final user = entry.value;
+                                                  ],
+                                                  rows:
+                                                      controller.pagedUsers
+                                                          .asMap()
+                                                          .entries
+                                                          .map((entry) {
+                                                            final i = entry.key;
+                                                            final user =
+                                                                entry.value;
 
-                                                  return _buildDataRow(
-                                                    i,
-                                                    user['name']!,
-                                                    user['email']!,
-                                                    user['birthDate']!,
-                                                    user['phNumber']!,
-                                                    user['role']!,
-                                                    context
-                                                  );
-                                                }).toList(),
-                                                dataRowMaxHeight: 70,
+                                                            return _buildDataRow(
+                                                              i,
+                                                              user['name']!,
+                                                              user['email']!,
+                                                              user['birthDate']!,
+                                                              user['phNumber']!,
+                                                              user['role']!,
+                                                              context,
+                                                            );
+                                                          })
+                                                          .toList(),
+                                                  dataRowMaxHeight: 70,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),),
-                                        SizedBox(height: 35.h,),
-                                        Obx(() => CustomPagination(
-                                          currentPage: controller.currentPage.value,
-                                          visiblePages: controller.visiblePageNumbers,
-                                          onPrevious: controller.goToPreviousPage,
-                                          onNext: controller.goToNextPage,
-                                          onPageSelected: controller.goToPage,
-                                        )),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 35.h),
+                                        Obx(
+                                          () => CustomPagination(
+                                            currentPage:
+                                                controller.currentPage.value,
+                                            visiblePages:
+                                                controller.visiblePageNumbers,
+                                            onPrevious:
+                                                controller.goToPreviousPage,
+                                            onNext: controller.goToNextPage,
+                                            onPageSelected: controller.goToPage,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -295,38 +398,48 @@ class UserScreen extends GetView<UserController> {
     );
   }
 
-  DataRow _buildDataRow(int i,String name, String email, String birthDate ,String phNumber,String role, context) {
-
+  DataRow _buildDataRow(
+    int i,
+    String name,
+    String email,
+    String birthDate,
+    String phNumber,
+    String role,
+    context,
+  ) {
     return DataRow(
       color: WidgetStateProperty.all(Colors.transparent),
       cells: [
         DataCell(
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: AppStyles.blackTextStyle()
-                  .copyWith(fontSize: 14.sp, ),
-            )),
-        DataCell(Text(
-          email,
-          textAlign: TextAlign.center,
-          style: AppStyles.blackTextStyle()
-              .copyWith(fontSize: 14.sp,),
-        )),
-        DataCell(Text(
-          birthDate,
-          textAlign: TextAlign.center,
-          style: AppStyles.blackTextStyle()
-              .copyWith(fontSize: 14.sp, ),
-        )),
-        DataCell(Center(
-          child: Text(
-            phNumber,
+          Text(
+            name,
             textAlign: TextAlign.center,
-            style: AppStyles.blackTextStyle()
-                .copyWith(fontSize: 14.sp, ),
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
           ),
-        )),
+        ),
+        DataCell(
+          Text(
+            email,
+            textAlign: TextAlign.center,
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+          ),
+        ),
+        DataCell(
+          Text(
+            birthDate,
+            textAlign: TextAlign.center,
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              phNumber,
+              textAlign: TextAlign.center,
+              style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+            ),
+          ),
+        ),
         DataCell(
           Center(
             child: Container(
@@ -337,7 +450,13 @@ class UserScreen extends GetView<UserController> {
                 color: kGreyShade5Color.withOpacity(0.22),
               ),
               child: Center(
-                child: Text(role,style: AppStyles.blackTextStyle().copyWith(fontSize: 13,color: kPrimaryColor),),
+                child: Text(
+                  role,
+                  style: AppStyles.blackTextStyle().copyWith(
+                    fontSize: 13,
+                    color: kPrimaryColor,
+                  ),
+                ),
               ),
             ),
           ),
@@ -354,25 +473,16 @@ class UserScreen extends GetView<UserController> {
                     controller.deleteUserAt(i);
                   }
                 },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 'Edit',
-                    child: Text('Edit'),
-                  ),
-                  PopupMenuItem(
-                    value: 'Delete',
-                    child: Text('Delete'),
-                  ),
-                  PopupMenuItem(
-                    value: 'Restrict',
-                    child: Text('Restrict'),
-                  ),
-                ],
+                itemBuilder:
+                    (context) => [
+                      PopupMenuItem(value: 'Edit', child: Text('Edit')),
+                      PopupMenuItem(value: 'Delete', child: Text('Delete')),
+                      PopupMenuItem(value: 'Restrict', child: Text('Restrict')),
+                    ],
                 icon: Icon(Icons.more_vert_outlined),
                 color: kWhiteColor,
                 position: PopupMenuPosition.under,
                 borderRadius: BorderRadius.circular(12),
-
               ),
             ],
           ),
@@ -380,5 +490,4 @@ class UserScreen extends GetView<UserController> {
       ],
     );
   }
-
 }

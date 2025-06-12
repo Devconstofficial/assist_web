@@ -1,4 +1,4 @@
-
+import 'package:assist_web/screens/calender_screen/controller/location_controller.dart';
 import 'package:assist_web/screens/feed_screen/controller/feed_controller.dart';
 import 'package:assist_web/screens/setting_screen/controller/setting_controller.dart';
 import 'package:assist_web/screens/subscription_screen/controller/subscription_controller.dart';
@@ -18,6 +18,6 @@ class ScreenBindings extends Bindings {
     Get.lazyPut(() => CalenderController());
     Get.lazyPut(() => UserController());
     Get.lazyPut(() => AuthController());
-
+    Get.lazyPut(() => LocationController());
   }
 }

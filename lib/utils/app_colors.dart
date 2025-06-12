@@ -8,7 +8,12 @@ const Color kBlackColor = Color(0xFF000000);
 const Color kBlackTextColor = Color(0xFF1A1C1E);
 const Color kBlackTextColor2 = Color(0xFF202224);
 const Color kBlackTextColor3 = Color(0xFF262F3D);
+const Color kBlackTextColor4 = Color(0xFF121212);
 const Color kGreyColor = Color(0xFFB9B9B9);
+const Color kGreenColor = Color(0xFF29CC39);
+const Color kPurpleColor = Color(0xFF8833FF);
+const Color kYellow1Color = Color(0xFFFFCB33);
+const Color kOrangeColor = Color(0xFFFF6633);
 const Color kGreyShade1Color = Color(0xFF535353);
 const Color kGreyShade2Color = Color(0xFFEDF1F3);
 const Color kGreyShade3Color = Color(0xFF979797);
@@ -24,11 +29,9 @@ const Color kGreyShade12Color = Color(0xFFD0D0D3);
 const Color kGreyShade13Color = Color(0xFFD3D3D3);
 const Color kGreyShade14Color = Color(0xFF4C535F);
 const Color kGreyShade15Color = Color(0xFFD9D9D9);
+const Color kGreyShade16Color = Color(0xFF4D5E80);
 const Color kRedColor = Color(0xFFFF0000);
 const Color kYellowColor = Color(0xFFE8AD41);
 const Color kYellowColor1 = Color(0xFFFAA524);
 const Color kYellowColor2 = Color(0xFFFCDFB3);
 const Color kPurpleShadeColor = Color(0xFFB6BFE8);
-
-
-
