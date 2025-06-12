@@ -54,7 +54,7 @@ class SendOtpScreen extends GetView<AuthController> {
                 copyWith(fontSize: 16,fontWeight: FontWeight.w400,color: kGreyShade3Color),),
               SizedBox(height: 56.h),
               CustomTextField(hintText: "debra.holt@example.com",prefix: SvgPicture.asset(kMailIcon,height: 24,width: 24,),fillColor: kGreyShade5Color.withOpacity(0.22),isFilled: true,),
-              SizedBox(height: 140.h),
+              SizedBox(height: 100.h),
               CustomButton(
                 width: MediaQuery.of(context).size.width,
                 title: kSendLink,

@@ -79,8 +79,11 @@ class UserScreen extends GetView<UserController> {
                                                   height: 24,
                                                   width: 24,
                                                 ),
-                                                borderColor: kGreyShade5Color
-                                                    .withOpacity(0.22),
+                                                borderColor: kGreyShade5Color.withOpacity(0.22),
+                                                onChanged: (value) {
+                                                  controller.searchQuery.value = value;
+                                                  controller.currentPage.value = 1; // Reset to page 1 on new search
+                                                },
                                               ),
                                             ),
                                             Spacer(),
@@ -367,13 +370,12 @@ class UserScreen extends GetView<UserController> {
                                         ),
                                         SizedBox(height: 35.h),
                                         Obx(
-                                          () => CustomPagination(
-                                            currentPage:
-                                                controller.currentPage.value,
-                                            visiblePages:
-                                                controller.visiblePageNumbers,
-                                            onPrevious:
-                                                controller.goToPreviousPage,
+                                              () => controller.filteredUsers.isEmpty
+                                              ? SizedBox.shrink()
+                                              : CustomPagination(
+                                            currentPage: controller.currentPage.value,
+                                            visiblePages: controller.visiblePageNumbers,
+                                            onPrevious: controller.goToPreviousPage,
                                             onNext: controller.goToNextPage,
                                             onPageSelected: controller.goToPage,
                                           ),

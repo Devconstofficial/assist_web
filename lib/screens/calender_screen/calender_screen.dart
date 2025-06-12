@@ -4,6 +4,7 @@ import 'package:assist_web/screens/calender_screen/select_location_screen.dart';
 import 'package:assist_web/utils/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -259,19 +260,32 @@ class _EventDialogState extends State<EventDialog> {
           children: [
             SizedBox(height: 27.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.only(right: 20.w),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _titleController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Event Title",
                         hintStyle: TextStyle(color: Colors.grey),
-                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 18,vertical: 10),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.withOpacity(0.2),
+                          )
+                        ),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(top: 6,right: 6,bottom: 6,left: 10),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Icon(Icons.title,color: kGreyShade10Color),
+                          ),
+                        )
                       ),
                     ),
                   ),
+                  SizedBox(width: 10,),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -378,45 +392,11 @@ class _EventDialogState extends State<EventDialog> {
                         final startTime = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
-                          builder: (BuildContext context, Widget? child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                timePickerTheme: TimePickerThemeData(
-                                  backgroundColor:
-                                      Colors.white, // Set background to white
-                                  hourMinuteTextColor: Colors.black,
-                                  dayPeriodTextColor: Colors.black,
-                                  dialHandColor: Colors.blue,
-                                  dialTextColor: Colors.black,
-                                  entryModeIconColor: Colors.black,
-                                ),
-                              ),
-                              child: child!,
-                            );
-                          },
                         );
                         if (startTime != null) {
                           final endTime = await showTimePicker(
                             context: context,
-                            initialTime: startTime.replacing(
-                              hour: startTime.hour + 1,
-                            ),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: Theme.of(context).copyWith(
-                                  timePickerTheme: TimePickerThemeData(
-                                    backgroundColor:
-                                        Colors.white, // Set background to white
-                                    hourMinuteTextColor: Colors.black,
-                                    dayPeriodTextColor: Colors.black,
-                                    dialHandColor: Colors.blue,
-                                    dialTextColor: Colors.black,
-                                    entryModeIconColor: Colors.black,
-                                  ),
-                                ),
-                                child: child!,
-                              );
-                            },
+                            initialTime: startTime.replacing(hour: startTime.hour + 1),
                           );
                           if (endTime != null) {
                             setState(() {

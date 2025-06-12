@@ -71,7 +71,6 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
       ),
     );
   }
-
   
   @override
   Widget build(BuildContext context) {
@@ -168,8 +167,9 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                                                     ],
                                                   ),
                                                   SizedBox(height: 21.h,),
-                                                  SubscriptionGraph(isMonthly: true),
-                                                ],
+                                                  Obx(() => SubscriptionGraph(
+                                                    isMonthly: controller.isMonthly.value,
+                                                  )),                                                ],
                                               ),
                                             ),
                                           ),
@@ -214,12 +214,21 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                                                   SizedBox(
                                                     width: 260.w,
                                                     child: CustomTextField(
-                                                        hintText: "Search by name...",
+                                                      hintText: "Search by name...",
                                                       hintColor: kGreyShade5Color,
-                                                      prefix: SvgPicture.asset(kSearchIcon,height: 24,width: 24,),
+                                                      prefix: SvgPicture.asset(
+                                                        kSearchIcon,
+                                                        height: 24,
+                                                        width: 24,
+                                                      ),
                                                       borderColor: kGreyShade5Color.withOpacity(0.22),
+                                                      onChanged: (value) {
+                                                        controller.searchQuery.value = value;
+                                                        controller.currentPage.value = 1; // Reset to page 1 on new search
+                                                      },
                                                     ),
                                                   ),
+
                                                   SizedBox(width: 13.w,),
                                                   Container(
                                                     decoration: BoxDecoration(
@@ -415,13 +424,18 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                                               ],
                                             ),),
                                             SizedBox(height: 35.h,),
-                                            Obx(() => CustomPagination(
-                                              currentPage: controller.currentPage.value,
-                                              visiblePages: controller.visiblePageNumbers,
-                                              onPrevious: controller.goToPreviousPage,
-                                              onNext: controller.goToNextPage,
-                                              onPageSelected: controller.goToPage,
-                                            )),
+                                            Obx(
+                                                  () => controller.filteredUsers.isEmpty
+                                                  ? SizedBox.shrink()
+                                                  : CustomPagination(
+                                                currentPage: controller.currentPage.value,
+                                                visiblePages: controller.visiblePageNumbers,
+                                                onPrevious: controller.goToPreviousPage,
+                                                onNext: controller.goToNextPage,
+                                                onPageSelected: controller.goToPage,
+                                              ),
+                                            ),
+
                                           ],
                                         ),
                                       ),

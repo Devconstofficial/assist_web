@@ -10,5 +10,25 @@ ThemeData buildTheme(brightness) {
     textTheme: GoogleFonts.poppinsTextTheme(baseTheme.textTheme),
     scaffoldBackgroundColor: kWhiteColor,
     colorScheme: ThemeData().colorScheme.copyWith(primary: kPrimaryColor),
+    timePickerTheme: TimePickerThemeData(
+      backgroundColor: Colors.white,
+      hourMinuteColor: Colors.grey.shade200,
+      hourMinuteTextColor: Colors.black,
+      hourMinuteTextStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+        fontSize: 20,
+      ),
+      dayPeriodTextColor: Colors.black,
+      dayPeriodColor: Colors.grey.shade200,
+      dayPeriodTextStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+      ),
+      dialHandColor: Colors.blue,
+      dialBackgroundColor: Colors.grey.shade200,
+      dialTextColor: Colors.black,
+      entryModeIconColor: Colors.black,
+    ),
   );
 }

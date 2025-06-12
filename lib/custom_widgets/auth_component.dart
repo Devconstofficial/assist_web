@@ -65,59 +65,61 @@ class AuthComponent extends StatelessWidget {
                         bottom: 0,
                         child: SvgPicture.asset(kPlayImage,height: 88.h,width: 108.w,)),
                     Padding(
-                      padding: EdgeInsets.only(top: 100.0.h,bottom: 100.h,right: 50.w),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: kWhiteColor,
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            width: 1,
-                            color: kBlackColor.withOpacity(0.25),
-                          ),
-                        ),
-                          child: Padding(
-                            padding: withBackButton == true ? const EdgeInsets.only(top: 42,right: 26,left: 74,bottom: 120) : EdgeInsets.symmetric(horizontal: 74,vertical: 120),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  if(withBackButton == true)
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            Get.back();
-                                          },
-                                          child: Container(
-                                            height: 65,
-                                            width: 65,
-                                            decoration: BoxDecoration(
-                                              color: kWhiteColor,
-                                              borderRadius: BorderRadius.circular(100),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: kGreyShade7Color.withOpacity(0.11),
-                                                  blurRadius: 22,
-                                                  offset: Offset(0, 4)
-                                                )
-                                              ]
-                                            ),
-                                            child: Center(child: Icon(Icons.close,size: 24,color: kPrimaryColor,)),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: withBackButton == true ? 60.0 : 0),
-                                    child: content,
-                                  ),
-                                ],
+                      padding: EdgeInsets.only(right: 50.w),
+                      child: Center(
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: kWhiteColor,
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                width: 1,
+                                color: kBlackColor.withOpacity(0.25),
                               ),
                             ),
-                          )),
+                            child: Padding(
+                              padding: withBackButton == true ? const EdgeInsets.only(top: 42,right: 26,left: 74,bottom: 60) : EdgeInsets.symmetric(horizontal: 74,vertical: 70),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    if(withBackButton == true)
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                Get.back();
+                                              },
+                                              child: Container(
+                                                height: 65,
+                                                width: 65,
+                                                decoration: BoxDecoration(
+                                                    color: kWhiteColor,
+                                                    borderRadius: BorderRadius.circular(100),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: kGreyShade7Color.withOpacity(0.11),
+                                                          blurRadius: 22,
+                                                          offset: Offset(0, 4)
+                                                      )
+                                                    ]
+                                                ),
+                                                child: Center(child: Icon(Icons.close,size: 24,color: kPrimaryColor,)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: withBackButton == true ? 60.0 : 0),
+                                      child: content,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                      ),
                     ),
                   ],
                 ),

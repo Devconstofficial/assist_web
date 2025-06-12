@@ -73,13 +73,25 @@ class SubscriptionController extends GetxController {
   final int itemsPerPage = 3;
   final int pagesPerGroup = 4;
 
-  int get totalPages => (users.length / itemsPerPage).ceil();
+  var searchQuery = ''.obs;
+
+  List get filteredUsers {
+    if (searchQuery.value.isEmpty) return users;
+
+    return users
+        .where((user) =>
+        user['name']!.toLowerCase().contains(searchQuery.value.toLowerCase()))
+        .toList();
+  }
 
   List get pagedUsers {
+    final filtered = filteredUsers;
     int start = (currentPage.value - 1) * itemsPerPage;
     int end = start + itemsPerPage;
-    return users.sublist(start, end > users.length ? users.length : end);
+    return filtered.sublist(start, end > filtered.length ? filtered.length : end);
   }
+
+  int get totalPages => (filteredUsers.length / itemsPerPage).ceil();
 
   int get currentGroup => ((currentPage.value - 1) / pagesPerGroup).floor();
 

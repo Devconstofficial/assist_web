@@ -35,36 +35,39 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: height.h,
-        width: width,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(
-            color: borderColor ?? kPrimaryColor.withOpacity(0.3),
-            width: 1,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon != null
-                ? Image.asset(icon!, height: 18, width: 18)
-                : SizedBox.shrink(),
-            icon != null ? SizedBox(width: 10) : SizedBox.shrink(),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: AppStyles.whiteTextStyle().copyWith(
-                fontSize: textSize,
-                color: textColor,
-                fontWeight: fontWeight,
-              ),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: height.h,
+          width: width,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(borderRadius),
+            border: Border.all(
+              color: borderColor ?? kPrimaryColor.withOpacity(0.3),
+              width: 1,
             ),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon != null
+                  ? Image.asset(icon!, height: 18, width: 18)
+                  : SizedBox.shrink(),
+              icon != null ? SizedBox(width: 10) : SizedBox.shrink(),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: AppStyles.whiteTextStyle().copyWith(
+                  fontSize: textSize,
+                  color: textColor,
+                  fontWeight: fontWeight,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -10,14 +10,24 @@ class SubscriptionGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final barData = [
+    final monthlyData = [
       _BarData(label: 'Jan', value: 70, isFilled: false),
       _BarData(label: 'Feb', value: 100, isFilled: true, showTooltip: true, tooltipValue: '\$12,000'),
       _BarData(label: 'Mar', value: 70, isFilled: false),
-      _BarData(label: 'April', value: 85, isFilled: true),
+      _BarData(label: 'Apr', value: 85, isFilled: true),
       _BarData(label: 'May', value: 60, isFilled: false),
-      _BarData(label: 'June', value: 50, isFilled: true),
+      _BarData(label: 'Jun', value: 50, isFilled: true),
     ];
+
+    final yearlyData = [
+      _BarData(label: '2020', value: 320, isFilled: false),
+      _BarData(label: '2021', value: 450, isFilled: true, showTooltip: true, tooltipValue: '\$45,000'),
+      _BarData(label: '2022', value: 400, isFilled: false),
+      _BarData(label: '2023', value: 520, isFilled: true),
+      _BarData(label: '2024', value: 460, isFilled: false),
+    ];
+
+    final barData = isMonthly ? monthlyData : yearlyData;
 
     return SizedBox(
       height: 300.h,
@@ -30,22 +40,19 @@ class SubscriptionGraph extends StatelessWidget {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 40,
-                interval: 20,
+                interval: isMonthly ? 20 : 100,
                 getTitlesWidget: (value, meta) {
-                  if (value % 20 != 0 || value > 100) return const SizedBox();
+                  if (isMonthly && (value % 20 != 0 || value > 100)) return const SizedBox();
+                  if (!isMonthly && (value % 100 != 0 || value > 600)) return const SizedBox();
                   return Text(
                     '\$${value.toInt()}',
-                    style: AppStyles.blackTextStyle().copyWith(fontSize: 12,),
+                    style: AppStyles.blackTextStyle().copyWith(fontSize: 12),
                   );
                 },
               ),
             ),
-            rightTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
-            topTitles: AxisTitles(
-              sideTitles: SideTitles(showTitles: false),
-            ),
+            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
@@ -56,7 +63,7 @@ class SubscriptionGraph extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       barData[index].label,
-                      style: AppStyles.blackTextStyle().copyWith(fontSize: 12,),
+                      style: AppStyles.blackTextStyle().copyWith(fontSize: 12),
                     ),
                   );
                 },
