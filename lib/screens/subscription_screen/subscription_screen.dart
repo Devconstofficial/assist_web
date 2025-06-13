@@ -37,7 +37,7 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
             Text(
               title,
               style: AppStyles.blackTextStyle().copyWith(
-                fontSize: 22.sp,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -47,7 +47,7 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                 Text(
                   detail,
                   style: AppStyles.blackTextStyle().copyWith(
-                    fontSize: 32.sp,
+                    fontSize: 28.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

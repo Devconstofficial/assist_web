@@ -496,12 +496,12 @@ class FeedScreen extends GetView<UserController> {
                                               onTap: () {
                                                 Get.dialog(createPostDialog());
                                               },
-                                              height: 67,
+                                              height: 66.h,
                                               width: 180.w,
                                               color: kWhiteColor,
                                               borderColor: kGreyShade13Color,
                                               textColor: kPrimaryColor,
-                                              textSize: 18,
+                                              textSize: 16,
                                             ),
                                             SizedBox(width: 7),
                                             CustomButton(
@@ -509,9 +509,9 @@ class FeedScreen extends GetView<UserController> {
                                               onTap: () {
                                                 Get.dialog(reportDialog());
                                               },
-                                              textSize: 20,
+                                              textSize: 18,
                                               fontWeight: FontWeight.w600,
-                                              width: 260.w,
+                                              width: 235.w,
                                               height: 66.h,
                                             ),
                                           ],

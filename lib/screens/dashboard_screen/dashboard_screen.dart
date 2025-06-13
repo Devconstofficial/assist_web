@@ -45,18 +45,18 @@ class DashboardScreen extends GetView<DashboardController> {
           top: 35.h,
           bottom: 35.h,
           left: 18.0.w,
-          right: 55.w,
+          right: 65.w,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 20.h,
+          spacing: 18.h,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
                 style: AppStyles.blackTextStyle().copyWith(
-                  fontSize: 22.sp,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -67,7 +67,7 @@ class DashboardScreen extends GetView<DashboardController> {
                 Text(
                   detail,
                   style: AppStyles.blackTextStyle().copyWith(
-                    fontSize: 30.sp,
+                    fontSize: 28.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -323,8 +323,8 @@ class DashboardScreen extends GetView<DashboardController> {
                                           },
                                           textSize: 20.sp,
                                           fontWeight: FontWeight.w400,
-                                          height: 62.h,
-                                          width: 300.w,
+                                          height: 68.h,
+                                          width: 240.w,
                                         ),
                                       ],
                                     ),
@@ -339,7 +339,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                         ),
                                         insightContainer(
                                           "Number of applicants helped",
-                                          "1,0000",
+                                          "\$1,0000",
                                         ),
                                         insightContainer(
                                           "Avg donation per user",
@@ -347,7 +347,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 28.h),
+                                    SizedBox(height: 32.h),
                                     Container(
                                       decoration: BoxDecoration(
                                         color: kWhiteColor,
@@ -484,7 +484,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                             final labels =
                                                                 isMonthly
                                                                     ? controller
-                                                                        .weekDays
+                                                                        .currentMonthDates
                                                                     : controller
                                                                         .months;
                                                             if (value.toInt() <
@@ -552,7 +552,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                                     .isMonthly
                                                                     .value
                                                                 ? controller
-                                                                    .weekDays
+                                                                    .currentMonthDates
                                                                     .length
                                                                 : controller
                                                                     .months
@@ -611,7 +611,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                               final labelList =
                                                                   isMonthly
                                                                       ? controller
-                                                                          .weekDays
+                                                                          .currentMonthDates
                                                                       : controller
                                                                           .months;
                                                               final label =
