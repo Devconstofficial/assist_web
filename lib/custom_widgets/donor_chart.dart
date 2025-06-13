@@ -19,7 +19,7 @@ class DonorMetricsChart extends StatelessWidget {
           "Donor Metrics",
           style: AppStyles.blackTextStyle().copyWith(
             fontWeight: FontWeight.w600,
-            fontSize: 24,
+            fontSize: 20.sp,
             color: kBlackColor,
           ),
         ),
@@ -39,7 +39,6 @@ class DonorMetricsChart extends StatelessWidget {
                       value: selectedPercentage,
                       radius: 48,
                       showTitle: false,
-
                     ),
                     PieChartSectionData(
                       color: kGreyShade10Color,
@@ -93,7 +92,7 @@ class DonorMetricsChart extends StatelessWidget {
               ],
             ),
           ],
-        )
+        ),
       ],
     );
   }

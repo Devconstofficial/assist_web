@@ -20,7 +20,6 @@ import 'controller/dashboard_controller.dart';
 class DashboardScreen extends GetView<DashboardController> {
   const DashboardScreen({super.key});
 
-
   Widget _buildStatusButton(String title, double width) {
     final isSelected = controller.selectedStatus.value == title;
     return CustomButton(
@@ -43,21 +42,21 @@ class DashboardScreen extends GetView<DashboardController> {
       ),
       child: Padding(
         padding: EdgeInsets.only(
-          top: 45.h,
-          bottom: 45.h,
+          top: 35.h,
+          bottom: 35.h,
           left: 18.0.w,
-          right: 40.w,
+          right: 55.w,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 28.h,
+          spacing: 20.h,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 title,
                 style: AppStyles.blackTextStyle().copyWith(
-                  fontSize: 24.sp,
+                  fontSize: 22.sp,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -68,7 +67,7 @@ class DashboardScreen extends GetView<DashboardController> {
                 Text(
                   detail,
                   style: AppStyles.blackTextStyle().copyWith(
-                    fontSize: 34.sp,
+                    fontSize: 30.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -209,17 +208,19 @@ class DashboardScreen extends GetView<DashboardController> {
                 ),
               ),
               SizedBox(height: 24.h),
-              Obx(() => Wrap(
-                spacing: 8,
-                runSpacing: 21,
-                children: [
-                  _buildStatusButton("Submitted", 119),
-                  _buildStatusButton("In Pool", 94),
-                  _buildStatusButton("Selected", 94),
-                  _buildStatusButton("Paid", 94),
-                  _buildStatusButton("Denied", 94),
-                ],
-              )),
+              Obx(
+                () => Wrap(
+                  spacing: 8,
+                  runSpacing: 21,
+                  children: [
+                    _buildStatusButton("Submitted", 119),
+                    _buildStatusButton("In Pool", 94),
+                    _buildStatusButton("Selected", 94),
+                    _buildStatusButton("Paid", 94),
+                    _buildStatusButton("Denied", 94),
+                  ],
+                ),
+              ),
               SizedBox(height: 24.h),
               Text(
                 "Add Notes",
@@ -310,7 +311,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                           "Matrices",
                                           style: AppStyles.blackTextStyle()
                                               .copyWith(
-                                                fontSize: 32.sp,
+                                                fontSize: 28.sp,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                         ),
@@ -320,7 +321,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                           onTap: () {
                                             Get.dialog(approvalDialog());
                                           },
-                                          textSize: 25.sp,
+                                          textSize: 20.sp,
                                           fontWeight: FontWeight.w400,
                                           height: 62.h,
                                           width: 300.w,
@@ -451,33 +452,54 @@ class DashboardScreen extends GetView<DashboardController> {
                                             ),
                                             SizedBox(height: 46.h),
                                             Obx(
-                                                  () => SizedBox(
+                                              () => SizedBox(
                                                 height: 250,
                                                 child: LineChart(
                                                   LineChartData(
                                                     gridData: FlGridData(
                                                       show: true,
                                                       drawVerticalLine: false,
-                                                      getDrawingHorizontalLine: (value) => FlLine(
-                                                        color: Colors.grey.shade300,
-                                                        strokeWidth: 1,
-                                                      ),
+                                                      getDrawingHorizontalLine:
+                                                          (value) => FlLine(
+                                                            color:
+                                                                Colors
+                                                                    .grey
+                                                                    .shade300,
+                                                            strokeWidth: 1,
+                                                          ),
                                                     ),
                                                     titlesData: FlTitlesData(
                                                       bottomTitles: AxisTitles(
                                                         sideTitles: SideTitles(
                                                           showTitles: true,
                                                           interval: 1,
-                                                          getTitlesWidget: (value, meta) {
-                                                            final isMonthly = controller.isMonthly.value;
-                                                            final labels = isMonthly ? controller.weekDays : controller.months;
-                                                            if (value.toInt() < labels.length) {
+                                                          getTitlesWidget: (
+                                                            value,
+                                                            meta,
+                                                          ) {
+                                                            final isMonthly =
+                                                                controller
+                                                                    .isMonthly
+                                                                    .value;
+                                                            final labels =
+                                                                isMonthly
+                                                                    ? controller
+                                                                        .weekDays
+                                                                    : controller
+                                                                        .months;
+                                                            if (value.toInt() <
+                                                                labels.length) {
                                                               return Text(
-                                                                labels[value.toInt()],
+                                                                labels[value
+                                                                    .toInt()],
                                                                 style: AppStyles.blackTextStyle().copyWith(
-                                                                  fontSize: 14.sp,
-                                                                  color: kGreyShade11Color,
-                                                                  fontWeight: FontWeight.w400,
+                                                                  fontSize:
+                                                                      14.sp,
+                                                                  color:
+                                                                      kGreyShade11Color,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
                                                                 ),
                                                               );
                                                             }
@@ -490,58 +512,126 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           showTitles: true,
                                                           interval: 20,
                                                           reservedSize: 40,
-                                                          getTitlesWidget: (value, meta) => Text(
-                                                            value.toInt().toString(),
-                                                            style: AppStyles.blackTextStyle().copyWith(
-                                                              fontSize: 13.sp,
-                                                              color: kGreyShade11Color,
-                                                              fontWeight: FontWeight.w400,
-                                                            ),
-                                                          ),
+                                                          getTitlesWidget:
+                                                              (
+                                                                value,
+                                                                meta,
+                                                              ) => Text(
+                                                                value
+                                                                    .toInt()
+                                                                    .toString(),
+                                                                style: AppStyles.blackTextStyle().copyWith(
+                                                                  fontSize:
+                                                                      13.sp,
+                                                                  color:
+                                                                      kGreyShade11Color,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                ),
+                                                              ),
                                                         ),
                                                       ),
-                                                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                                                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                                      topTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                          showTitles: false,
+                                                        ),
+                                                      ),
+                                                      rightTitles: AxisTitles(
+                                                        sideTitles: SideTitles(
+                                                          showTitles: false,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    borderData: FlBorderData(show: false),
+                                                    borderData: FlBorderData(
+                                                      show: false,
+                                                    ),
                                                     minX: 0,
-                                                    maxX: (controller.isMonthly.value
-                                                        ? controller.weekDays.length
-                                                        : controller.months.length)
-                                                        .toDouble() -
+                                                    maxX:
+                                                        (controller
+                                                                    .isMonthly
+                                                                    .value
+                                                                ? controller
+                                                                    .weekDays
+                                                                    .length
+                                                                : controller
+                                                                    .months
+                                                                    .length)
+                                                            .toDouble() -
                                                         1,
                                                     minY: 0,
                                                     maxY: 100,
                                                     lineBarsData: [
                                                       LineChartBarData(
-                                                        spots: controller.completedSpots,
+                                                        spots:
+                                                            controller
+                                                                .completedSpots,
                                                         isCurved: true,
                                                         color: kBlackColor,
                                                         barWidth: 2,
-                                                        dotData: FlDotData(show: false),
-                                                        belowBarData: BarAreaData(show: false),
+                                                        dotData: FlDotData(
+                                                          show: false,
+                                                        ),
+                                                        belowBarData:
+                                                            BarAreaData(
+                                                              show: false,
+                                                            ),
                                                       ),
                                                     ],
                                                     lineTouchData: LineTouchData(
-                                                      handleBuiltInTouches: true,
-                                                      touchCallback: (FlTouchEvent event, LineTouchResponse? response) {},
+                                                      handleBuiltInTouches:
+                                                          true,
+                                                      touchCallback:
+                                                          (
+                                                            FlTouchEvent event,
+                                                            LineTouchResponse?
+                                                            response,
+                                                          ) {},
                                                       touchTooltipData: LineTouchTooltipData(
                                                         tooltipRoundedRadius: 8,
-                                                        fitInsideHorizontally: true,
-                                                        fitInsideVertically: true,
-                                                        getTooltipColor: (touchedSpots) => kWhiteColor,
-                                                        getTooltipItems: (touchedSpots) {
-                                                          return touchedSpots.map((spot) {
-                                                            if (spot.barIndex == 0) {
-                                                              final isMonthly = controller.isMonthly.value;
-                                                              final labelList = isMonthly ? controller.weekDays : controller.months;
-                                                              final label = labelList[spot.x.toInt()];
-                                                              final value = spot.y.toStringAsFixed(2);
+                                                        fitInsideHorizontally:
+                                                            true,
+                                                        fitInsideVertically:
+                                                            true,
+                                                        getTooltipColor:
+                                                            (touchedSpots) =>
+                                                                kWhiteColor,
+                                                        getTooltipItems: (
+                                                          touchedSpots,
+                                                        ) {
+                                                          return touchedSpots.map((
+                                                            spot,
+                                                          ) {
+                                                            if (spot.barIndex ==
+                                                                0) {
+                                                              final isMonthly =
+                                                                  controller
+                                                                      .isMonthly
+                                                                      .value;
+                                                              final labelList =
+                                                                  isMonthly
+                                                                      ? controller
+                                                                          .weekDays
+                                                                      : controller
+                                                                          .months;
+                                                              final label =
+                                                                  labelList[spot
+                                                                      .x
+                                                                      .toInt()];
+                                                              final value = spot
+                                                                  .y
+                                                                  .toStringAsFixed(
+                                                                    2,
+                                                                  );
                                                               return LineTooltipItem(
                                                                 '$label\n$value',
                                                                 const TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontWeight: FontWeight.w500,
+                                                                  color:
+                                                                      Colors
+                                                                          .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
                                                                   fontSize: 12,
                                                                 ),
                                                               );
@@ -550,21 +640,36 @@ class DashboardScreen extends GetView<DashboardController> {
                                                           }).toList();
                                                         },
                                                       ),
-                                                      getTouchedSpotIndicator: (barData, spotIndexes) {
-                                                        return spotIndexes.map((index) {
+                                                      getTouchedSpotIndicator: (
+                                                        barData,
+                                                        spotIndexes,
+                                                      ) {
+                                                        return spotIndexes.map((
+                                                          index,
+                                                        ) {
                                                           return TouchedSpotIndicatorData(
                                                             FlLine(
-                                                              color: kPrimaryColor,
+                                                              color:
+                                                                  kPrimaryColor,
                                                               strokeWidth: 2,
                                                             ),
                                                             FlDotData(
                                                               show: true,
-                                                              getDotPainter: (spot, percent, barData, index) =>
-                                                                  FlDotCirclePainter(
+                                                              getDotPainter:
+                                                                  (
+                                                                    spot,
+                                                                    percent,
+                                                                    barData,
+                                                                    index,
+                                                                  ) => FlDotCirclePainter(
                                                                     radius: 6,
-                                                                    color: kPrimaryColor,
-                                                                    strokeWidth: 2,
-                                                                    strokeColor: Colors.white,
+                                                                    color:
+                                                                        kPrimaryColor,
+                                                                    strokeWidth:
+                                                                        2,
+                                                                    strokeColor:
+                                                                        Colors
+                                                                            .white,
                                                                   ),
                                                             ),
                                                           );
@@ -608,7 +713,7 @@ class DashboardScreen extends GetView<DashboardController> {
                                                             AppStyles.blackTextStyle()
                                                                 .copyWith(
                                                                   fontSize:
-                                                                      30.sp,
+                                                                      26.sp,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
@@ -691,9 +796,14 @@ class DashboardScreen extends GetView<DashboardController> {
                                                     ],
                                                   ),
                                                   SizedBox(height: 21.h),
-                                                  Obx(() => SubscriptionGraph(
-                                                    isMonthly: controller.isMonthly1.value,
-                                                  )),
+                                                  Obx(
+                                                    () => SubscriptionGraph(
+                                                      isMonthly:
+                                                          controller
+                                                              .isMonthly1
+                                                              .value,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                             ),

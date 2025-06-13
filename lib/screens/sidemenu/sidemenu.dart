@@ -98,7 +98,7 @@ class _SideMenuState extends State<SideMenu> {
       child: Drawer(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: kBlackColor,
-        width: 316.w,
+        width: 290.w,
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(

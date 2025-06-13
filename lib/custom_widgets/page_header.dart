@@ -39,13 +39,13 @@ class _PageHeaderState extends State<PageHeader> {
         borderRadius: BorderRadius.circular(34),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 37, vertical: 28),
+        padding: const EdgeInsets.symmetric(horizontal: 37, vertical: 24),
         child: Row(
           children: [
             Text(
               widget.pageName,
               style: AppStyles.blackTextStyle().copyWith(
-                fontSize: 28.sp,
+                fontSize: 25.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),

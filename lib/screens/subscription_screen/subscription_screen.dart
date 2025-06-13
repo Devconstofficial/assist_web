@@ -17,24 +17,27 @@ import 'controller/subscription_controller.dart';
 class SubscriptionScreen extends GetView<SubscriptionController> {
   const SubscriptionScreen({super.key});
 
-  Widget insightContainer(title, detail, {bool isDonation = false}){
+  Widget insightContainer(title, detail, {bool isDonation = false}) {
     return Container(
       decoration: BoxDecoration(
         color: kWhiteColor,
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 35.h,bottom: 35.h, left: 18.0.w,right: 40.w),
+        padding: EdgeInsets.only(
+          top: 40.h,
+          bottom: 40.h,
+          left: 18.0.w,
+          right: 40.w,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 28.h,
+          spacing: 24.h,
           children: [
             Text(
               title,
-              style:
-              AppStyles.blackTextStyle()
-                  .copyWith(
-                fontSize: 24.sp,
+              style: AppStyles.blackTextStyle().copyWith(
+                fontSize: 22.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -43,24 +46,20 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
               children: [
                 Text(
                   detail,
-                  style:
-                  AppStyles.blackTextStyle()
-                      .copyWith(
-                    fontSize: 34.sp,
+                  style: AppStyles.blackTextStyle().copyWith(
+                    fontSize: 32.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                if(isDonation == true)
+                if (isDonation == true)
                   Padding(
-                    padding: EdgeInsets.only(left: 8.0.w),
+                    padding: EdgeInsets.only(left: 8.0.w, bottom: 8.h),
                     child: Text(
                       "per person",
-                      style:
-                      AppStyles.greyTextStyle()
-                          .copyWith(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w500,
-                          color: kGreyShade10Color
+                      style: AppStyles.greyTextStyle().copyWith(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w500,
+                        color: kGreyShade10Color,
                       ),
                     ),
                   ),
@@ -71,7 +70,7 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
       ),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -121,168 +120,332 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                                             height: 450.h,
                                             decoration: BoxDecoration(
                                               color: kWhiteColor,
-                                              borderRadius: BorderRadius.circular(24),
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(24),
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Text(
                                                         "Subscription summary",
-                                                        style: AppStyles.blackTextStyle()
-                                                            .copyWith(
-                                                          fontSize: 30.sp,
-                                                          fontWeight: FontWeight.w600,
-                                                        ),
+                                                        style:
+                                                            AppStyles.blackTextStyle()
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      26.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
                                                       ),
-                                                      Obx((){
-                                                        bool monthly = controller.isMonthly.value;
+                                                      Obx(() {
+                                                        bool monthly =
+                                                            controller
+                                                                .isMonthly
+                                                                .value;
                                                         return Container(
                                                           height: 45.h,
                                                           width: 186,
                                                           decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(100),
-                                                              color: kWhiteColor,
-                                                              border: Border.all(
-                                                                  width: 0.5,
-                                                                  color: kGreyShade12Color
-                                                              )
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                  100,
+                                                                ),
+                                                            color: kWhiteColor,
+                                                            border: Border.all(
+                                                              width: 0.5,
+                                                              color:
+                                                                  kGreyShade12Color,
+                                                            ),
                                                           ),
                                                           child: Row(
                                                             children: [
-                                                              Expanded(child: CustomButton(title: "Monthly", onTap: (){
-                                                                controller.selectMonthly();
-                                                              },height: 45,textSize: 12,color: monthly ? kPrimaryColor : kWhiteColor,borderColor: monthly ? kPrimaryColor : kWhiteColor,textColor: monthly ? kWhiteColor : kPrimaryColor,)),
-                                                              Expanded(child: CustomButton(title: "Yearly", onTap: (){
-                                                                controller.selectYearly();
-                                                              },height: 45,textSize: 12,color: monthly ? kWhiteColor : kPrimaryColor,borderColor: monthly ? kWhiteColor : kPrimaryColor,textColor: monthly ? kPrimaryColor : kWhiteColor,)),
+                                                              Expanded(
+                                                                child: CustomButton(
+                                                                  title:
+                                                                      "Monthly",
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .selectMonthly();
+                                                                  },
+                                                                  height: 45,
+                                                                  textSize: 12,
+                                                                  color:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                  borderColor:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                  textColor:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: CustomButton(
+                                                                  title:
+                                                                      "Yearly",
+                                                                  onTap: () {
+                                                                    controller
+                                                                        .selectYearly();
+                                                                  },
+                                                                  height: 45,
+                                                                  textSize: 12,
+                                                                  color:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                  borderColor:
+                                                                      monthly
+                                                                          ? kWhiteColor
+                                                                          : kPrimaryColor,
+                                                                  textColor:
+                                                                      monthly
+                                                                          ? kPrimaryColor
+                                                                          : kWhiteColor,
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
                                                         );
-                                                      })
+                                                      }),
                                                     ],
                                                   ),
-                                                  SizedBox(height: 21.h,),
-                                                  Obx(() => SubscriptionGraph(
-                                                    isMonthly: controller.isMonthly.value,
-                                                  )),                                                ],
+                                                  SizedBox(height: 21.h),
+                                                  Obx(
+                                                    () => SubscriptionGraph(
+                                                      isMonthly:
+                                                          controller
+                                                              .isMonthly
+                                                              .value,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),
                                         ),
-                                        SizedBox(width: 18.w,),
+                                        SizedBox(width: 18.w),
                                         Expanded(
                                           flex: 2,
                                           child: Container(
                                             height: 450.h,
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(24),
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
                                             ),
                                             child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                insightContainer("Total Donation", "\$12,700"),
-                                                insightContainer("Individual Subscriber", "\$12",isDonation: true),
+                                                insightContainer(
+                                                  "Total Donation",
+                                                  "\$12,700",
+                                                ),
+                                                insightContainer(
+                                                  "Individual Subscriber",
+                                                  "\$12",
+                                                  isDonation: true,
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 35.h,),
+                                    SizedBox(height: 35.h),
                                     Container(
                                       decoration: BoxDecoration(
                                         color: kWhiteColor,
                                         borderRadius: BorderRadius.circular(45),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 32.h,horizontal: 29.w),
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 32.h,
+                                          horizontal: 29.w,
+                                        ),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-
                                             SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
                                                 children: [
-                                                  CustomButton(title: "Export Data", onTap: (){},width: 210.w,height: 66.h,textSize: 24.sp,),
-                                                  SizedBox(width: 13.w,),
+                                                  CustomButton(
+                                                    title: "Export Data",
+                                                    onTap: () {},
+                                                    width: 210.w,
+                                                    height: 66.h,
+                                                    textSize: 20.sp,
+                                                  ),
+                                                  SizedBox(width: 13.w),
                                                   SizedBox(
                                                     width: 260.w,
                                                     child: CustomTextField(
-                                                      hintText: "Search by name...",
-                                                      hintColor: kGreyShade5Color,
+                                                      hintText:
+                                                          "Search by name...",
+                                                      hintColor:
+                                                          kGreyShade5Color,
                                                       prefix: SvgPicture.asset(
                                                         kSearchIcon,
                                                         height: 24,
                                                         width: 24,
                                                       ),
-                                                      borderColor: kGreyShade5Color.withOpacity(0.22),
+                                                      borderColor:
+                                                          kGreyShade5Color
+                                                              .withOpacity(
+                                                                0.22,
+                                                              ),
                                                       onChanged: (value) {
-                                                        controller.searchQuery.value = value;
-                                                        controller.currentPage.value = 1; // Reset to page 1 on new search
+                                                        controller
+                                                            .searchQuery
+                                                            .value = value;
+                                                        controller
+                                                                .currentPage
+                                                                .value =
+                                                            1; // Reset to page 1 on new search
                                                       },
                                                     ),
                                                   ),
 
-                                                  SizedBox(width: 13.w,),
+                                                  SizedBox(width: 13.w),
                                                   Container(
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(100),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            100,
+                                                          ),
                                                       border: Border.all(
-                                                        color: kGreyShade5Color.withOpacity(0.22),
+                                                        color: kGreyShade5Color
+                                                            .withOpacity(0.22),
                                                       ),
                                                     ),
                                                     child: Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 21,horizontal: 35),
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            vertical: 21,
+                                                            horizontal: 35,
+                                                          ),
                                                       child: Row(
                                                         children: [
-                                                          SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                          SizedBox(width: 4,),
-                                                          Text("by type...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                          SvgPicture.asset(
+                                                            kFilterIcon,
+                                                            height: 24,
+                                                            width: 24,
+                                                          ),
+                                                          SizedBox(width: 4),
+                                                          Text(
+                                                            "by type...",
+                                                            style: AppStyles.greyTextStyle()
+                                                                .copyWith(
+                                                                  color:
+                                                                      kGreyShade5Color,
+                                                                  fontSize:
+                                                                      18.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 13.w,),
+                                                  SizedBox(width: 13.w),
                                                   Container(
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(100),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            100,
+                                                          ),
                                                       border: Border.all(
-                                                        color: kGreyShade5Color.withOpacity(0.22),
+                                                        color: kGreyShade5Color
+                                                            .withOpacity(0.22),
                                                       ),
-
                                                     ),
                                                     child: Padding(
-                                                      padding: const EdgeInsets.symmetric(vertical: 21,horizontal: 35),
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            vertical: 21,
+                                                            horizontal: 35,
+                                                          ),
                                                       child: Row(
                                                         children: [
-                                                          SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                          SizedBox(width: 4,),
-                                                          Text("by range...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                          SvgPicture.asset(
+                                                            kFilterIcon,
+                                                            height: 24,
+                                                            width: 24,
+                                                          ),
+                                                          SizedBox(width: 4),
+                                                          Text(
+                                                            "by range...",
+                                                            style: AppStyles.greyTextStyle()
+                                                                .copyWith(
+                                                                  color:
+                                                                      kGreyShade5Color,
+                                                                  fontSize:
+                                                                      18.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 13.w,),
+                                                  SizedBox(width: 13.w),
                                                   Container(
                                                     decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(100),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            100,
+                                                          ),
                                                       border: Border.all(
-                                                        color: kGreyShade5Color.withOpacity(0.22),
+                                                        color: kGreyShade5Color
+                                                            .withOpacity(0.22),
                                                       ),
                                                     ),
                                                     child: Padding(
-                                                      padding: EdgeInsets.symmetric(vertical: 21.h,horizontal: 35.w),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                            vertical: 21.h,
+                                                            horizontal: 35.w,
+                                                          ),
                                                       child: Row(
                                                         children: [
-                                                          SvgPicture.asset(kFilterIcon,height: 24,width: 24,),
-                                                          SizedBox(width: 4,),
-                                                          Text("by price...",style: AppStyles.greyTextStyle().copyWith(color: kGreyShade5Color,fontSize: 18.sp,fontWeight: FontWeight.w600),)
+                                                          SvgPicture.asset(
+                                                            kFilterIcon,
+                                                            height: 24,
+                                                            width: 24,
+                                                          ),
+                                                          SizedBox(width: 4),
+                                                          Text(
+                                                            "by price...",
+                                                            style: AppStyles.greyTextStyle()
+                                                                .copyWith(
+                                                                  color:
+                                                                      kGreyShade5Color,
+                                                                  fontSize:
+                                                                      18.sp,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -290,152 +453,204 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                                                 ],
                                               ),
                                             ),
-                                            SizedBox(height: 37.h,),
-                                            Obx(() => Stack(
-                                              children: [
-                                                Container(
-                                                  height: 70,
-                                                  decoration: BoxDecoration(
-                                                    color: kGreyShade5Color.withOpacity(0.22),
-                                                    borderRadius: BorderRadius.circular(12),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: width,
-                                                  child: DataTable(
-                                                    columnSpacing: 0,
-                                                    headingRowHeight: 70,
-                                                    dividerThickness: 0,
-                                                    columns: [
-                                                      DataColumn(
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Name",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Email",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Donation date",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        headingRowAlignment:
-                                                        MainAxisAlignment.center,
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Donation Amount",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        headingRowAlignment:
-                                                        MainAxisAlignment.center,
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Donation Stats",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        headingRowAlignment:
-                                                        MainAxisAlignment.center,
-                                                        label: Flexible(
-                                                          child: Text(
-                                                            "Actions",
-                                                            overflow: TextOverflow.ellipsis,
-                                                            maxLines: 1,
-                                                            style:
-                                                            AppStyles.blackTextStyle()
-                                                                .copyWith(
-                                                              fontSize: 16.sp,
-                                                              fontWeight: FontWeight.w600,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                    rows: controller.pagedUsers.asMap().entries.map((entry) {
-                                                      final i = entry.key;
-                                                      final user = entry.value;
-
-                                                      return _buildDataRow(
-                                                        i,
-                                                        user['name']!,
-                                                        user['email']!,
-                                                        user['dDate']!,
-                                                        user['dAmount']!,
-                                                        user['role']!,
-                                                        context
-                                                      );
-                                                    }).toList(),
-                                                    dataRowMaxHeight: 70,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),),
-                                            SizedBox(height: 35.h,),
+                                            SizedBox(height: 37.h),
                                             Obx(
-                                                  () => controller.filteredUsers.isEmpty
-                                                  ? SizedBox.shrink()
-                                                  : CustomPagination(
-                                                currentPage: controller.currentPage.value,
-                                                visiblePages: controller.visiblePageNumbers,
-                                                onPrevious: controller.goToPreviousPage,
-                                                onNext: controller.goToNextPage,
-                                                onPageSelected: controller.goToPage,
+                                              () => Stack(
+                                                children: [
+                                                  Container(
+                                                    height: 70,
+                                                    decoration: BoxDecoration(
+                                                      color: kGreyShade5Color
+                                                          .withOpacity(0.22),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: width,
+                                                    child: DataTable(
+                                                      columnSpacing: 0,
+                                                      headingRowHeight: 70,
+                                                      dividerThickness: 0,
+                                                      columns: [
+                                                        DataColumn(
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Name",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Email",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Donation date",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          headingRowAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Donation Amount",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          headingRowAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Donation Stats",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          headingRowAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          label: Flexible(
+                                                            child: Text(
+                                                              "Actions",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
+                                                              style: AppStyles.blackTextStyle()
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        16.sp,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      rows:
+                                                          controller.pagedUsers
+                                                              .asMap()
+                                                              .entries
+                                                              .map((entry) {
+                                                                final i =
+                                                                    entry.key;
+                                                                final user =
+                                                                    entry.value;
+
+                                                                return _buildDataRow(
+                                                                  i,
+                                                                  user['name']!,
+                                                                  user['email']!,
+                                                                  user['dDate']!,
+                                                                  user['dAmount']!,
+                                                                  user['role']!,
+                                                                  context,
+                                                                );
+                                                              })
+                                                              .toList(),
+                                                      dataRowMaxHeight: 70,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-
+                                            SizedBox(height: 35.h),
+                                            Obx(
+                                              () =>
+                                                  controller
+                                                          .filteredUsers
+                                                          .isEmpty
+                                                      ? SizedBox.shrink()
+                                                      : CustomPagination(
+                                                        currentPage:
+                                                            controller
+                                                                .currentPage
+                                                                .value,
+                                                        visiblePages:
+                                                            controller
+                                                                .visiblePageNumbers,
+                                                        onPrevious:
+                                                            controller
+                                                                .goToPreviousPage,
+                                                        onNext:
+                                                            controller
+                                                                .goToNextPage,
+                                                        onPageSelected:
+                                                            controller.goToPage,
+                                                      ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -458,38 +673,48 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
     );
   }
 
-  DataRow _buildDataRow(int i,String name, String email, String birthDate ,String dAmount,String role, context) {
-
+  DataRow _buildDataRow(
+    int i,
+    String name,
+    String email,
+    String birthDate,
+    String dAmount,
+    String role,
+    context,
+  ) {
     return DataRow(
       color: WidgetStateProperty.all(Colors.transparent),
       cells: [
         DataCell(
-            Text(
-              name,
-              textAlign: TextAlign.center,
-              style: AppStyles.blackTextStyle()
-                  .copyWith(fontSize: 14.sp, ),
-            )),
-        DataCell(Text(
-          email,
-          textAlign: TextAlign.center,
-          style: AppStyles.blackTextStyle()
-              .copyWith(fontSize: 14.sp,),
-        )),
-        DataCell(Text(
-          birthDate,
-          textAlign: TextAlign.center,
-          style: AppStyles.blackTextStyle()
-              .copyWith(fontSize: 14.sp, ),
-        )),
-        DataCell(Center(
-          child: Text(
-            "\$$dAmount",
+          Text(
+            name,
             textAlign: TextAlign.center,
-            style: AppStyles.blackTextStyle()
-                .copyWith(fontSize: 14.sp, ),
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
           ),
-        )),
+        ),
+        DataCell(
+          Text(
+            email,
+            textAlign: TextAlign.center,
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+          ),
+        ),
+        DataCell(
+          Text(
+            birthDate,
+            textAlign: TextAlign.center,
+            style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+          ),
+        ),
+        DataCell(
+          Center(
+            child: Text(
+              "\$$dAmount",
+              textAlign: TextAlign.center,
+              style: AppStyles.blackTextStyle().copyWith(fontSize: 14.sp),
+            ),
+          ),
+        ),
         DataCell(
           Center(
             child: Container(
@@ -500,7 +725,13 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                 color: kGreyShade5Color.withOpacity(0.22),
               ),
               child: Center(
-                child: Text(role,style: AppStyles.blackTextStyle().copyWith(fontSize: 13,color: kPrimaryColor),),
+                child: Text(
+                  role,
+                  style: AppStyles.blackTextStyle().copyWith(
+                    fontSize: 13,
+                    color: kPrimaryColor,
+                  ),
+                ),
               ),
             ),
           ),
@@ -515,7 +746,10 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
                 color: kPrimaryColor,
               ),
               child: Center(
-                child: Text("Refund",style: AppStyles.whiteTextStyle().copyWith(fontSize: 13),),
+                child: Text(
+                  "Refund",
+                  style: AppStyles.whiteTextStyle().copyWith(fontSize: 13),
+                ),
               ),
             ),
           ),
@@ -523,5 +757,4 @@ class SubscriptionScreen extends GetView<SubscriptionController> {
       ],
     );
   }
-
 }
