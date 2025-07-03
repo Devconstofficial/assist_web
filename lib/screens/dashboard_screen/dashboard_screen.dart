@@ -315,17 +315,17 @@ class DashboardScreen extends GetView<DashboardController> {
                                                 fontWeight: FontWeight.w500,
                                               ),
                                         ),
-                                        Spacer(),
-                                        CustomButton(
-                                          title: "Application Approval",
-                                          onTap: () {
-                                            Get.dialog(approvalDialog());
-                                          },
-                                          textSize: 20.sp,
-                                          fontWeight: FontWeight.w400,
-                                          height: 68.h,
-                                          width: 240.w,
-                                        ),
+                                        // Spacer(),
+                                        // CustomButton(
+                                        //   title: "Application Approval",
+                                        //   onTap: () {
+                                        //     Get.dialog(approvalDialog());
+                                        //   },
+                                        //   textSize: 20.sp,
+                                        //   fontWeight: FontWeight.w400,
+                                        //   height: 68.h,
+                                        //   width: 240.w,
+                                        // ),
                                       ],
                                     ),
                                     SizedBox(height: 28.h),

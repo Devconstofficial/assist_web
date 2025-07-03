@@ -6,6 +6,7 @@ String kDashboardIcon = "$basePathIcons/dashboard.svg";
 String kMailIcon = "$basePathIcons/mail.svg";
 String kLockIcon = "$basePathIcons/lock.svg";
 String kUserIcon = "$basePathIcons/user.svg";
+String kApplicationIcon = "$basePathIcons/application.svg";
 String kClipboardIcon = "$basePathIcons/clipboard.svg";
 String kSubscriptionIcon = "$basePathIcons/subscription.svg";
 String kCalendarIcon = "$basePathIcons/calendar.svg";
@@ -18,6 +19,7 @@ String kSearchIcon = "$basePathIcons/search.svg";
 String kFilterIcon = "$basePathIcons/filter.svg";
 String kDotsIcon = "$basePathIcons/dots.svg";
 String kCalendarIcon1 = "$basePathIcons/calender.svg";
+String kPdf1Icon = "$basePathIcons/pdf.png";
 
 /// IMAGES
 String kLogo = "$basePath/logo.png";
@@ -30,3 +32,4 @@ String kDotsHorImage = "$basePath/dots_hori.svg";
 String kDotsVerImage = "$basePath/dots_ver.svg";
 String kPlayImage = "$basePath/play_image.svg";
 String kProfilePictureImage = "$basePath/profilePicture.png";
+String kDummyImg = "$basePath/dummy.png";

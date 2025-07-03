@@ -1,24 +1,26 @@
 import 'package:assist_web/custom_widgets/custom_button.dart';
 import 'package:assist_web/custom_widgets/custom_dialog.dart';
+import 'package:assist_web/custom_widgets/custom_error_widget.dart';
+import 'package:assist_web/custom_widgets/custom_shimmer_widget.dart';
 import 'package:assist_web/custom_widgets/page_header.dart';
-import 'package:assist_web/screens/user_screen/controller/user_controller.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:assist_web/models/post_model.dart';
+import 'package:assist_web/screens/feed_screen/controller/feed_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
+import 'package:intl/intl.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
 import '../../../utils/app_styles.dart';
-import '../../custom_widgets/custom_pagination.dart';
 import '../../custom_widgets/custom_textfield.dart';
-import '../../custom_widgets/field_container.dart';
 import '../sidemenu/sidemenu.dart';
 
-class FeedScreen extends GetView<UserController> {
+class FeedScreen extends GetView<FeedController> {
   const FeedScreen({super.key});
 
-  Widget requestContainer() {
+  Widget requestContainer({required PostModel post}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
@@ -29,14 +31,17 @@ class FeedScreen extends GetView<UserController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 226.h,
+            ImageNetwork(
+              image: post.imageUrl,
+              height: 230.h,
               width: Get.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: kPrimaryColor,
-              ),
+              fitWeb: BoxFitWeb.cover,
+              fitAndroidIos: BoxFit.cover,
+              borderRadius: BorderRadius.circular(20),
+              onLoading: const CircularProgressIndicator(strokeWidth: 2),
+              onError: Center(child: Icon(Icons.error, size: 35)),
             ),
+
             SizedBox(height: 14.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,14 +51,14 @@ class FeedScreen extends GetView<UserController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Memona Channa",
+                      post.user.name,
                       style: AppStyles.blackTextStyle().copyWith(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
-                      "12-2-2025",
+                      DateFormat('d-M-yyyy').format(post.createdAt),
                       style: AppStyles.blackTextStyle().copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -77,10 +82,12 @@ class FeedScreen extends GetView<UserController> {
             ),
             SizedBox(height: 9.h),
             Text(
-              "Big impact today — 100 kids received help, smiles, and support, all thanks to your kindness!",
+              post.text,
+              maxLines: 2,
               style: AppStyles.blackTextStyle().copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(height: 27.h),
@@ -89,7 +96,9 @@ class FeedScreen extends GetView<UserController> {
                 Expanded(
                   child: CustomButton(
                     title: "Reject",
-                    onTap: () {},
+                    onTap: () {
+                      controller.removePost(post.postId);
+                    },
                     color: kGreyShade5Color.withOpacity(0.22),
                     borderColor: kGreyShade5Color.withOpacity(0.22),
                     textColor: kPrimaryColor,
@@ -102,7 +111,9 @@ class FeedScreen extends GetView<UserController> {
                 Expanded(
                   child: CustomButton(
                     title: "Approve",
-                    onTap: () {},
+                    onTap: () {
+                      controller.approvePostRequest(post.postId);
+                    },
                     textSize: 16,
                     fontWeight: FontWeight.w900,
                     height: 48.h,
@@ -204,6 +215,8 @@ class FeedScreen extends GetView<UserController> {
   }
 
   createPostDialog() {
+    controller.webImage.value = null;
+    controller.descCont.clear();
     return CustomDialog(
       width: 675.w,
       content: SingleChildScrollView(
@@ -251,28 +264,45 @@ class FeedScreen extends GetView<UserController> {
                   ),
                 ],
               ),
+
               SizedBox(height: 70.h),
               CustomTextField(
+                controller: controller.descCont,
                 hintText: "Type here...",
                 maxLines: 8,
                 borderRadius: 20,
                 borderColor: kGreyShade13Color,
               ),
+              SizedBox(height: 20.h),
+              Obx(() {
+                if (controller.webImage.value != null) {
+                  return Image.memory(
+                    controller.webImage.value!,
+                    fit: BoxFit.cover,
+                  );
+                }
+                return SizedBox.shrink();
+              }),
               SizedBox(height: 87.h),
               Row(
                 children: [
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: kPrimaryColor,
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        kUploadIcon,
-                        height: 24,
-                        width: 24,
+                  GestureDetector(
+                    onTap: () {
+                      controller.pickImage();
+                    },
+                    child: Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: kPrimaryColor,
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          kUploadIcon,
+                          height: 24,
+                          width: 24,
+                        ),
                       ),
                     ),
                   ),
@@ -280,7 +310,9 @@ class FeedScreen extends GetView<UserController> {
                   Expanded(
                     child: CustomButton(
                       title: "Upload post",
-                      onTap: () {},
+                      onTap: () {
+                        controller.addPost();
+                      },
                       height: 85,
                       textSize: 20,
                       fontWeight: FontWeight.w700,
@@ -297,131 +329,215 @@ class FeedScreen extends GetView<UserController> {
 
   reportDialog() {
     return CustomDialog(
-      content: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 94),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Reason: Violates community guidelines",
-                style: AppStyles.blackTextStyle().copyWith(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: kRedColor,
-                ),
+      content: Padding(
+        padding: EdgeInsets.symmetric(vertical: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 38),
+              child: Text(
+                "Reports",
+                style: AppStyles.blackTextStyle().copyWith(fontSize: 22),
               ),
-              SizedBox(height: 8.h),
-              Text(
-                "This content might be offensive",
-                style: AppStyles.blackTextStyle().copyWith(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: kRedColor,
-                ),
-              ),
-              SizedBox(height: 15.h),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: kRedColor),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(26.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 226.h,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: kPrimaryColor,
-                        ),
-                      ),
-                      SizedBox(height: 14.h),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            spacing: 9,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Memona Channa",
-                                style: AppStyles.blackTextStyle().copyWith(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              Text(
-                                "12-2-2025",
-                                style: AppStyles.blackTextStyle().copyWith(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          CustomButton(
-                            title: "Donor",
-                            onTap: () {},
-                            color: kGreyShade5Color.withOpacity(0.22),
-                            borderColor: kGreyShade5Color.withOpacity(0.22),
-                            textColor: kPrimaryColor,
-                            textSize: 14,
-                            fontWeight: FontWeight.w600,
-                            width: 60.w,
-                            height: 33,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 9.h),
-                      Text(
-                        "100 kids received help, smiles, and support, all thanks to your kindness!",
-                        style: AppStyles.blackTextStyle().copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: 27.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomButton(
-                              title: "Ban User",
-                              onTap: () {
-                                Get.back();
-                              },
-                              color: kGreyShade5Color.withOpacity(0.22),
-                              borderColor: kGreyShade5Color.withOpacity(0.22),
-                              textColor: kPrimaryColor,
-                              textSize: 16,
-                              fontWeight: FontWeight.w900,
-                              height: 48.h,
+            ),
+            SizedBox(height: 15.h),
+            Obx(
+              () =>
+                  controller.isLoadingUser.value
+                      ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.symmetric(horizontal: 38),
+                        itemCount: 2,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: CustomShimmerWidget(
+                              height: 400,
+                              borderRadius: 24,
                             ),
-                          ),
-                          SizedBox(width: 17.w),
-                          Expanded(
-                            child: CustomButton(
-                              title: "Remove Post",
-                              onTap: () {
-                                Get.back();
-                              },
-                              textSize: 16,
-                              fontWeight: FontWeight.w900,
-                              height: 48.h,
+                          );
+                        },
+                      )
+                      : controller.isErrorUser.value
+                      ? SizedBox(
+                        height: 600.h,
+                        child: CustomErrorWidget(
+                          title: controller.errorMsgUser.value,
+                        ),
+                      )
+                      : controller.allReports.isEmpty
+                      ? SizedBox(
+                        height: 600.h,
+                        child: CustomErrorWidget(title: "No reported posts"),
+                      )
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: controller.allReports.length,
+                        padding: EdgeInsets.symmetric(horizontal: 38),
+                        itemBuilder: (context, index) {
+                          final post = controller.allReports[index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 10.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Reason: ${post.reports.first['reason']}",
+                                  style: AppStyles.blackTextStyle().copyWith(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: kRedColor,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  "This content might be offensive",
+                                  style: AppStyles.blackTextStyle().copyWith(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: kRedColor,
+                                  ),
+                                ),
+                                SizedBox(height: 15.h),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(24),
+                                    border: Border.all(color: kRedColor),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(26.r),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ImageNetwork(
+                                          image: post.imageUrl,
+                                          height: 230.h,
+                                          width: Get.width,
+                                          fitWeb: BoxFitWeb.cover,
+                                          fitAndroidIos: BoxFit.cover,
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          onLoading:
+                                              const CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                          onError: Center(
+                                            child: Icon(Icons.error, size: 35),
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 14.h),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Column(
+                                              spacing: 9,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  post.user.name,
+                                                  style:
+                                                      AppStyles.blackTextStyle()
+                                                          .copyWith(
+                                                            fontSize: 20.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                ),
+                                                Text(
+                                                  DateFormat(
+                                                    'd-M-yyyy',
+                                                  ).format(post.createdAt),
+                                                  style:
+                                                      AppStyles.blackTextStyle()
+                                                          .copyWith(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                ),
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            CustomButton(
+                                              title: "Donor",
+                                              onTap: () {},
+                                              color: kGreyShade5Color
+                                                  .withOpacity(0.22),
+                                              borderColor: kGreyShade5Color
+                                                  .withOpacity(0.22),
+                                              textColor: kPrimaryColor,
+                                              textSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              width: 60.w,
+                                              height: 33,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 9.h),
+                                        Text(
+                                          post.text,
+                                          style: AppStyles.blackTextStyle()
+                                              .copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                        ),
+                                        SizedBox(height: 27.h),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: CustomButton(
+                                                title: "Ban User",
+                                                onTap: () {
+                                                  controller.blockUser(
+                                                    post.user.userId,
+                                                  );
+                                                },
+                                                color: kGreyShade5Color
+                                                    .withOpacity(0.22),
+                                                borderColor: kGreyShade5Color
+                                                    .withOpacity(0.22),
+                                                textColor: kPrimaryColor,
+                                                textSize: 16,
+                                                fontWeight: FontWeight.w900,
+                                                height: 48.h,
+                                              ),
+                                            ),
+                                            SizedBox(width: 17.w),
+                                            Expanded(
+                                              child: CustomButton(
+                                                title: "Remove Post",
+                                                onTap: () {
+                                                  controller.removePost(
+                                                    post.postId,
+                                                  );
+                                                },
+                                                textSize: 16,
+                                                fontWeight: FontWeight.w900,
+                                                height: 48.h,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          );
+                        },
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -505,8 +621,9 @@ class FeedScreen extends GetView<UserController> {
                                             ),
                                             SizedBox(width: 7),
                                             CustomButton(
-                                              title: "Moderation Queue",
+                                              title: "Report Posts",
                                               onTap: () {
+                                                controller.getReportedPosts();
                                                 Get.dialog(reportDialog());
                                               },
                                               textSize: 18,
@@ -517,80 +634,138 @@ class FeedScreen extends GetView<UserController> {
                                           ],
                                         ),
                                         SizedBox(height: 20.h),
-                                        Row(
-                                          children: [
-                                            Expanded(child: requestContainer()),
-                                            SizedBox(width: 24.w),
-                                            Expanded(child: requestContainer()),
-                                            SizedBox(width: 24.w),
-                                            Expanded(child: requestContainer()),
-                                          ],
-                                        ),
-                                        SizedBox(height: 25.h),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Recent Feedback’s",
-                                              style: AppStyles.blackTextStyle()
-                                                  .copyWith(
-                                                    fontSize: 26,
-                                                    fontWeight: FontWeight.w600,
+                                        Obx(
+                                          () =>
+                                              controller.isLoading.value
+                                                  ? GridView.builder(
+                                                    shrinkWrap: true,
+                                                    gridDelegate:
+                                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                                          crossAxisCount: 3,
+                                                          crossAxisSpacing:
+                                                              24.w,
+                                                          mainAxisSpacing: 24.h,
+                                                          mainAxisExtent: 520.h,
+                                                        ),
+                                                    itemCount: 3,
+
+                                                    itemBuilder: (
+                                                      context,
+                                                      index,
+                                                    ) {
+                                                      return CustomShimmerWidget();
+                                                    },
+                                                  )
+                                                  : controller.isError.value
+                                                  ? SizedBox(
+                                                    height: 400.h,
+                                                    child: CustomErrorWidget(
+                                                      title:
+                                                          controller
+                                                              .errorMsg
+                                                              .value,
+                                                    ),
+                                                  )
+                                                  : controller
+                                                      .allRequests
+                                                      .isEmpty
+                                                  ? SizedBox(
+                                                    height: 400.h,
+                                                    child: CustomErrorWidget(
+                                                      title: "No post requests",
+                                                    ),
+                                                  )
+                                                  : GridView.builder(
+                                                    shrinkWrap: true,
+                                                    gridDelegate:
+                                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                                          crossAxisCount: 3,
+                                                          crossAxisSpacing:
+                                                              24.w,
+                                                          mainAxisSpacing: 24.h,
+                                                          mainAxisExtent: 520.h,
+                                                        ),
+                                                    itemCount:
+                                                        controller
+                                                            .allRequests
+                                                            .length,
+                                                    itemBuilder: (
+                                                      context,
+                                                      index,
+                                                    ) {
+                                                      return requestContainer(
+                                                        post:
+                                                            controller
+                                                                .allRequests[index],
+                                                      );
+                                                    },
                                                   ),
-                                            ),
-                                            Spacer(),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                border: Border.all(
-                                                  color: kGreyShade5Color,
-                                                ),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                  15,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      kCalendarIcon1,
-                                                      height: 16,
-                                                      width: 16,
-                                                    ),
-                                                    SizedBox(width: 4),
-                                                    Text(
-                                                      "12 December",
-                                                      style: AppStyles.greyTextStyle()
-                                                          .copyWith(
-                                                            color:
-                                                                kGreyShade5Color,
-                                                            fontSize: 12.sp,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
                                         ),
                                         SizedBox(height: 25.h),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: feedbackContainer(),
-                                            ),
-                                            SizedBox(width: 24.w),
-                                            Expanded(
-                                              child: feedbackContainer(),
-                                            ),
-                                            SizedBox(width: 24.w),
-                                            Expanded(
-                                              child: feedbackContainer(),
-                                            ),
-                                          ],
-                                        ),
+                                        //             Row(
+                                        //               children: [
+                                        //                 Text(
+                                        //                   "Recent Feedback’s",
+                                        //                   style: AppStyles.blackTextStyle()
+                                        //                       .copyWith(
+                                        //                         fontSize: 26,
+                                        //                         fontWeight: FontWeight.w600,
+                                        //                       ),
+                                        //                 ),
+                                        //                 Spacer(),
+                                        //                 Container(
+                                        //                   decoration: BoxDecoration(
+                                        //                     borderRadius:
+                                        //                         BorderRadius.circular(100),
+                                        //                     border: Border.all(
+                                        //                       color: kGreyShade5Color,
+                                        //                     ),
+                                        //                   ),
+                                        //                   child: Padding(
+                                        //                     padding: const EdgeInsets.all(
+                                        //                       15,
+                                        //                     ),
+                                        //                     child: Row(
+                                        //                       children: [
+                                        //                         SvgPicture.asset(
+                                        //                           kCalendarIcon1,
+                                        //                           height: 16,
+                                        //                           width: 16,
+                                        //                         ),
+                                        //                         SizedBox(width: 4),
+                                        //                         Text(
+                                        //                           "12 December",
+                                        //                           style: AppStyles.greyTextStyle()
+                                        //                               .copyWith(
+                                        //                                 color:
+                                        //                                     kGreyShade5Color,
+                                        //                                 fontSize: 12.sp,
+                                        //                                 fontWeight:
+                                        //                                     FontWeight.w500,
+                                        //                               ),
+                                        //                         ),
+                                        //                       ],
+                                        //                     ),
+                                        //                   ),
+                                        //                 ),
+                                        //               ],
+                                        //             ),
+                                        //             SizedBox(height: 25.h),
+                                        //             Row(
+                                        //               children: [
+                                        //                 Expanded(
+                                        //                   child: feedbackContainer(),
+                                        //                 ),
+                                        //                 SizedBox(width: 24.w),
+                                        //                 Expanded(
+                                        //                   child: feedbackContainer(),
+                                        //                 ),
+                                        //                 SizedBox(width: 24.w),
+                                        //                 Expanded(
+                                        //                   child: feedbackContainer(),
+                                        //                 ),
+                                        //               ],
+                                        //             ),
                                       ],
                                     ),
                                   ),

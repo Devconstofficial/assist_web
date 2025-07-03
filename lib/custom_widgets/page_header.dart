@@ -1,12 +1,12 @@
+import 'package:assist_web/custom_widgets/update_details_dialog.dart';
+import 'package:assist_web/screens/dashboard_screen/controller/dashboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:image_picker/image_picker.dart';
-
+import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_images.dart';
-import '../utils/app_strings.dart';
 import '../utils/app_styles.dart';
-import 'dart:typed_data';
 
 // ignore: must_be_immutable
 class PageHeader extends StatefulWidget {
@@ -18,21 +18,10 @@ class PageHeader extends StatefulWidget {
 }
 
 class _PageHeaderState extends State<PageHeader> {
-  Uint8List? webImage;
+  final DashboardController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    Future<void> pickImage() async {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-      if (pickedFile != null) {
-        final bytes = await pickedFile.readAsBytes();
-        setState(() {
-          webImage = bytes;
-        });
-      }
-    }
-
     return Container(
       decoration: BoxDecoration(
         color: kGreyShade9Color,
@@ -50,26 +39,42 @@ class _PageHeaderState extends State<PageHeader> {
               ),
             ),
             Spacer(),
-            GestureDetector(
-              onTap: () {
-                pickImage();
-              },
-              child: Container(
-                height: 68,
-                width: 68,
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                child:
-                    webImage != null
-                        ? Image.memory(webImage!, fit: BoxFit.cover)
-                        : Image.asset(kAvatar, fit: BoxFit.cover),
-              ),
+            Obx(
+              () =>
+                  controller.userData.value.userId.isEmpty
+                      ? SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                      : ClipOval(
+                        child: ImageNetwork(
+                          image: controller.userData.value.userImage,
+                          height: 100,
+                          width: 100,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => UpdateDetailsDialog(),
+                            );
+                          },
+                          fitWeb: BoxFitWeb.cover,
+                          fitAndroidIos: BoxFit.cover,
+                          onLoading: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                          onError: Image.asset(kDummyImg, fit: BoxFit.cover),
+                        ),
+                      ),
             ),
             SizedBox(width: 7.w),
-            Text(
-              "Admin",
-              style: AppStyles.blackTextStyle().copyWith(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w600,
+            Obx(
+              () => Text(
+                controller.userData.value.name,
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],

@@ -1,3 +1,4 @@
+import 'package:assist_web/screens/auth/start_screen.dart';
 import 'package:assist_web/utils/screen_bindings.dart';
 import 'package:get/get.dart';
 import '../screens/auth/auth_screen.dart';
@@ -12,19 +13,47 @@ import '../screens/subscription_screen/subscription_screen.dart';
 import '../screens/user_screen/user_screen.dart';
 import 'app_strings.dart';
 
-
 class RouteGenerator {
   static List<GetPage> getPages() {
     return [
-      GetPage(name: kDashboardScreenRoute, page: () => DashboardScreen(), binding: ScreenBindings(),),
-      GetPage(name: kUserScreenRoute, page: () => UserScreen(), binding: ScreenBindings(),),
-      GetPage(name: kFeedScreenRoute, page: () => FeedScreen(), binding: ScreenBindings(),),
-      GetPage(name: kSettingScreenRoute, page: () => SettingScreen(), binding: ScreenBindings(),),
-      GetPage(name: kSubscriptionScreenRoute, page: () => SubscriptionScreen(), binding: ScreenBindings(),),
-      GetPage(name: kCalenderScreenRoute, page: () => CalenderScreen(), binding: ScreenBindings(),),
+      GetPage(
+        name: kDashboardScreenRoute,
+        page: () => DashboardScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kUserScreenRoute,
+        page: () => UserScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kFeedScreenRoute,
+        page: () => FeedScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kSettingScreenRoute,
+        page: () => SettingScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kSubscriptionScreenRoute,
+        page: () => SubscriptionScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kCalenderScreenRoute,
+        page: () => CalenderScreen(),
+        binding: ScreenBindings(),
+      ),
       GetPage(
         name: kAuthScreenRoute,
         page: () => const AuthScreen(),
+        binding: ScreenBindings(),
+      ),
+      GetPage(
+        name: kStartScreenRoute,
+        page: () => const StartScreen(),
         binding: ScreenBindings(),
       ),
       GetPage(
@@ -45,4 +74,3 @@ class RouteGenerator {
     ];
   }
 }
-

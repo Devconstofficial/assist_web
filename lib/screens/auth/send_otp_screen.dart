@@ -18,7 +18,6 @@ class SendOtpScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: AuthComponent(
         withBackButton: true,
@@ -31,12 +30,16 @@ class SendOtpScreen extends GetView<AuthController> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
-                      child: Icon(Icons.arrow_back_ios,color: kWhiteColor,size: 24,),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: kWhiteColor,
+                        size: 24,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 28),
@@ -50,10 +53,20 @@ class SendOtpScreen extends GetView<AuthController> {
               SizedBox(height: 8),
               Text(
                 kResetPasswordInstruction,
-                style: AppStyles.blackTextStyle().
-                copyWith(fontSize: 16,fontWeight: FontWeight.w400,color: kGreyShade3Color),),
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: kGreyShade3Color,
+                ),
+              ),
               SizedBox(height: 56.h),
-              CustomTextField(hintText: "debra.holt@example.com",prefix: SvgPicture.asset(kMailIcon,height: 24,width: 24,),fillColor: kGreyShade5Color.withOpacity(0.22),isFilled: true,),
+              CustomTextField(
+                controller: controller.emailForgotPassController,
+                hintText: "debra.holt@example.com",
+                prefix: SvgPicture.asset(kMailIcon, height: 24, width: 24),
+                fillColor: kGreyShade5Color.withOpacity(0.22),
+                isFilled: true,
+              ),
               SizedBox(height: 100.h),
               CustomButton(
                 width: MediaQuery.of(context).size.width,
@@ -61,14 +74,13 @@ class SendOtpScreen extends GetView<AuthController> {
                 color: kPrimaryColor,
                 borderColor: kPrimaryColor,
                 onTap: () {
-                  Get.toNamed(kVerifyScreenRoute);
+                  controller.forgotPassword();
                 },
               ),
             ],
           ),
         ),
       ),
-
     );
   }
 }

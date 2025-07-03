@@ -1,12 +1,128 @@
+import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
+import 'package:assist_web/custom_widgets/custom_snackbar.dart';
+import 'package:assist_web/models/user_model.dart';
+import 'package:assist_web/services/auth_service.dart';
+import 'package:assist_web/utils/session_management/session_management.dart';
+import 'package:assist_web/utils/session_management/session_token_keys.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class DashboardController extends GetxController {
+  final AuthService _service = AuthService();
   var isMonthly = true.obs;
   var isMonthly1 = true.obs;
   var selectedStatus = 'Submitted'.obs;
+  Rx<UserModel> userData = UserModel.empty().obs;
+  Rx<Uint8List?> webImage = Rxn<Uint8List>();
+  var nameCont = TextEditingController();
+  static final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getUserData();
+    selectMonthly();
+    selectMonthly1();
+  }
+
+  void getUserData() async {
+    String userJson = await SessionManagement().getSessionToken(
+      tokenKey: SessionTokenKeys.kUserModelKey,
+    );
+
+    if (userJson.isNotEmpty) {
+      try {
+        Map<String, dynamic> userMap = jsonDecode(userJson);
+        userData.value = UserModel.fromJson(userMap);
+      } catch (e) {
+        print("Error decoding user data: $e");
+      }
+    } else {
+      print("No user data found");
+    }
+  }
+
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+
+      webImage.value = bytes;
+    }
+  }
+
+  Future<dynamic> uploadCategoryImage(dynamic imageBytes) async {
+    try {
+      String filePath =
+          'profile_images/${DateTime.now().millisecondsSinceEpoch}.png';
+
+      UploadTask uploadTask;
+
+      uploadTask = _storage.ref(filePath).putData(imageBytes);
+
+      // Wait for the upload to complete
+      TaskSnapshot snapshot = await uploadTask;
+
+      // Get the download URL after the upload is complete
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void updateProfile() async {
+    try {
+      String imageUrl = "";
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+      if (webImage.value != null) {
+        var result = await uploadCategoryImage(webImage.value);
+        if (result is bool) {
+          Get.back();
+          showCustomSnackbar("Error", "Failed to upload image");
+          return;
+        } else {
+          imageUrl = result;
+        }
+      }
+      var result = await _service.updateProfile(
+        body: {
+          "name": nameCont.text,
+          if (imageUrl.isNotEmpty) "profilePicture": imageUrl,
+        },
+      );
+      Get.back();
+      if (result is UserModel) {
+        Get.back();
+
+        getUserData();
+        showCustomSnackbar(
+          "Success",
+          "Profile updated successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        showCustomSnackbar("Error", result.toString());
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
+    }
+  }
 
   void updateStatus(String status) {
     selectedStatus.value = status;
@@ -42,7 +158,7 @@ class DashboardController extends GetxController {
 
   void selectMonthly1() {
     isMonthly1.value = true;
-    _generateCurrentMonthDates(); // ensure both use same date base
+    _generateCurrentMonthDates();
     completedSpots1.value = _getIrregularMonthlyData1();
   }
 
@@ -66,22 +182,6 @@ class DashboardController extends GetxController {
       final y = 20 + _random.nextInt(60); // values between 20-80
       return FlSpot(i.toDouble(), y.toDouble());
     });
-  }
-
-  List<FlSpot> _getMonthlyData() {
-    final days = currentMonthDates.length;
-    return List.generate(
-      days,
-      (i) => FlSpot(i.toDouble(), (10 + i * 2) % 60 + 10),
-    );
-  }
-
-  List<FlSpot> _getMonthlyData1() {
-    final days = currentMonthDates.length;
-    return List.generate(
-      days,
-      (i) => FlSpot(i.toDouble(), (15 + i * 3) % 70 + 5),
-    );
   }
 
   void selectYearly() {
@@ -126,12 +226,5 @@ class DashboardController extends GetxController {
       FlSpot(10, 30),
       FlSpot(11, 25),
     ];
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    selectMonthly(); // Default
-    selectMonthly1(); // Default
   }
 }

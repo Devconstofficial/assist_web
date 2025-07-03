@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import '../../../utils/app_colors.dart';
-import '../../../utils/app_images.dart';
 import '../../../utils/app_styles.dart';
 import '../../custom_widgets/auth_component.dart';
 import '../../custom_widgets/custom_button.dart';
@@ -20,7 +18,6 @@ class VerifyOtpScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: AuthComponent(
         withBackButton: true,
@@ -33,12 +30,16 @@ class VerifyOtpScreen extends GetView<AuthController> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
-                      child: Icon(Icons.arrow_back_ios,color: kWhiteColor,size: 24,),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: kWhiteColor,
+                        size: 24,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 28.h),
@@ -52,34 +53,48 @@ class VerifyOtpScreen extends GetView<AuthController> {
               SizedBox(height: 8.h),
               Text(
                 kOtpInstruction,
-                style: AppStyles.blackTextStyle().copyWith(fontSize: 16,color: kGreyShade3Color,fontWeight: FontWeight.w400),
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 16,
+                  color: kGreyShade3Color,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               SizedBox(height: 56.h),
               OTPTextField(
+                controller: controller.code,
                 length: 4,
                 width: MediaQuery.of(context).size.width,
                 textFieldAlignment: MainAxisAlignment.center,
                 fieldWidth: 70.w,
                 margin: EdgeInsets.only(left: 16),
-                otpFieldStyle: OtpFieldStyle(enabledBorderColor: kGreyShade5Color.withOpacity(0.22),borderColor: kGreyShade3Color,focusBorderColor: kPrimaryColor,disabledBorderColor: kGreyShade5Color.withOpacity(0.22),backgroundColor: kGreyShade5Color.withOpacity(0.22)),
+                otpFieldStyle: OtpFieldStyle(
+                  enabledBorderColor: kGreyShade5Color.withOpacity(0.22),
+                  borderColor: kGreyShade3Color,
+                  focusBorderColor: kPrimaryColor,
+                  disabledBorderColor: kGreyShade5Color.withOpacity(0.22),
+                  backgroundColor: kGreyShade5Color.withOpacity(0.22),
+                ),
                 fieldStyle: FieldStyle.box,
                 contentPadding: EdgeInsets.symmetric(vertical: 25.h),
                 outlineBorderRadius: 16.r,
-                style: const TextStyle(fontSize: 17,color: kBlackColor),
-                onChanged: (pin) {
-          
+                style: const TextStyle(fontSize: 17, color: kBlackColor),
+                onChanged: (pin) {},
+                onCompleted: (pin) async {
+                  controller.otpCode.value = pin;
                 },
-                onCompleted: (pin) async {},
               ),
               SizedBox(height: 25.h),
               Center(
                 child: MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Text(
                       kResendCode,
-                      style: AppStyles.blackTextStyle().copyWith(fontSize: 18.sp,fontWeight: FontWeight.w600),
+                      style: AppStyles.blackTextStyle().copyWith(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -91,14 +106,13 @@ class VerifyOtpScreen extends GetView<AuthController> {
                 color: kPrimaryColor,
                 borderColor: kPrimaryColor,
                 onTap: () {
-                  Get.toNamed(kSetNewPassScreenRoute);
+                  controller.verifyOtp();
                 },
               ),
             ],
           ),
         ),
       ),
-
     );
   }
 }
