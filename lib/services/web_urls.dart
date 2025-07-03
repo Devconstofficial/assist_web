@@ -14,6 +14,9 @@ class WebUrls extends _BaseUrl {
   static const String kEventUrl = "${_BaseUrl._kBaseUrl}/admin/events";
   static const String kApplicationUrl =
       "${_BaseUrl._kBaseUrl}/admin/applications";
+  static const String kSubscriptionUrl =
+      "${_BaseUrl._kBaseUrl}/admin/subscriptions";
+  static const String kStatsUrl = "${_BaseUrl._kBaseUrl}/admin/stats";
 }
 
 abstract class _BaseUrl {

@@ -333,17 +333,23 @@ class DashboardScreen extends GetView<DashboardController> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        insightContainer(
-                                          "Total funds raised",
-                                          "\$12,700",
+                                        Obx(
+                                          () => insightContainer(
+                                            "Total funds raised",
+                                            "\$${controller.totalFunds.value}",
+                                          ),
                                         ),
-                                        insightContainer(
-                                          "Number of applicants helped",
-                                          "\$1,0000",
+                                        Obx(
+                                          () => insightContainer(
+                                            "Number of applicants helped",
+                                            "${controller.helpedApplicants.value}",
+                                          ),
                                         ),
-                                        insightContainer(
-                                          "Avg donation per user",
-                                          "\$5,00",
+                                        Obx(
+                                          () => insightContainer(
+                                            "Avg donation per user",
+                                            "\$${controller.averageDonationPerUser.value}",
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -748,6 +754,11 @@ class DashboardScreen extends GetView<DashboardController> {
                                                                   onTap: () {
                                                                     controller
                                                                         .selectMonthly1();
+                                                                    controller
+                                                                        .controller
+                                                                        .getRevenue(
+                                                                          "monthly",
+                                                                        );
                                                                   },
                                                                   height: 45,
                                                                   textSize: 12,
@@ -772,6 +783,11 @@ class DashboardScreen extends GetView<DashboardController> {
                                                                   onTap: () {
                                                                     controller
                                                                         .selectYearly1();
+                                                                    controller
+                                                                        .controller
+                                                                        .getRevenue(
+                                                                          "yearly",
+                                                                        );
                                                                   },
                                                                   height: 45,
                                                                   textSize: 12,
@@ -821,8 +837,17 @@ class DashboardScreen extends GetView<DashboardController> {
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(24),
-                                              child: DonorMetricsChart(
-                                                selectedPercentage: 75,
+                                              child: Obx(
+                                                () => DonorMetricsChart(
+                                                  selectedPercentage:
+                                                      controller.isDenied.value
+                                                          ? controller
+                                                              .deniedPercentage
+                                                              .value
+                                                          : controller
+                                                              .selectedPercentage
+                                                              .value,
+                                                ),
                                               ),
                                             ),
                                           ),

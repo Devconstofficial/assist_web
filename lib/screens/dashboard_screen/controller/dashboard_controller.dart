@@ -4,7 +4,9 @@ import 'dart:typed_data';
 
 import 'package:assist_web/custom_widgets/custom_snackbar.dart';
 import 'package:assist_web/models/user_model.dart';
+import 'package:assist_web/screens/subscription_screen/controller/subscription_controller.dart';
 import 'package:assist_web/services/auth_service.dart';
+import 'package:assist_web/services/dashboard_stats_service.dart';
 import 'package:assist_web/utils/session_management/session_management.dart';
 import 'package:assist_web/utils/session_management/session_token_keys.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,21 +17,117 @@ import 'package:image_picker/image_picker.dart';
 
 class DashboardController extends GetxController {
   final AuthService _service = AuthService();
+  final DashboardStatsService _dashboardStatsService = DashboardStatsService();
+  var isLoading = false.obs;
+  var isError = false.obs;
+  var errorMsg = "".obs;
+  var isLoading1 = false.obs;
+  var isError1 = false.obs;
+  var errorMsg1 = "".obs;
+  var isLoading2 = false.obs;
+  var isError2 = false.obs;
+  var errorMsg2 = "".obs;
+  var totalFunds = 0.0.obs;
+  var averageDonationPerUser = 0.0.obs;
+  var helpedApplicants = 0.0.obs;
+  var selectedPercentage = 0.0.obs;
+  var deniedPercentage = 0.0.obs;
   var isMonthly = true.obs;
   var isMonthly1 = true.obs;
   var selectedStatus = 'Submitted'.obs;
+  var isDenied = false.obs;
   Rx<UserModel> userData = UserModel.empty().obs;
   Rx<Uint8List?> webImage = Rxn<Uint8List>();
   var nameCont = TextEditingController();
   static final FirebaseStorage _storage = FirebaseStorage.instance;
+  RxList<Map<String, dynamic>> userGraphData = <Map<String, dynamic>>[].obs;
+  final SubscriptionController controller = Get.find();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getUserData();
+    getAll();
     selectMonthly();
     selectMonthly1();
+  }
+
+  void getAll() {
+    Future.wait([
+      getMatrices(),
+      getDonorMatrices(),
+      controller.getRevenue(isMonthly1.value ? "monthly" : "yearly"),
+      getUserGrowth(),
+    ]);
+  }
+
+  Future getMatrices() async {
+    try {
+      isLoading(true);
+      var result = await _dashboardStatsService.getMatrices();
+      isLoading(false);
+      if (result is Map<String, dynamic>) {
+        totalFunds.value = result['totalFunds'];
+        averageDonationPerUser.value = result['averageDonationPerUser'];
+        helpedApplicants.value = result['helpedApplicants'];
+        isError(false);
+        errorMsg.value = '';
+        return;
+      } else {
+        isError(true);
+        errorMsg.value = result.toString();
+      }
+    } catch (e) {
+      isLoading(false);
+      isError(true);
+      errorMsg.value = e.toString();
+    }
+  }
+
+  Future getDonorMatrices() async {
+    try {
+      isLoading2(true);
+      var result = await _dashboardStatsService.getDonarMatrices();
+      isLoading2(false);
+      if (result is Map<String, dynamic>) {
+        selectedPercentage.value = result['selectedPercentage'];
+        deniedPercentage.value = result['deniedPercentage'];
+        isError2(false);
+        errorMsg2.value = '';
+        return;
+      } else {
+        isError2(true);
+        errorMsg2.value = result.toString();
+      }
+    } catch (e) {
+      isLoading2(false);
+      isError2(true);
+      errorMsg2.value = e.toString();
+    }
+  }
+
+  Future getUserGrowth() async {
+    try {
+      isLoading1(true);
+      var result = await _dashboardStatsService.getUserGrowth(
+        type: isMonthly.value ? "monthly" : "yearly",
+      );
+      isLoading1(false);
+      if (result is List<Map<String, dynamic>>) {
+        userGraphData.assignAll(result);
+        isError1(false);
+        errorMsg1.value = '';
+        return;
+      } else {
+        isError1(true);
+        errorMsg1.value = result.toString();
+      }
+    } catch (e) {
+      isLoading1(false);
+      isError1(true);
+      errorMsg1.value = e.toString();
+    }
   }
 
   void getUserData() async {
@@ -124,6 +222,9 @@ class DashboardController extends GetxController {
     }
   }
 
+  void selectMonthly1() => isMonthly1.value = true;
+  void selectYearly1() => isMonthly1.value = false;
+
   void updateStatus(String status) {
     selectedStatus.value = status;
   }
@@ -156,12 +257,6 @@ class DashboardController extends GetxController {
     completedSpots.value = _getIrregularMonthlyData();
   }
 
-  void selectMonthly1() {
-    isMonthly1.value = true;
-    _generateCurrentMonthDates();
-    completedSpots1.value = _getIrregularMonthlyData1();
-  }
-
   void _generateCurrentMonthDates() {
     final now = DateTime.now();
     final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
@@ -171,15 +266,7 @@ class DashboardController extends GetxController {
   List<FlSpot> _getIrregularMonthlyData() {
     final days = currentMonthDates.length;
     return List.generate(days, (i) {
-      final y = 30 + _random.nextInt(40); // values between 30-70
-      return FlSpot(i.toDouble(), y.toDouble());
-    });
-  }
-
-  List<FlSpot> _getIrregularMonthlyData1() {
-    final days = currentMonthDates.length;
-    return List.generate(days, (i) {
-      final y = 20 + _random.nextInt(60); // values between 20-80
+      final y = 30 + _random.nextInt(40);
       return FlSpot(i.toDouble(), y.toDouble());
     });
   }
@@ -187,11 +274,6 @@ class DashboardController extends GetxController {
   void selectYearly() {
     isMonthly.value = false;
     completedSpots.value = _getYearlyData();
-  }
-
-  void selectYearly1() {
-    isMonthly1.value = false;
-    completedSpots1.value = _getYearlyData1();
   }
 
   List<FlSpot> _getYearlyData() {
@@ -208,23 +290,6 @@ class DashboardController extends GetxController {
       FlSpot(9, 58),
       FlSpot(10, 60),
       FlSpot(11, 85),
-    ];
-  }
-
-  List<FlSpot> _getYearlyData1() {
-    return [
-      FlSpot(0, 80),
-      FlSpot(1, 75),
-      FlSpot(2, 65),
-      FlSpot(3, 70),
-      FlSpot(4, 55),
-      FlSpot(5, 60),
-      FlSpot(6, 50),
-      FlSpot(7, 45),
-      FlSpot(8, 40),
-      FlSpot(9, 35),
-      FlSpot(10, 30),
-      FlSpot(11, 25),
     ];
   }
 }

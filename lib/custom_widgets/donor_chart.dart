@@ -1,8 +1,10 @@
+import 'package:assist_web/screens/dashboard_screen/controller/dashboard_controller.dart';
 import 'package:assist_web/utils/app_colors.dart';
 import 'package:assist_web/utils/app_styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class DonorMetricsChart extends StatelessWidget {
   final double selectedPercentage;
@@ -11,6 +13,7 @@ class DonorMetricsChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DashboardController controller = Get.find();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,7 +54,7 @@ class DonorMetricsChart extends StatelessWidget {
               ),
             ),
             Text(
-              "\$${selectedPercentage.toInt()}%",
+              "${selectedPercentage.toInt()}%",
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -62,34 +65,54 @@ class DonorMetricsChart extends StatelessWidget {
         ),
         Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
-                    borderRadius: BorderRadius.circular(4),
+            Obx(
+              () => Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.isDenied.value = true;
+                    },
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color:
+                            controller.isDenied.value
+                                ? Colors.black
+                                : Colors.grey.shade400,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                const Text("Denied"),
-              ],
+                  const SizedBox(width: 8),
+                  const Text("Denied"),
+                ],
+              ),
             ),
             const SizedBox(width: 24),
-            Row(
-              children: [
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(4),
+            Obx(
+              () => Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.isDenied.value = false;
+                    },
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color:
+                            controller.isDenied.value
+                                ? Colors.grey.shade400
+                                : Colors.black,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                const Text("Selected"),
-              ],
+                  const SizedBox(width: 8),
+                  const Text("Selected"),
+                ],
+              ),
             ),
           ],
         ),
