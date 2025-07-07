@@ -83,19 +83,24 @@ class FeedController extends GetxController {
     }
   }
 
-  void approvePostRequest(String id) async {
+  void approvePostRequest(String id, bool approve) async {
     try {
       Get.dialog(
         const Center(child: CircularProgressIndicator()),
         barrierDismissible: false,
       );
-      var result = await _service.approvePost(postId: id);
+      var result = await _service.approvePost(postId: id, isApprove: approve);
       Get.back();
       if (result is bool) {
         getPostRequests();
+        approve ?
         showCustomSnackbar(
           "Success",
-          "Approved Successfully",
+          "Post Approved Successfully",
+          backgroundColor: Colors.green,
+        ):showCustomSnackbar(
+          "Success",
+          "Post Rejected Successfully",
           backgroundColor: Colors.green,
         );
         return;

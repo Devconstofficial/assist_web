@@ -1,4 +1,5 @@
 import 'package:assist_web/screens/application_screen/applications_screen.dart';
+import 'package:assist_web/screens/post_screen/post_screen.dart';
 import 'package:assist_web/utils/session_management/session_management.dart';
 import 'package:assist_web/utils/session_management/session_token_keys.dart';
 import 'package:flutter/material.dart';
@@ -311,7 +312,7 @@ class _SideMenuState extends State<SideMenu> {
                                                 menuController
                                                             .selectedIndex
                                                             .value ==
-                                                        1
+                                                        2
                                                     ? kWhiteColor
                                                     : kGreyShade8Color,
                                                 BlendMode.srcIn,
@@ -380,7 +381,7 @@ class _SideMenuState extends State<SideMenu> {
                                                 menuController
                                                             .selectedIndex
                                                             .value ==
-                                                        2
+                                                        3
                                                     ? kWhiteColor
                                                     : kGreyShade8Color,
                                                 BlendMode.srcIn,
@@ -425,6 +426,75 @@ class _SideMenuState extends State<SideMenu> {
                             child: GestureDetector(
                               onTap: () {
                                 menuController.onItemTapped(4);
+                                Get.to(() => PostScreen());
+                              },
+                              child: SizedBox(
+                                width: width,
+                                height: 58,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              kApplicationIcon,
+                                              height: 26,
+                                              width: 26,
+                                              colorFilter: ColorFilter.mode(
+                                                menuController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        4
+                                                    ? kWhiteColor
+                                                    : kGreyShade8Color,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.01,
+                                            ),
+                                            Text(
+                                              "Post Management",
+                                              style: AppStyles.blackTextStyle()
+                                                  .copyWith(
+                                                    color:
+                                                        menuController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                4
+                                                            ? kWhiteColor
+                                                            : kGreyShade8Color,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                        const SizedBox(height: 20),
+                        Obx(() {
+                          return MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                menuController.onItemTapped(5);
                                 Get.toNamed(kSubscriptionScreenRoute);
                               },
                               child: SizedBox(
@@ -449,7 +519,7 @@ class _SideMenuState extends State<SideMenu> {
                                                 menuController
                                                             .selectedIndex
                                                             .value ==
-                                                        3
+                                                        5
                                                     ? kWhiteColor
                                                     : kGreyShade8Color,
                                                 BlendMode.srcIn,
@@ -471,7 +541,7 @@ class _SideMenuState extends State<SideMenu> {
                                                           menuController
                                                                       .selectedIndex
                                                                       .value ==
-                                                                  4
+                                                                  5
                                                               ? kWhiteColor
                                                               : kGreyShade8Color,
                                                       fontSize: 16,
@@ -496,7 +566,7 @@ class _SideMenuState extends State<SideMenu> {
                             cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
-                                menuController.onItemTapped(5);
+                                menuController.onItemTapped(6);
                                 Get.toNamed(kCalenderScreenRoute);
                               },
                               child: SizedBox(
@@ -521,7 +591,7 @@ class _SideMenuState extends State<SideMenu> {
                                                 menuController
                                                             .selectedIndex
                                                             .value ==
-                                                        5
+                                                        6
                                                     ? kWhiteColor
                                                     : kGreyShade8Color,
                                                 BlendMode.srcIn,
@@ -542,7 +612,7 @@ class _SideMenuState extends State<SideMenu> {
                                                         menuController
                                                                     .selectedIndex
                                                                     .value ==
-                                                                4
+                                                                6
                                                             ? kWhiteColor
                                                             : kGreyShade8Color,
                                                     fontSize: 16,

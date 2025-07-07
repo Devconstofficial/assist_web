@@ -107,8 +107,9 @@ class SelectLocationScreen extends StatelessWidget {
                     ),
                   ),
                   Obx(() {
-                    if (controller.predictions.isEmpty)
+                    if (controller.predictions.isEmpty) {
                       return const SizedBox.shrink();
+                    }
                     return Container(
                       margin: const EdgeInsets.only(top: 4),
                       decoration: BoxDecoration(

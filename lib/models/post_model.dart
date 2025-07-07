@@ -12,6 +12,7 @@ class PostModel {
   DateTime createdAt = DateTime.now();
 
   PostModel();
+  PostModel.empty();
 
   PostModel.fromJson(Map<String, dynamic> json) {
     postId = json["_id"] ?? "";

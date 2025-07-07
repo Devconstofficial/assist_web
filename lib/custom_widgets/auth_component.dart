@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../screens/auth/controller/auth_controller.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_images.dart';
-import '../utils/app_styles.dart';
 
 class AuthComponent extends StatelessWidget {
   Widget content;

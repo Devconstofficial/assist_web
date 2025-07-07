@@ -57,23 +57,32 @@ class PostService {
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }
 
-  Future<dynamic> approvePost({required String postId}) async {
-    final token = await _sessionManagement.getSessionToken(
-      tokenKey: SessionTokenKeys.kUserTokenKey,
-    );
-    ResponseModel responseModel = await _client.customRequest(
-      'POST',
-      url: "${WebUrls.kPostUrl}/$postId/approve",
-      requestHeader: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Baerer $token',
-      },
-    );
-    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
-      return true;
-    }
-    return responseModel.data["message"] ?? responseModel.statusDescription;
+  Future<dynamic> approvePost({
+  required String postId,
+  required bool isApprove,
+}) async {
+  final token = await _sessionManagement.getSessionToken(
+    tokenKey: SessionTokenKeys.kUserTokenKey,
+  );
+
+  final String url =
+      "${WebUrls.kPostUrl}/$postId/approve?isApprove=$isApprove";
+
+  ResponseModel responseModel = await _client.customRequest(
+    'POST',
+    url: url,
+    requestHeader: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Baerer $token',
+    },
+  );
+
+  if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+    return true;
   }
+  return responseModel.data["message"] ?? responseModel.statusDescription;
+}
+
 
   Future<dynamic> removePost({required String postId}) async {
     final token = await _sessionManagement.getSessionToken(
@@ -111,4 +120,25 @@ class PostService {
     }
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }
+
+  Future<dynamic> getAllPosts() async {
+    final token = await _sessionManagement.getSessionToken(
+      tokenKey: SessionTokenKeys.kUserTokenKey,
+    );
+    ResponseModel responseModel = await _client.customRequest(
+      'GET',
+      url: WebUrls.kGetAllPostsUrl,
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token',
+      },
+    );
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      return (responseModel.data['data']["posts"] as List)
+          .map((json) => PostModel.fromJson(json))
+          .toList();
+    }
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
+
 }

@@ -97,7 +97,7 @@ class FeedScreen extends GetView<FeedController> {
                   child: CustomButton(
                     title: "Reject",
                     onTap: () {
-                      controller.removePost(post.postId);
+                      controller.approvePostRequest(post.postId, false);
                     },
                     color: kGreyShade5Color.withOpacity(0.22),
                     borderColor: kGreyShade5Color.withOpacity(0.22),
@@ -112,7 +112,7 @@ class FeedScreen extends GetView<FeedController> {
                   child: CustomButton(
                     title: "Approve",
                     onTap: () {
-                      controller.approvePostRequest(post.postId);
+                      controller.approvePostRequest(post.postId, true);
                     },
                     textSize: 16,
                     fontWeight: FontWeight.w900,

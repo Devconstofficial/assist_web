@@ -1,6 +1,7 @@
 import 'package:assist_web/custom_widgets/custom_button.dart';
 import 'package:assist_web/custom_widgets/custom_textfield.dart';
 import 'package:assist_web/screens/application_screen/controller/application_controller.dart';
+import 'package:assist_web/screens/post_screen/controller/post_controller.dart';
 import 'package:assist_web/screens/user_screen/controller/user_controller.dart';
 import 'package:assist_web/utils/app_colors.dart';
 import 'package:assist_web/utils/app_styles.dart';
@@ -24,6 +25,7 @@ class CustomFilterDialog extends StatefulWidget {
 class _CustomFilterDialogState extends State<CustomFilterDialog> {
   final ApplicationController controller = Get.find();
   final UserController userController = Get.find();
+  final PostController postController = Get.put(PostController());
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,55 @@ class _CustomFilterDialogState extends State<CustomFilterDialog> {
                         );
                       }).toList(),
                 ),
+              if (widget.type == "Status")
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 20.h,
+                  children:
+                      ['Approved', 'Rejected'].map((item) {
+                        return GestureDetector(
+                          onTap: () {
+                            postController.selectedRole.value = item;
+                          },
+                          child: Obx(
+                            () => Container(
+                              height: 46.h,
+                              width: 125.w,
+                              padding: EdgeInsets.symmetric(horizontal: 24.w),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color:
+                                      (postController.selectedRole.value) ==
+                                              item
+                                          ? kPrimaryColor
+                                          : kGreyShade13Color,
+                                ),
+                                color:
+                                    (postController.selectedRole.value) == item
+                                        ? kPrimaryColor
+                                        : kGreyShade5Color.withOpacity(0.22),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  item,
+                                  style: AppStyles.blackTextStyle().copyWith(
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        (postController.selectedRole.value) ==
+                                                item
+                                            ? kWhiteColor
+                                            : kBlackColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                ),
+
               if (widget.type == "Bill Type")
                 Wrap(
                   spacing: 8.w,
@@ -242,7 +293,10 @@ class _CustomFilterDialogState extends State<CustomFilterDialog> {
                     Get.back();
                     if (widget.type == "Bill Type") {
                       controller.filterApplications();
-                    } else if (widget.type == "Role") {
+                     } else if (widget.type == "Status") {
+                      postController.filterPosts();
+                    }
+                     else if (widget.type == "Role") {
                       userController.filterUsers();
                     } else if (widget.type == "Name" && widget.isUser == true) {
                       userController.filterUsers();

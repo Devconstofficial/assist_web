@@ -17,6 +17,8 @@ class WebUrls extends _BaseUrl {
   static const String kSubscriptionUrl =
       "${_BaseUrl._kBaseUrl}/admin/subscriptions";
   static const String kStatsUrl = "${_BaseUrl._kBaseUrl}/admin/stats";
+  static const String kGetAllPostsUrl =
+      "${_BaseUrl._kBaseUrl}/admin/posts";
 }
 
 abstract class _BaseUrl {

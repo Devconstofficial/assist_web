@@ -1,6 +1,5 @@
 import 'package:assist_web/custom_widgets/page_header.dart';
 import 'package:assist_web/screens/setting_screen/controller/setting_controller.dart';
-import 'package:assist_web/screens/user_screen/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_images.dart';
 import '../../../utils/app_styles.dart';
-import '../../custom_widgets/custom_pagination.dart';
 import '../../custom_widgets/custom_textfield.dart';
 import '../../utils/app_strings.dart';
 import '../sidemenu/sidemenu.dart';

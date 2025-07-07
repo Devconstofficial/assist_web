@@ -96,10 +96,12 @@ class SubscriptionGraph extends StatelessWidget {
                   reservedSize: 40,
                   interval: isMonthly ? 20 : 100,
                   getTitlesWidget: (value, meta) {
-                    if (isMonthly && (value % 20 != 0 || value > 100))
+                    if (isMonthly && (value % 20 != 0 || value > 100)) {
                       return const SizedBox();
-                    if (!isMonthly && (value % 100 != 0 || value > 600))
+                    }
+                    if (!isMonthly && (value % 100 != 0 || value > 600)) {
                       return const SizedBox();
+                    }
                     return Text(
                       '\$${value.toInt()}',
                       style: AppStyles.blackTextStyle().copyWith(fontSize: 12),
@@ -116,8 +118,9 @@ class SubscriptionGraph extends StatelessWidget {
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
                     final index = value.toInt();
-                    if (index < 0 || index >= barData.length)
+                    if (index < 0 || index >= barData.length) {
                       return const SizedBox();
+                    }
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(

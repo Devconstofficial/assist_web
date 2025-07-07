@@ -285,6 +285,133 @@ class _EventDialogState extends State<EventDialog> {
   List<String> selectedMembers = [];
   String? _selectedLocation;
   List<String> selectedMemberIds = [];
+  void _showMultiSelectDialog(BuildContext context) {
+    final calenderController = Get.find<CalenderController>();
+
+    List<String> tempSelectedIds = List.from(selectedMemberIds);
+    List<String> tempSelectedNames = List.from(selectedMembers);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: kWhiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: const Text("Select Members"),
+          content: SizedBox(
+            width: 300.w,
+            height: 400.h,
+            child: Obx(() {
+              return ListView.builder(
+                itemCount: calenderController.allUsers.length,
+                itemBuilder: (context, index) {
+                  final user = calenderController.allUsers[index];
+                  final isSelected = tempSelectedIds.contains(user.userId);
+
+                  return CheckboxListTile(
+                    value: isSelected,
+                    onChanged: (checked) {
+                      if (checked == true) {
+                        tempSelectedIds.add(user.userId);
+                        tempSelectedNames.add(user.name);
+                      } else {
+                        tempSelectedIds.remove(user.userId);
+                        tempSelectedNames.remove(user.name);
+                      }
+                      (context as Element).markNeedsBuild();
+                    },
+                    title: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 14,
+                          child: ClipOval(
+                            child: ImageNetwork(
+                              image: user.userImage,
+                              height: 30,
+                              width: 30,
+                              fitWeb: BoxFitWeb.cover,
+                              fitAndroidIos: BoxFit.cover,
+                              onLoading: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                              onError: Image.asset(
+                                kDummyImg,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(child: Text(user.name)),
+                      ],
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                  );
+                },
+              );
+            }),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    title: "Cancel",
+                    height: 50,
+                    borderRadius: 12,
+                    fontWeight: FontWeight.w600,
+                    borderColor: kPrimaryColor,
+                    textColor: kPrimaryColor,
+                    color: kWhiteColor,
+                    onTap: () {
+                      Get.back();
+                    },
+                  ),
+                ),
+                SizedBox(width: 16),
+
+                Expanded(
+                  child: CustomButton(
+                    title: "Done",
+                    height: 50,
+                    borderRadius: 12,
+                    textSize: 16,
+                    fontWeight: FontWeight.w600,
+                    textColor: kWhiteColor,
+                    color: kPrimaryColor,
+                    onTap: () {
+                      setState(() {
+                  selectedMemberIds = tempSelectedIds;
+                  selectedMembers = tempSelectedNames;
+                });
+                Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            // TextButton(
+            //   onPressed: () => Navigator.pop(context), // Cancel
+            //   child: const Text("Cancel"),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     setState(() {
+            //       selectedMemberIds = tempSelectedIds;
+            //       selectedMembers = tempSelectedNames;
+            //     });
+            //     Navigator.pop(context);
+            //   },
+            //   child: const Text("Done"),
+            // ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -501,71 +628,36 @@ class _EventDialogState extends State<EventDialog> {
                   Icon(Icons.group_outlined, color: kGreyShade10Color),
                   SizedBox(width: 15.w),
                   Expanded(
-                    child: Obx(
-                      () => DropdownButtonHideUnderline(
-                        child: DropdownButton<UserModel>(
-                          isExpanded: true,
-                          dropdownColor: kWhiteColor,
-                          hint: Text(
-                            selectedMembers.isEmpty
-                                ? 'Add Members'
-                                : selectedMembers.join(', '),
-                            style: TextStyle(
-                              color:
-                                  selectedMembers.isEmpty
-                                      ? kGreyShade10Color
-                                      : kBlackColor,
-                              fontSize: 16,
+                    child: GestureDetector(
+                      onTap: () => _showMultiSelectDialog(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                selectedMembers.isEmpty
+                                    ? 'Add Members'
+                                    : selectedMembers.join(', '),
+                                style: TextStyle(
+                                  color:
+                                      selectedMembers.isEmpty
+                                          ? kGreyShade10Color
+                                          : kBlackColor,
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          items:
-                              calenderController.allUsers.map((member) {
-                                return DropdownMenuItem<UserModel>(
-                                  value: member,
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 12,
-                                        child: ClipOval(
-                                          child: ImageNetwork(
-                                            image: member.userImage,
-                                            height: 30,
-                                            width: 30,
-
-                                            fitWeb: BoxFitWeb.cover,
-                                            fitAndroidIos: BoxFit.cover,
-                                            onLoading:
-                                                const CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                ),
-                                            onError: Image.asset(
-                                              kDummyImg,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      const SizedBox(width: 8),
-                                      Text(member.name),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                          onChanged: (value) {
-                            if (!selectedMembers.contains(value!.userId)) {
-                              setState(() {
-                                selectedMembers.add(value.name);
-                                selectedMemberIds.add(value.userId);
-                              });
-                            } else {
-                              setState(() {
-                                selectedMembers.remove(value.name);
-                                selectedMemberIds.remove(value.userId);
-                              });
-                            }
-                          },
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            ),
+                          ],
                         ),
                       ),
                     ),
