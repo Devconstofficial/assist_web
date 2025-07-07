@@ -1,15 +1,17 @@
 import 'package:assist_web/custom_widgets/custom_button.dart';
+import 'package:assist_web/custom_widgets/custom_error_widget.dart';
+import 'package:assist_web/custom_widgets/custom_snackbar.dart';
 import 'package:assist_web/custom_widgets/page_header.dart';
+import 'package:assist_web/models/user_model.dart';
 import 'package:assist_web/screens/calender_screen/select_location_screen.dart';
 import 'package:assist_web/utils/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_network/image_network.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../utils/app_colors.dart';
-import '../../../utils/app_styles.dart';
 import '../sidemenu/sidemenu.dart';
 import 'controller/calender_controller.dart';
 
@@ -75,43 +77,71 @@ class CalenderScreen extends GetView<CalenderController> {
                                         onSurface: Colors.black,
                                       ),
                                     ),
-                                    child: SfCalendar(
-                                      timeSlotViewSettings:
-                                          TimeSlotViewSettings(
-                                            timeIntervalHeight: 80.h,
-                                            timeIntervalWidth: 200.w,
-                                          ),
-                                      view: CalendarView.week,
-                                      firstDayOfWeek: 1,
-                                      todayHighlightColor: kPrimaryColor,
-                                      showDatePickerButton: true,
-                                      headerStyle: CalendarHeaderStyle(
-                                        backgroundColor: kWhiteColor,
-                                      ),
-                                      appointmentTextStyle: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                      dataSource: controller.dataSource,
-                                      appointmentBuilder: (context, details) {
-                                        final Appointment appointment =
-                                            details.appointments.first;
-                                        return CustomAppointmentWidget(
-                                          appointment: appointment,
-                                        );
-                                      },
-                                      onTap: (calendarTapDetails) {
-                                        if (calendarTapDetails.targetElement ==
-                                                CalendarElement.calendarCell &&
-                                            calendarTapDetails.date != null) {
-                                          final selectedDateTime =
-                                              calendarTapDetails.date!;
-                                          Get.dialog(
-                                            EventDialog(
-                                              initialDateTime: selectedDateTime,
-                                            ),
-                                          );
-                                        }
-                                      },
+                                    child: Obx(
+                                      () =>
+                                          controller.isLoadingEvents.value
+                                              ? Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                              : controller.isErrorEvents.value
+                                              ? CustomErrorWidget(
+                                                title:
+                                                    controller.errorMsg.value,
+                                              )
+                                              : SfCalendar(
+                                                timeSlotViewSettings:
+                                                    TimeSlotViewSettings(
+                                                      timeIntervalHeight: 80.h,
+                                                      timeIntervalWidth: 200.w,
+                                                    ),
+                                                view: CalendarView.week,
+                                                firstDayOfWeek: 1,
+                                                todayHighlightColor:
+                                                    kPrimaryColor,
+                                                showDatePickerButton: true,
+                                                headerStyle:
+                                                    CalendarHeaderStyle(
+                                                      backgroundColor:
+                                                          kWhiteColor,
+                                                    ),
+                                                appointmentTextStyle: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                                dataSource:
+                                                    controller.dataSource,
+                                                appointmentBuilder: (
+                                                  context,
+                                                  details,
+                                                ) {
+                                                  final Appointment
+                                                  appointment =
+                                                      details
+                                                          .appointments
+                                                          .first;
+                                                  return CustomAppointmentWidget(
+                                                    appointment: appointment,
+                                                  );
+                                                },
+                                                onTap: (calendarTapDetails) {
+                                                  if (calendarTapDetails
+                                                              .targetElement ==
+                                                          CalendarElement
+                                                              .calendarCell &&
+                                                      calendarTapDetails.date !=
+                                                          null) {
+                                                    final selectedDateTime =
+                                                        calendarTapDetails
+                                                            .date!;
+                                                    Get.dialog(
+                                                      EventDialog(
+                                                        initialDateTime:
+                                                            selectedDateTime,
+                                                      ),
+                                                    );
+                                                  }
+                                                },
+                                              ),
                                     ),
                                   ),
                                 ),
@@ -210,14 +240,22 @@ class CustomAppointmentWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: appointment.resourceIds!.length,
               itemBuilder: (context, index) {
-                final resource =
-                    appointment.resourceIds![index] as Map<String, dynamic>;
+                final resource = appointment.resourceIds![index] as String;
                 return Padding(
                   padding: EdgeInsets.only(right: 4.w),
-                  child: Image.asset(
-                    resource["userImg"],
-                    height: 20.h,
-                    width: 20.w,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(500),
+                    child: ImageNetwork(
+                      image: resource,
+                      height: 25.h,
+                      width: 22.w,
+                      fitWeb: BoxFitWeb.cover,
+                      fitAndroidIos: BoxFit.cover,
+                      onLoading: const CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                      onError: Image.asset(kDummyImg, fit: BoxFit.cover),
+                    ),
                   ),
                 );
               },
@@ -244,8 +282,9 @@ class _EventDialogState extends State<EventDialog> {
   final TextEditingController _notesController = TextEditingController();
   DateTime? _startDateTime;
   DateTime? _endDateTime;
-  List<Map<String, String>> selectedMembers = [];
+  List<String> selectedMembers = [];
   String? _selectedLocation;
+  List<String> selectedMemberIds = [];
 
   @override
   Widget build(BuildContext context) {
@@ -269,23 +308,31 @@ class _EventDialogState extends State<EventDialog> {
                       decoration: InputDecoration(
                         hintText: "Event Title",
                         hintStyle: TextStyle(color: Colors.grey),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 18,vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18,
+                          vertical: 10,
+                        ),
                         border: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.grey.withOpacity(0.2),
-                          )
+                          ),
                         ),
                         prefixIcon: Padding(
-                          padding: const EdgeInsets.only(top: 6,right: 6,bottom: 6,left: 10),
+                          padding: const EdgeInsets.only(
+                            top: 6,
+                            right: 6,
+                            bottom: 6,
+                            left: 10,
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(Icons.title,color: kGreyShade10Color),
+                            child: Icon(Icons.title, color: kGreyShade10Color),
                           ),
-                        )
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 10),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 12,
@@ -316,10 +363,7 @@ class _EventDialogState extends State<EventDialog> {
             const SizedBox(height: 16),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: _optionRow(
-                Icons.place_outlined,
-                _selectedLocation != null ? "$_selectedLocation" : "Add Place",
-                _selectedLocation != null ? kBlackColor : kGreyShade10Color,
+              child: GestureDetector(
                 onTap: () async {
                   var result = await Get.to(() => SelectLocationScreen());
                   if (result != null) {
@@ -328,6 +372,29 @@ class _EventDialogState extends State<EventDialog> {
                     });
                   }
                 },
+                child: Row(
+                  children: [
+                    Icon(Icons.place_outlined, color: kGreyShade10Color),
+                    SizedBox(width: 15.w),
+                    SizedBox(
+                      width: 350.w,
+                      child: Text(
+                        _selectedLocation != null
+                            ? "$_selectedLocation"
+                            : "Add Place",
+                        maxLines: 1,
+                        style: TextStyle(
+                          color:
+                              _selectedLocation != null
+                                  ? kBlackColor
+                                  : kGreyShade10Color,
+                          fontSize: 16,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const Divider(height: 30),
@@ -396,7 +463,9 @@ class _EventDialogState extends State<EventDialog> {
                         if (startTime != null) {
                           final endTime = await showTimePicker(
                             context: context,
-                            initialTime: startTime.replacing(hour: startTime.hour + 1),
+                            initialTime: startTime.replacing(
+                              hour: startTime.hour + 1,
+                            ),
                           );
                           if (endTime != null) {
                             setState(() {
@@ -434,15 +503,13 @@ class _EventDialogState extends State<EventDialog> {
                   Expanded(
                     child: Obx(
                       () => DropdownButtonHideUnderline(
-                        child: DropdownButton<Map<String, String>>(
+                        child: DropdownButton<UserModel>(
                           isExpanded: true,
                           dropdownColor: kWhiteColor,
                           hint: Text(
                             selectedMembers.isEmpty
                                 ? 'Add Members'
-                                : selectedMembers
-                                    .map((e) => e['name'])
-                                    .join(', '),
+                                : selectedMembers.join(', '),
                             style: TextStyle(
                               color:
                                   selectedMembers.isEmpty
@@ -453,31 +520,49 @@ class _EventDialogState extends State<EventDialog> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           items:
-                              calenderController.members.map((member) {
-                                return DropdownMenuItem<Map<String, String>>(
+                              calenderController.allUsers.map((member) {
+                                return DropdownMenuItem<UserModel>(
                                   value: member,
                                   child: Row(
                                     children: [
                                       CircleAvatar(
                                         radius: 12,
-                                        backgroundImage: AssetImage(
-                                          member['userImg']!,
+                                        child: ClipOval(
+                                          child: ImageNetwork(
+                                            image: member.userImage,
+                                            height: 30,
+                                            width: 30,
+
+                                            fitWeb: BoxFitWeb.cover,
+                                            fitAndroidIos: BoxFit.cover,
+                                            onLoading:
+                                                const CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                ),
+                                            onError: Image.asset(
+                                              kDummyImg,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                       ),
+
                                       const SizedBox(width: 8),
-                                      Text(member['name']!),
+                                      Text(member.name),
                                     ],
                                   ),
                                 );
                               }).toList(),
                           onChanged: (value) {
-                            if (!selectedMembers.contains(value)) {
+                            if (!selectedMembers.contains(value!.userId)) {
                               setState(() {
-                                selectedMembers.add(value!);
+                                selectedMembers.add(value.name);
+                                selectedMemberIds.add(value.userId);
                               });
                             } else {
                               setState(() {
-                                selectedMembers.remove(value!);
+                                selectedMembers.remove(value.name);
+                                selectedMemberIds.remove(value.userId);
                               });
                             }
                           },
@@ -515,19 +600,23 @@ class _EventDialogState extends State<EventDialog> {
               onTap: () {
                 if (_titleController.text.trim().isNotEmpty &&
                     _startDateTime != null &&
-                    _endDateTime != null) {
-                  calenderController.appointments.add(
-                    Appointment(
-                      startTime: _startDateTime!,
-                      endTime: _endDateTime!,
-                      subject: _titleController.text,
-                      color: kPurpleColor,
-                      location: _selectedLocation,
-                      resourceIds: selectedMembers,
-                    ),
-                  );
-                  calenderController.dataSource.notify();
-                  Get.back();
+                    _endDateTime != null &&
+                    _notesController.text.isNotEmpty &&
+                    _selectedLocation!.isNotEmpty &&
+                    selectedMembers.isNotEmpty) {
+                  Map<String, dynamic> body = {
+                    "eventTitle": _titleController.text.trim(),
+                    "place": _selectedLocation,
+                    "date": _startDateTime!.toIso8601String(), // ISO format
+                    "startTime": _startDateTime!.hour, // 24-hour int
+                    "endTime": _endDateTime!.hour, // 24-hour int
+                    "notes": _notesController.text.trim(),
+                    "members": selectedMemberIds,
+                  };
+
+                  calenderController.addEvent(body: body);
+                } else {
+                  showCustomSnackbar("Error", "Please fill all fields");
                 }
                 // if (_titleController.text.trim().isNotEmpty &&
                 //     _startDateTime != null &&

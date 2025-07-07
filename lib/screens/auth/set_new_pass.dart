@@ -18,7 +18,6 @@ class SetNewPassScreen extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: AuthComponent(
         withBackButton: true,
@@ -31,50 +30,59 @@ class SetNewPassScreen extends GetView<AuthController> {
                   MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.back();
                       },
-                      child: Icon(Icons.arrow_back_ios,color: kWhiteColor,size: 24,),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        color: kWhiteColor,
+                        size: 24,
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               SizedBox(height: 28.h),
               Text(
                 kSetNewPassword,
                 style: AppStyles.blackTextStyle().copyWith(
-                    fontSize: 32.sp,
-                    fontWeight: FontWeight.w700,
+                  fontSize: 32.sp,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               SizedBox(height: 8),
               Text(
                 kEnterNewPassword,
-                style: AppStyles.blackTextStyle().
-                copyWith(fontSize: 16,fontWeight: FontWeight.w400,color: kGreyShade3Color),),
+                style: AppStyles.blackTextStyle().copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: kGreyShade3Color,
+                ),
+              ),
               SizedBox(height: 56.h),
               Obx(
-                    () => TextField(
+                () => TextField(
+                  controller: controller.passwordForgotController,
                   style: AppStyles.blackTextStyle().copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                   obscuringCharacter: '•',
                   obscureText: controller.isPasswordHidden1.value,
                   keyboardType: TextInputType.visiblePassword,
-          
+
                   decoration: InputDecoration(
                     hintText: kNewPassword,
                     hintStyle: AppStyles.blackTextStyle().copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: kGreyShade3Color
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: kGreyShade3Color,
                     ),
                     fillColor: kGreyShade5Color.withOpacity(0.22),
                     filled: true,
                     prefixIcon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: SvgPicture.asset(kLockIcon,height: 24,width: 24,),
+                      child: SvgPicture.asset(kLockIcon, height: 24, width: 24),
                     ),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -91,45 +99,49 @@ class SetNewPassScreen extends GetView<AuthController> {
                     contentPadding: EdgeInsets.symmetric(vertical: 27.h),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: kGreyShade5Color.withOpacity(0.22), width: 1),
-          
+                      borderSide: BorderSide(
+                        color: kGreyShade5Color.withOpacity(0.22),
+                        width: 1,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
                       borderSide: BorderSide(color: kPrimaryColor, width: 1),
-          
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: kGreyShade5Color.withOpacity(0.22), width: 1),
-          
+                      borderSide: BorderSide(
+                        color: kGreyShade5Color.withOpacity(0.22),
+                        width: 1,
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 24.h),
               Obx(
-                    () => TextField(
+                () => TextField(
+                  controller: controller.passwordForgotConfirmController,
                   style: AppStyles.blackTextStyle().copyWith(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                   obscuringCharacter: '•',
                   obscureText: controller.isPasswordHidden2.value,
                   keyboardType: TextInputType.visiblePassword,
-          
+
                   decoration: InputDecoration(
                     hintText: kConfirmNewPassword,
                     hintStyle: AppStyles.blackTextStyle().copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: kGreyShade3Color
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: kGreyShade3Color,
                     ),
                     fillColor: kGreyShade5Color.withOpacity(0.22),
                     filled: true,
                     prefixIcon: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: SvgPicture.asset(kLockIcon,height: 24,width: 24,),
+                      child: SvgPicture.asset(kLockIcon, height: 24, width: 24),
                     ),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
@@ -146,18 +158,21 @@ class SetNewPassScreen extends GetView<AuthController> {
                     contentPadding: EdgeInsets.symmetric(vertical: 27.h),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: kGreyShade5Color.withOpacity(0.22), width: 1),
-          
+                      borderSide: BorderSide(
+                        color: kGreyShade5Color.withOpacity(0.22),
+                        width: 1,
+                      ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
                       borderSide: BorderSide(color: kPrimaryColor, width: 1),
-          
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(100),
-                      borderSide: BorderSide(color: kGreyShade5Color.withOpacity(0.22), width: 1),
-          
+                      borderSide: BorderSide(
+                        color: kGreyShade5Color.withOpacity(0.22),
+                        width: 1,
+                      ),
                     ),
                   ),
                 ),
@@ -169,7 +184,7 @@ class SetNewPassScreen extends GetView<AuthController> {
                 color: kPrimaryColor,
                 borderColor: kPrimaryColor,
                 onTap: () {
-                  Get.toNamed(kAuthScreenRoute);
+                  controller.newPassword();
                 },
               ),
             ],

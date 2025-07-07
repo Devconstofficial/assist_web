@@ -1,120 +1,221 @@
+import 'dart:typed_data';
+import 'package:assist_web/custom_widgets/custom_snackbar.dart';
+import 'package:assist_web/models/post_model.dart';
+import 'package:assist_web/services/post_service.dart';
+import 'package:assist_web/services/user_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../custom_widgets/view_profile_dialog.dart';
-
+import 'package:image_picker/image_picker.dart';
 
 class FeedController extends GetxController {
-  var users = [
-    {
-      "name": "Sassanian Habib",
-      "email": "sassanian.habib@example.com",
-      "birthDate": "02-12-2002",
-      "phNumber": "+9212345678901",
-      "role": "Applicant"
-    },
-    {
-      "name": "Mehaik Fatima",
-      "email": "mehaik.fatima@example.com",
-      "birthDate": "02-13-2002",
-      "phNumber": "+9212345678902",
-      "role": "Subscriber"
-    },
-    {
-      "name": "Ahmed Khan",
-      "email": "ahmed.khan@example.com",
-      "birthDate": "02-14-2002",
-      "phNumber": "+9212345678903",
-      "role": "Applicant"
-    },
-    {
-      "name": "Areeba Qamar",
-      "email": "areeba.qamar@example.com",
-      "birthDate": "02-15-2002",
-      "phNumber": "+9212345678904",
-      "role": "Subscriber"
-    },
-    {
-      "name": "Umer Rasheed",
-      "email": "umer.rasheed@example.com",
-      "birthDate": "02-16-2002",
-      "phNumber": "+9212345678905",
-      "role": "Applicant"
-    },
-    {
-      "name": "Fatima Noor",
-      "email": "fatima.noor@example.com",
-      "birthDate": "02-17-2002",
-      "phNumber": "+9212345678906",
-      "role": "Subscriber"
-    },
-    {
-      "name": "Zayan Malik",
-      "email": "zayan.malik@example.com",
-      "birthDate": "02-18-2002",
-      "phNumber": "+9212345678907",
-      "role": "Applicant"
-    },
-    {
-      "name": "Hina Shah",
-      "email": "hina.shah@example.com",
-      "birthDate": "02-19-2002",
-      "phNumber": "+9212345678908",
-      "role": "Subscriber"
-    },
-    {
-      "name": "Bilal Ansari",
-      "email": "bilal.ansari@example.com",
-      "birthDate": "02-20-2002",
-      "phNumber": "+9212345678909",
-      "role": "Applicant"
-    },
-  ].obs;
+  final PostService _service = PostService();
+  final UserService _userService = UserService();
+  var isLoading = false.obs;
+  var isError = false.obs;
+  var errorMsg = "".obs;
+  var isLoadingUser = false.obs;
+  var isErrorUser = false.obs;
+  var errorMsgUser = "".obs;
+  RxList<PostModel> allRequests = <PostModel>[].obs;
+  RxList<PostModel> allReports = <PostModel>[].obs;
+  var descCont = TextEditingController();
+  Rx<Uint8List?> webImage = Rxn<Uint8List>();
+  static final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  var currentPage = 1.obs;
-  final int itemsPerPage = 8;
-  final int pagesPerGroup = 4;
+  Future<void> pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-  int get totalPages => (users.length / itemsPerPage).ceil();
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
 
-  List get pagedUsers {
-    int start = (currentPage.value - 1) * itemsPerPage;
-    int end = start + itemsPerPage;
-    return users.sublist(start, end > users.length ? users.length : end);
-  }
-
-  int get currentGroup => ((currentPage.value - 1) / pagesPerGroup).floor();
-
-  List<int> get visiblePageNumbers {
-    int startPage = currentGroup * pagesPerGroup + 1;
-    int endPage = (startPage + pagesPerGroup - 1).clamp(1, totalPages);
-    return List.generate(endPage - startPage + 1, (index) => startPage + index);
-  }
-
-  void goToPage(int page) {
-    if (page >= 1 && page <= totalPages) currentPage.value = page;
-  }
-
-  void goToNextPage() {
-    if (currentPage.value < totalPages) {
-      currentPage.value++;
+      webImage.value = bytes;
     }
   }
 
-  void goToPreviousPage() {
-    if (currentPage.value > 1) {
-      currentPage.value--;
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getPostRequests();
+  }
+
+  void getPostRequests() async {
+    try {
+      isLoading(true);
+      var result = await _service.getPostRequests();
+      isLoading(false);
+      if (result is List<PostModel>) {
+        allRequests.assignAll(result);
+        isError(false);
+        errorMsg.value = '';
+        return;
+      } else {
+        isError(true);
+        errorMsg.value = result.toString();
+      }
+    } catch (e) {
+      isLoading(false);
+      isError(true);
+      errorMsg.value = e.toString();
     }
   }
 
-  void deleteUserAt(int index) {
-    users.removeAt(index);
+  void getReportedPosts() async {
+    try {
+      isLoadingUser(true);
+      var result = await _service.getReportedPosts();
+      isLoadingUser(false);
+      if (result is List<PostModel>) {
+        allReports.assignAll(result);
+        isErrorUser(false);
+        errorMsgUser.value = '';
+        return;
+      } else {
+        isErrorUser(true);
+        errorMsg.value = result.toString();
+      }
+    } catch (e) {
+      isLoadingUser(false);
+      isErrorUser(true);
+      errorMsgUser.value = e.toString();
+    }
   }
 
-  void editUserAt(int index) {
-    final user = users[index];
-    if (user['role'] == 'Subscriber') {
-      Get.dialog(viewProfileDialog(isSubscriber: true));
-    } else {
-      Get.dialog(viewProfileDialog());
+  void approvePostRequest(String id) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+      var result = await _service.approvePost(postId: id);
+      Get.back();
+      if (result is bool) {
+        getPostRequests();
+        showCustomSnackbar(
+          "Success",
+          "Approved Successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        showCustomSnackbar("Error", result.toString());
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
+    }
+  }
+
+  void removePost(String id) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+      var result = await _service.removePost(postId: id);
+      Get.back();
+      if (result is bool) {
+        getPostRequests();
+        getReportedPosts();
+        showCustomSnackbar(
+          "Success",
+          "Post removed Successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        showCustomSnackbar("Error", result.toString());
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
+    }
+  }
+
+  void blockUser(String id) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      var result = await _userService.blockUser(userId: id);
+      Get.back();
+      if (result is bool) {
+        Get.back();
+        showCustomSnackbar(
+          "Success",
+          "Banned Successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        showCustomSnackbar("Error", result.toString());
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
+    }
+  }
+
+  Future<dynamic> uploadCategoryImage(dynamic imageBytes) async {
+    try {
+      String filePath =
+          'applications/${DateTime.now().millisecondsSinceEpoch}_post.png';
+
+      UploadTask uploadTask;
+
+      uploadTask = _storage.ref(filePath).putData(imageBytes);
+
+      // Wait for the upload to complete
+      TaskSnapshot snapshot = await uploadTask;
+
+      // Get the download URL after the upload is complete
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void addPost() async {
+    if (descCont.text.isEmpty || webImage.value == null) {
+      showCustomSnackbar("Error", "Add a content and upload an image");
+      return;
+    }
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+      final imageUrl = await uploadCategoryImage(webImage.value);
+      if (imageUrl is bool) {
+        Get.back();
+        showCustomSnackbar("Error", "Failed to upload image");
+        return;
+      } else {
+        var result = await _service.addPost(
+          body: {"text": descCont.text, "imageUrl": imageUrl},
+        );
+        Get.back();
+        if (result is bool) {
+          Get.back();
+          showCustomSnackbar(
+            "Success",
+            "Post added Successfully",
+            backgroundColor: Colors.green,
+          );
+          return;
+        } else {
+          showCustomSnackbar("Error", result.toString());
+        }
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
     }
   }
 }

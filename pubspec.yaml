@@ -48,6 +48,14 @@ dependencies:
   syncfusion_flutter_calendar:
   geolocator: ^14.0.1
   http: ^1.4.0
+  shared_preferences: ^2.5.3
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+  image_network: ^2.6.0
+  firebase_storage: ^12.4.7
+  firebase_core: ^3.14.0
+  syncfusion_flutter_pdfviewer: ^28.2.12
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
