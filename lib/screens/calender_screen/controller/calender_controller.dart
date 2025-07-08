@@ -17,7 +17,9 @@ class CalenderController extends GetxController {
   var isLoadingEvents = false.obs;
   var isErrorEvents = false.obs;
   var errorMsgEvents = "".obs;
-  late final DataSource dataSource;
+  // late final DataSource dataSource;
+  var dataSource = Rx<DataSource?>(null);
+
   RxList<UserModel> allUsers = <UserModel>[].obs;
   RxList<EventModel> allEvents = <EventModel>[].obs;
 
@@ -50,7 +52,8 @@ class CalenderController extends GetxController {
                     event.members.map((member) => member.userImage).toList(),
               );
             }).toList();
-        dataSource = DataSource(generatedAppointments);
+      dataSource.value = DataSource(generatedAppointments);
+
         update();
         isLoadingEvents(false);
         return;

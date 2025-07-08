@@ -17,6 +17,13 @@ import 'package:image_picker/image_picker.dart';
 
 class DashboardController extends GetxController {
   final AuthService _service = AuthService();
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController contact = TextEditingController();
+  TextEditingController note = TextEditingController();
+  RxString status = "".obs;
+  RxString planName = "".obs;
+  RxString imageUrl = "".obs;
   final DashboardStatsService _dashboardStatsService = DashboardStatsService();
   var isLoading = false.obs;
   var isError = false.obs;

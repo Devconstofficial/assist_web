@@ -89,58 +89,59 @@ class CalenderScreen extends GetView<CalenderController> {
                                                 title:
                                                     controller.errorMsg.value,
                                               )
-                                              : SfCalendar(
-                                                timeSlotViewSettings:
-                                                    TimeSlotViewSettings(
-                                                      timeIntervalHeight: 80.h,
-                                                      timeIntervalWidth: 200.w,
-                                                    ),
-                                                view: CalendarView.week,
-                                                firstDayOfWeek: 1,
-                                                todayHighlightColor:
-                                                    kPrimaryColor,
-                                                showDatePickerButton: true,
-                                                headerStyle:
-                                                    CalendarHeaderStyle(
-                                                      backgroundColor:
-                                                          kWhiteColor,
-                                                    ),
-                                                appointmentTextStyle: TextStyle(
-                                                  color: Colors.black,
-                                                ),
-                                                dataSource:
-                                                    controller.dataSource,
-                                                appointmentBuilder: (
-                                                  context,
-                                                  details,
-                                                ) {
-                                                  final Appointment
-                                                  appointment =
-                                                      details
-                                                          .appointments
-                                                          .first;
-                                                  return CustomAppointmentWidget(
-                                                    appointment: appointment,
-                                                  );
-                                                },
-                                                onTap: (calendarTapDetails) {
-                                                  if (calendarTapDetails
-                                                              .targetElement ==
-                                                          CalendarElement
-                                                              .calendarCell &&
-                                                      calendarTapDetails.date !=
-                                                          null) {
-                                                    final selectedDateTime =
-                                                        calendarTapDetails
-                                                            .date!;
-                                                    Get.dialog(
-                                                      EventDialog(
-                                                        initialDateTime:
-                                                            selectedDateTime,
+                                              : Obx(
+                                                ()=> SfCalendar(
+                                                  timeSlotViewSettings:
+                                                      TimeSlotViewSettings(
+                                                        timeIntervalHeight: 80.h,
+                                                        timeIntervalWidth: 200.w,
                                                       ),
+                                                  view: CalendarView.week,
+                                                  firstDayOfWeek: 1,
+                                                  todayHighlightColor:
+                                                      kPrimaryColor,
+                                                  showDatePickerButton: true,
+                                                  headerStyle:
+                                                      CalendarHeaderStyle(
+                                                        backgroundColor:
+                                                            kWhiteColor,
+                                                      ),
+                                                  appointmentTextStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  dataSource:controller.dataSource.value,
+                                                  appointmentBuilder: (
+                                                    context,
+                                                    details,
+                                                  ) {
+                                                    final Appointment
+                                                    appointment =
+                                                        details
+                                                            .appointments
+                                                            .first;
+                                                    return CustomAppointmentWidget(
+                                                      appointment: appointment,
                                                     );
-                                                  }
-                                                },
+                                                  },
+                                                  onTap: (calendarTapDetails) {
+                                                    if (calendarTapDetails
+                                                                .targetElement ==
+                                                            CalendarElement
+                                                                .calendarCell &&
+                                                        calendarTapDetails.date !=
+                                                            null) {
+                                                      final selectedDateTime =
+                                                          calendarTapDetails
+                                                              .date!;
+                                                      Get.dialog(
+                                                        EventDialog(
+                                                          initialDateTime:
+                                                              selectedDateTime,
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                ),
                                               ),
                                     ),
                                   ),
@@ -170,6 +171,8 @@ class CustomAppointmentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isShortDuration =
+        appointment.endTime.difference(appointment.startTime).inMinutes <= 60;
+    final isMoreShortDuration =
         appointment.endTime.difference(appointment.startTime).inMinutes <= 60;
     return Container(
       height: isShortDuration ? 120.h : null,
@@ -393,20 +396,7 @@ class _EventDialogState extends State<EventDialog> {
                 ),
               ],
             ),
-            // TextButton(
-            //   onPressed: () => Navigator.pop(context), // Cancel
-            //   child: const Text("Cancel"),
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     setState(() {
-            //       selectedMemberIds = tempSelectedIds;
-            //       selectedMembers = tempSelectedNames;
-            //     });
-            //     Navigator.pop(context);
-            //   },
-            //   child: const Text("Done"),
-            // ),
+           
           ],
         );
       },
@@ -710,14 +700,7 @@ class _EventDialogState extends State<EventDialog> {
                 } else {
                   showCustomSnackbar("Error", "Please fill all fields");
                 }
-                // if (_titleController.text.trim().isNotEmpty &&
-                //     _startDateTime != null &&
-                //     _endDateTime != null) {
-                //   widget.onSave(
-                //     _titleController.text.trim(),
-                //     _startDateTime!,
-                //     _endDateTime!,
-                //   );
+               
               },
               borderRadius: 10,
               width: 250.w,
