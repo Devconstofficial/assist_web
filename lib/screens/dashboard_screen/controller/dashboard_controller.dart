@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:assist_web/custom_widgets/custom_snackbar.dart';
+import 'package:assist_web/models/application_model.dart';
 import 'package:assist_web/models/user_model.dart';
 import 'package:assist_web/screens/subscription_screen/controller/subscription_controller.dart';
+import 'package:assist_web/services/application_service.dart';
 import 'package:assist_web/services/auth_service.dart';
 import 'package:assist_web/services/dashboard_stats_service.dart';
 import 'package:assist_web/utils/session_management/session_management.dart';
@@ -14,6 +14,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class DashboardController extends GetxController {
   final AuthService _service = AuthService();
@@ -25,6 +26,7 @@ class DashboardController extends GetxController {
   RxString planName = "".obs;
   RxString imageUrl = "".obs;
   final DashboardStatsService _dashboardStatsService = DashboardStatsService();
+  final ApplicationService _applicationService = ApplicationService();
   var isLoading = false.obs;
   var isError = false.obs;
   var errorMsg = "".obs;
@@ -34,6 +36,9 @@ class DashboardController extends GetxController {
   var isLoading2 = false.obs;
   var isError2 = false.obs;
   var errorMsg2 = "".obs;
+  var isLoading3 = false.obs;
+  var isError3 = false.obs;
+  var errorMsg3 = "".obs;
   var totalFunds = 0.0.obs;
   var averageDonationPerUser = 0.0.obs;
   var helpedApplicants = 0.0.obs;
@@ -49,6 +54,7 @@ class DashboardController extends GetxController {
   static final FirebaseStorage _storage = FirebaseStorage.instance;
   RxList<Map<String, dynamic>> userGraphData = <Map<String, dynamic>>[].obs;
   final SubscriptionController controller = Get.find();
+  Rx<ApplicationModel> randomApplication = ApplicationModel().obs;
 
   @override
   void onInit() {
@@ -92,6 +98,29 @@ class DashboardController extends GetxController {
     }
   }
 
+  Future getRandomApplication() async {
+    try {
+      isLoading3(true);
+      var result = await _applicationService.getRandomApplication();
+      isLoading3(false);
+      if (result is ApplicationModel) {
+        randomApplication.value = result;
+        selectedStatus.value = result.status;
+        isError3(false);
+        errorMsg3.value = '';
+
+        return;
+      } else {
+        isError3(true);
+        errorMsg3.value = result.toString();
+      }
+    } catch (e) {
+      isLoading3(false);
+      isError3(true);
+      errorMsg3.value = e.toString();
+    }
+  }
+
   Future getDonorMatrices() async {
     try {
       isLoading2(true);
@@ -125,6 +154,11 @@ class DashboardController extends GetxController {
         userGraphData.assignAll(result);
         isError1(false);
         errorMsg1.value = '';
+        if (isMonthly.value) {
+          _processMonthlyUserGrowthData(result);
+        } else {
+          _processYearlyUserGrowthData(result);
+        }
         return;
       } else {
         isError1(true);
@@ -135,6 +169,48 @@ class DashboardController extends GetxController {
       isError1(true);
       errorMsg1.value = e.toString();
     }
+  }
+
+  void _processMonthlyUserGrowthData(List<Map<String, dynamic>> data) {
+    final List<String> dates = [];
+    final List<FlSpot> spots = [];
+
+    for (int i = 0; i < data.length; i++) {
+      final entry = data[i];
+      final dateStr = entry['date'] as String;
+      final count = entry['count'] as int;
+
+      final date = DateTime.parse(dateStr);
+      final day = date.day;
+
+      dates.add(day.toString());
+      spots.add(FlSpot(i.toDouble(), count.toDouble()));
+    }
+
+    currentMonthDates.value = dates;
+    completedSpots.value = spots;
+  }
+
+  void _processYearlyUserGrowthData(List<Map<String, dynamic>> data) {
+    final List<String> monthLabels = [];
+    final List<FlSpot> spots = [];
+
+    for (int i = 0; i < data.length; i++) {
+      final entry = data[i];
+      final monthStr = entry['month'] as String; // e.g. "2024-08"
+      final count = entry['count'] as int;
+
+      final date = DateTime.parse("$monthStr-01");
+
+      // Format month name like "Aug", "Sep", etc.
+      final formattedMonth = DateFormat.MMM().format(date);
+
+      monthLabels.add(formattedMonth);
+      spots.add(FlSpot(i.toDouble(), count.toDouble()));
+    }
+
+    months.value = monthLabels;
+    completedSpots.value = spots;
   }
 
   void getUserData() async {
@@ -229,6 +305,36 @@ class DashboardController extends GetxController {
     }
   }
 
+  void updateApplicationStatus(String id) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      var result = await _applicationService.updateApplicationStatus(
+        status: selectedStatus.value,
+        id: id,
+      );
+      Get.back();
+      if (result is bool) {
+        Get.back();
+        getRandomApplication();
+        showCustomSnackbar(
+          "Success",
+          "Status updated Successfully",
+          backgroundColor: Colors.green,
+        );
+        return;
+      } else {
+        showCustomSnackbar("Error", result.toString());
+      }
+    } catch (e) {
+      Get.back();
+      showCustomSnackbar("Error", e.toString());
+    }
+  }
+
   void selectMonthly1() => isMonthly1.value = true;
   void selectYearly1() => isMonthly1.value = false;
 
@@ -236,67 +342,17 @@ class DashboardController extends GetxController {
     selectedStatus.value = status;
   }
 
-  final List<String> months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  final RxList<String> months = <String>[].obs;
 
   var currentMonthDates = <String>[].obs;
 
   var completedSpots = <FlSpot>[].obs;
-  var completedSpots1 = <FlSpot>[].obs;
-
-  final Random _random = Random();
 
   void selectMonthly() {
     isMonthly.value = true;
-    _generateCurrentMonthDates();
-    completedSpots.value = _getIrregularMonthlyData();
-  }
-
-  void _generateCurrentMonthDates() {
-    final now = DateTime.now();
-    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-    currentMonthDates.value = List.generate(daysInMonth, (i) => '${i + 1}');
-  }
-
-  List<FlSpot> _getIrregularMonthlyData() {
-    final days = currentMonthDates.length;
-    return List.generate(days, (i) {
-      final y = 30 + _random.nextInt(40);
-      return FlSpot(i.toDouble(), y.toDouble());
-    });
   }
 
   void selectYearly() {
     isMonthly.value = false;
-    completedSpots.value = _getYearlyData();
-  }
-
-  List<FlSpot> _getYearlyData() {
-    return [
-      FlSpot(0, 25),
-      FlSpot(1, 40),
-      FlSpot(2, 35),
-      FlSpot(3, 30),
-      FlSpot(4, 45),
-      FlSpot(5, 80),
-      FlSpot(6, 65),
-      FlSpot(7, 70),
-      FlSpot(8, 55),
-      FlSpot(9, 58),
-      FlSpot(10, 60),
-      FlSpot(11, 85),
-    ];
   }
 }

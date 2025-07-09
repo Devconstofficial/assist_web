@@ -65,7 +65,9 @@ class DashboardStatsService {
       },
     );
     if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
-      return responseModel.data['data']["usersGrowth"] as List;
+      return List<Map<String, dynamic>>.from(
+        responseModel.data['data']["usersGrowth"],
+      );
     }
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }

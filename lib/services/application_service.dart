@@ -29,6 +29,7 @@ class ApplicationService {
         'Authorization': 'Baerer $token',
       },
     );
+
     if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
       return (responseModel.data['data']["applications"] as List)
           .map((json) => ApplicationModel.fromJson(json))
@@ -55,6 +56,26 @@ class ApplicationService {
     );
     if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
       return true;
+    }
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
+
+  Future<dynamic> getRandomApplication() async {
+    final token = await _sessionManagement.getSessionToken(
+      tokenKey: SessionTokenKeys.kUserTokenKey,
+    );
+    ResponseModel responseModel = await _client.customRequest(
+      'GET',
+      url: "${WebUrls.kApplicationUrl}/random",
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token',
+      },
+    );
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      return ApplicationModel.fromJson(
+        responseModel.data['data']["application"],
+      );
     }
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }
