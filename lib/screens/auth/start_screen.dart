@@ -17,7 +17,9 @@ class _StartScreenState extends State<StartScreen> {
   @override
   void initState() {
     super.initState();
-    _checkSessionAndNavigate();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkSessionAndNavigate();
+    });
   }
 
   void _checkSessionAndNavigate() async {
