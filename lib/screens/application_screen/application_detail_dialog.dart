@@ -205,70 +205,89 @@ class _ApplicationDetailDialogState extends State<ApplicationDetailDialog> {
                     ],
                   ),
                 ),
-                SizedBox(height: 25.h),
-                Text(
-                  "Application Stats",
-                  style: AppStyles.blackTextStyle().copyWith(fontSize: 18.sp),
-                ),
-                SizedBox(height: 24.h),
-                Wrap(
-                  spacing: 8.w,
-                  runSpacing: 20.h,
-                  children:
-                      [
-                        'Submitted',
-                        'In Pool',
-                        'Selected',
-                        'Paid',
-                        'Denied',
-                      ].map((item) {
-                        return GestureDetector(
-                          onTap: () {
-                            controller.selectedStatus.value = item;
-                          },
-                          child: Obx(
-                            () => Container(
-                              height: 46.h,
-                              width: 125.w,
-                              padding: EdgeInsets.symmetric(horizontal: 24.w),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                border: Border.all(
-                                  color:
-                                      controller.selectedStatus.value == item
-                                          ? kPrimaryColor
-                                          : kGreyShade13Color,
-                                ),
-                                color:
-                                    controller.selectedStatus.value == item
-                                        ? kPrimaryColor
-                                        : kGreyShade5Color.withOpacity(0.22),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  item,
-                                  style: AppStyles.blackTextStyle().copyWith(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color:
-                                        controller.selectedStatus.value == item
-                                            ? kWhiteColor
-                                            : kBlackColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                ),
+                //  SizedBox(height: 25.h),
+                // Text(
+                //   "Application Stats",
+                //   style: AppStyles.blackTextStyle().copyWith(fontSize: 18.sp),
+                // ),
+                // SizedBox(height: 24.h),
+                // Wrap(
+                //   spacing: 8.w,
+                //   runSpacing: 20.h,
+                //   children:
+                //       [
+                //         'Submitted',
+                //         'In Pool',
+                //         'Selected',
+                //         'Paid',
+                //         'Denied',
+                //       ].map((item) {
+                //         return GestureDetector(
+                //           onTap: () {
+                //             controller.selectedStatus.value = item;
+                //           },
+                //           child: Obx(
+                //             () => Container(
+                //               height: 46.h,
+                //               width: 125.w,
+                //               padding: EdgeInsets.symmetric(horizontal: 24.w),
+                //               decoration: BoxDecoration(
+                //                 borderRadius: BorderRadius.circular(100),
+                //                 border: Border.all(
+                //                   color:
+                //                       controller.selectedStatus.value == item
+                //                           ? kPrimaryColor
+                //                           : kGreyShade13Color,
+                //                 ),
+                //                 color:
+                //                     controller.selectedStatus.value == item
+                //                         ? kPrimaryColor
+                //                         : kGreyShade5Color.withOpacity(0.22),
+                //               ),
+                //               child: Center(
+                //                 child: Text(
+                //                   item,
+                //                   style: AppStyles.blackTextStyle().copyWith(
+                //                     fontSize: 15.sp,
+                //                     fontWeight: FontWeight.w600,
+                //                     color:
+                //                         controller.selectedStatus.value == item
+                //                             ? kWhiteColor
+                //                             : kBlackColor,
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         );
+                //       }).toList(),
+                // ),
                 SizedBox(height: 150.h),
                 CustomButton(
                   height: 61,
-                  title: "Update",
+                  title: "Approve",
                   onTap: () {
-                    controller.updateStatus(widget.application.applicationId);
+                    controller.updateStatus(
+                      widget.application.applicationId,
+                      "Selected",
+                    );
                   },
+                ),
+                SizedBox(height: 20.h),
+                CustomButton(
+                  title: "Reject",
+                  color: kGreyShade13Color,
+                  borderColor: kGreyShade13Color,
+                  textColor: kBlackColor,
+                  onTap: () {
+                    controller.updateStatus(
+                      widget.application.applicationId,
+                      "Denied",
+                    );
+                  },
+                  height: 61,
+                  textSize: 16,
+                  fontWeight: FontWeight.w700,
                 ),
                 SizedBox(height: 15.h),
               ],

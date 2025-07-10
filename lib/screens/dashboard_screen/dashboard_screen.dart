@@ -271,15 +271,15 @@ class DashboardScreen extends GetView<DashboardController> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 24.h),
-                        Text(
-                          "Application Stats",
-                          style: AppStyles.blackTextStyle().copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(height: 24.h),
+                        //  SizedBox(height: 24.h),
+                        // Text(
+                        //   "Application Stats",
+                        //   style: AppStyles.blackTextStyle().copyWith(
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // ),
+                        // SizedBox(height: 24.h),
                         // Obx(
                         //   () => Wrap(
                         //     spacing: 8,
@@ -307,7 +307,7 @@ class DashboardScreen extends GetView<DashboardController> {
                         //   maxLines: 5,
                         //   borderRadius: 24,
                         // ),
-                        SizedBox(height: 24.h),
+                        SizedBox(height: 40.h),
                         CustomButton(
                           title: "Approve",
                           onTap: () {

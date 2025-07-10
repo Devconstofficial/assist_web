@@ -96,7 +96,7 @@ class ApplicationController extends GetxController {
     Get.to(() => FullImageViewScreen(imageUrl: url));
   }
 
-  void updateStatus(String id) async {
+  void updateStatus(String id, String status) async {
     try {
       Get.dialog(
         const Center(child: CircularProgressIndicator()),
@@ -104,7 +104,7 @@ class ApplicationController extends GetxController {
       );
 
       var result = await _service.updateApplicationStatus(
-        status: selectedStatus.value,
+        status: status,
         id: id,
       );
       Get.back();
