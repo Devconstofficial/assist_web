@@ -305,7 +305,7 @@ class DashboardController extends GetxController {
     }
   }
 
-  void updateApplicationStatus(String id) async {
+  void updateApplicationStatus(String id, String status) async {
     try {
       Get.dialog(
         const Center(child: CircularProgressIndicator()),
@@ -313,7 +313,7 @@ class DashboardController extends GetxController {
       );
 
       var result = await _applicationService.updateApplicationStatus(
-        status: selectedStatus.value,
+        status: status,
         id: id,
       );
       Get.back();

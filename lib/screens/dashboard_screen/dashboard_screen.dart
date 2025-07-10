@@ -280,20 +280,20 @@ class DashboardScreen extends GetView<DashboardController> {
                           ),
                         ),
                         SizedBox(height: 24.h),
-                        Obx(
-                          () => Wrap(
-                            spacing: 8,
-                            runSpacing: 21,
-                            children: [
-                              _buildStatusButton("Submitted", 119),
-                              _buildStatusButton("In Pool", 94),
-                              _buildStatusButton("Selected", 94),
-                              _buildStatusButton("Paid", 94),
-                              _buildStatusButton("Denied", 94),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 24.h),
+                        // Obx(
+                        //   () => Wrap(
+                        //     spacing: 8,
+                        //     runSpacing: 21,
+                        //     children: [
+                        //       _buildStatusButton("Submitted", 119),
+                        //       _buildStatusButton("In Pool", 94),
+                        //       _buildStatusButton("Selected", 94),
+                        //       _buildStatusButton("Paid", 94),
+                        //       _buildStatusButton("Denied", 94),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(height: 24.h),
                         // Text(
                         //   "Add Notes",
                         //   style: AppStyles.blackTextStyle().copyWith(
@@ -309,10 +309,27 @@ class DashboardScreen extends GetView<DashboardController> {
                         // ),
                         SizedBox(height: 24.h),
                         CustomButton(
-                          title: "Update",
+                          title: "Approve",
                           onTap: () {
                             controller.updateApplicationStatus(
                               controller.randomApplication.value.applicationId,
+                              "Selected",
+                            );
+                          },
+                          height: 61,
+                          textSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        SizedBox(height: 20.h),
+                        CustomButton(
+                          title: "Reject",
+                          color: kGreyShade13Color,
+                          borderColor: kGreyShade13Color,
+                          textColor: kBlackColor,
+                          onTap: () {
+                            controller.updateApplicationStatus(
+                              controller.randomApplication.value.applicationId,
+                              "Denied",
                             );
                           },
                           height: 61,
