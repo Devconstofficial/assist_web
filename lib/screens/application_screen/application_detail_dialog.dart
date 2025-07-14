@@ -263,32 +263,48 @@ class _ApplicationDetailDialogState extends State<ApplicationDetailDialog> {
                 //       }).toList(),
                 // ),
                 SizedBox(height: 150.h),
-                CustomButton(
-                  height: 61,
-                  title: "Approve",
-                  onTap: () {
-                    controller.updateStatus(
-                      widget.application.applicationId,
-                      "Selected",
-                    );
-                  },
-                ),
+                if (widget.application.status != "Selected" &&
+                    widget.application.status != "Denied")
+                  CustomButton(
+                    height: 61,
+                    title: "Approve",
+                    onTap: () {
+                      controller.updateStatus(
+                        widget.application.applicationId,
+                        "Selected",
+                      );
+                    },
+                  ),
                 SizedBox(height: 20.h),
-                CustomButton(
-                  title: "Reject",
-                  color: kGreyShade13Color,
-                  borderColor: kGreyShade13Color,
-                  textColor: kBlackColor,
-                  onTap: () {
-                    controller.updateStatus(
-                      widget.application.applicationId,
-                      "Denied",
-                    );
-                  },
-                  height: 61,
-                  textSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                if (widget.application.status != "Denied" &&
+                    widget.application.status != "Selected")
+                  CustomButton(
+                    title: "Reject",
+                    color: kGreyShade13Color,
+                    borderColor: kGreyShade13Color,
+                    textColor: kBlackColor,
+                    onTap: () {
+                      controller.updateStatus(
+                        widget.application.applicationId,
+                        "Denied",
+                      );
+                    },
+                    height: 61,
+                    textSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                if (widget.application.status == "Denied" ||
+                    widget.application.status == "Selected")
+                  CustomButton(
+                    title:
+                        widget.application.status == "Denied"
+                            ? "Rejected"
+                            : "Approved",
+                    onTap: () {},
+                    height: 61,
+                    textSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 SizedBox(height: 15.h),
               ],
             ),

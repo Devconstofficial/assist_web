@@ -1,6 +1,7 @@
 import 'package:assist_web/custom_widgets/custom_button.dart';
 import 'package:assist_web/custom_widgets/custom_error_widget.dart';
 import 'package:assist_web/custom_widgets/custom_textfield.dart';
+import 'package:assist_web/screens/chat/chat_screen.dart';
 import 'package:assist_web/screens/user_screen/controller/user_controller.dart';
 import 'package:assist_web/utils/app_colors.dart';
 import 'package:assist_web/utils/app_images.dart';
@@ -134,22 +135,25 @@ class _UserDetailDialogState extends State<UserDetailDialog> {
                               isFilled: true,
                             ),
                             SizedBox(height: 150.h),
-                            if (controller.user.value.roles.last == "applicant")
+                            if (controller.user.value.roles.isNotEmpty &&
+                                controller.user.value.roles.last == "applicant")
                               CustomButton(
                                 height: 61,
                                 color: kGreyShade13Color,
                                 textColor: kBlackColor,
                                 borderColor: kBlackTextColor4,
                                 title: "View Message",
-                                onTap: () {},
+                                onTap: () {
+                                  Get.to(() => ChatScreen());
+                                },
                               ),
                             SizedBox(height: 15.h),
                             CustomButton(
                               height: 61,
                               title:
                                   controller.user.value.blocked == false
-                                      ? "Block ${controller.user.value.roles.last == "applicant" ? "User" : "Donar"}"
-                                      : "Unblock ${controller.user.value.roles.last == "applicant" ? "User" : "Donar"}",
+                                      ? "Block ${controller.user.value.roles.isNotEmpty && controller.user.value.roles.last == "applicant" ? "User" : "Donar"}"
+                                      : "Unblock ${controller.user.value.roles.isNotEmpty && controller.user.value.roles.last == "applicant" ? "User" : "Donar"}",
                               onTap: () {
                                 if (controller.user.value.blocked == false) {
                                   controller.blockUser(widget.id);
