@@ -17,10 +17,11 @@ class WebUrls extends _BaseUrl {
   static const String kSubscriptionUrl =
       "${_BaseUrl._kBaseUrl}/admin/subscriptions";
   static const String kStatsUrl = "${_BaseUrl._kBaseUrl}/admin/stats";
-  static const String kGetAllPostsUrl =
-      "${_BaseUrl._kBaseUrl}/admin/posts";
+  static const String kGetAllPostsUrl = "${_BaseUrl._kBaseUrl}/admin/posts";
   static const String kGetRandomApplicationUrl =
       "${_BaseUrl._kBaseUrl}/admin/applications/random";
+  static const String kGetNotificationIds =
+      "${_BaseUrl._kBaseUrl}/user/notifications/ids";
 }
 
 abstract class _BaseUrl {

@@ -308,63 +308,37 @@ class DashboardScreen extends GetView<DashboardController> {
                         //   borderRadius: 24,
                         // ),
                         SizedBox(height: 40.h),
-                        if (controller.randomApplication.value.status !=
-                                "Selected" &&
-                            controller.randomApplication.value.status ==
-                                "Denied")
-                          CustomButton(
-                            title: "Approve",
-                            onTap: () {
-                              controller.updateApplicationStatus(
-                                controller
-                                    .randomApplication
-                                    .value
-                                    .applicationId,
-                                "Selected",
-                              );
-                            },
-                            height: 61,
-                            textSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+
+                        CustomButton(
+                          title: "Approve",
+                          onTap: () {
+                            controller.updateApplicationStatus(
+                              controller.randomApplication.value.applicationId,
+                              "Selected",
+                            );
+                          },
+                          height: 61,
+                          textSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                         SizedBox(height: 20.h),
-                        if (controller.randomApplication.value.status !=
-                                "Denied" &&
-                            controller.randomApplication.value.status !=
-                                "Selected")
-                          CustomButton(
-                            title: "Reject",
-                            color: kGreyShade13Color,
-                            borderColor: kGreyShade13Color,
-                            textColor: kBlackColor,
-                            onTap: () {
-                              controller.updateApplicationStatus(
-                                controller
-                                    .randomApplication
-                                    .value
-                                    .applicationId,
-                                "Denied",
-                              );
-                            },
-                            height: 61,
-                            textSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        if (controller.randomApplication.value.status ==
-                                "Denied" ||
-                            controller.randomApplication.value.status ==
-                                "Selected")
-                          CustomButton(
-                            title:
-                                controller.randomApplication.value.status ==
-                                        "Denied"
-                                    ? "Rejected"
-                                    : "Approved",
-                            onTap: () {},
-                            height: 61,
-                            textSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+
+                        CustomButton(
+                          title: "Reject",
+                          color: kGreyShade13Color,
+                          borderColor: kGreyShade13Color,
+                          textColor: kBlackColor,
+                          onTap: () {
+                            controller.updateApplicationStatus(
+                              controller.randomApplication.value.applicationId,
+                              "Denied",
+                            );
+                          },
+                          height: 61,
+                          textSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+
                         SizedBox(height: 14.h),
                         // CustomButton(
                         //   title: "Reject",

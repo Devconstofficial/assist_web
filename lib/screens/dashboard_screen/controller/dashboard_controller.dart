@@ -7,6 +7,7 @@ import 'package:assist_web/screens/subscription_screen/controller/subscription_c
 import 'package:assist_web/services/application_service.dart';
 import 'package:assist_web/services/auth_service.dart';
 import 'package:assist_web/services/dashboard_stats_service.dart';
+import 'package:assist_web/services/firebase_services.dart';
 import 'package:assist_web/utils/session_management/session_management.dart';
 import 'package:assist_web/utils/session_management/session_token_keys.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -27,6 +28,7 @@ class DashboardController extends GetxController {
   RxString imageUrl = "".obs;
   final DashboardStatsService _dashboardStatsService = DashboardStatsService();
   final ApplicationService _applicationService = ApplicationService();
+  final FirebaseServices _firebaseService = FirebaseServices();
   var isLoading = false.obs;
   var isError = false.obs;
   var errorMsg = "".obs;
@@ -277,6 +279,10 @@ class DashboardController extends GetxController {
           return;
         } else {
           imageUrl = result;
+          _firebaseService.updateParticipantImageUrl(
+            userId: userData.value.userId,
+            newImageUrl: result,
+          );
         }
       }
       var result = await _service.updateProfile(

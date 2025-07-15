@@ -2,6 +2,7 @@ import 'package:assist_web/custom_widgets/custom_button.dart';
 import 'package:assist_web/custom_widgets/custom_textfield.dart';
 import 'package:assist_web/models/application_model.dart';
 import 'package:assist_web/screens/application_screen/controller/application_controller.dart';
+import 'package:assist_web/screens/chat/chat_screen.dart';
 import 'package:assist_web/utils/app_colors.dart';
 import 'package:assist_web/utils/app_images.dart';
 import 'package:assist_web/utils/app_styles.dart';
@@ -302,8 +303,23 @@ class _ApplicationDetailDialogState extends State<ApplicationDetailDialog> {
                             : "Approved",
                     onTap: () {},
                     height: 61,
+                    color: kRedColor.withOpacity(0.8),
+                    borderColor: kRedColor,
                     textSize: 16,
                     fontWeight: FontWeight.w700,
+                  ),
+                SizedBox(height: 15.h),
+                if (widget.application.status == "Selected")
+                  CustomButton(
+                    height: 61,
+                    textSize: 16,
+                    color: kGreyShade13Color,
+                    textColor: kBlackColor,
+                    borderColor: kBlackTextColor4,
+                    title: "View Message",
+                    onTap: () {
+                      Get.to(() => ChatScreen(data: widget.application.user));
+                    },
                   ),
                 SizedBox(height: 15.h),
               ],

@@ -90,4 +90,29 @@ class UserService {
     }
     return responseModel.data["message"] ?? responseModel.statusDescription;
   }
+
+  Future<dynamic> getNotificationIds(String id) async {
+    final token = await _sessionManagement.getSessionToken(
+      tokenKey: SessionTokenKeys.kUserTokenKey,
+    );
+    ResponseModel responseModel = await _client.customRequest(
+      'GET',
+      url: "${WebUrls.kGetNotificationIds}?userId=$id",
+      requestHeader: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Baerer $token',
+      },
+    );
+    if (responseModel.statusCode >= 200 && responseModel.statusCode <= 230) {
+      final ids = responseModel.data['data']['notificationIds'];
+      final allIds =
+          ids
+              .where((e) => e != null && e is String && e.trim().isNotEmpty)
+              .toList();
+
+      return List<String>.from(allIds);
+    }
+
+    return responseModel.data["message"] ?? responseModel.statusDescription;
+  }
 }
