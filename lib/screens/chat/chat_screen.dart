@@ -60,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     Get.back();
                   },
@@ -187,13 +187,17 @@ class _ChatScreenState extends State<ChatScreen> {
             }),
           ),
           Container(
+            margin: EdgeInsets.symmetric(horizontal: 50.w, vertical: 20.h),
             padding: EdgeInsets.only(
-              left: (18),
-              top: (0),
+              left: (20),
+              top: (10),
               right: (20),
-              bottom: (18),
+              bottom: (10),
             ),
-            decoration: BoxDecoration(color: kGreyShade3Color.withOpacity(0.1)),
+            decoration: BoxDecoration(
+              color: kGreyShade3Color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -252,6 +256,17 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Row(
                   children: [
+                    GestureDetector(
+                      onTap: () {
+                        controller.pickImagesFromGallery();
+                      },
+                      child: Icon(
+                        Icons.camera_alt_outlined,
+                        color: kBlackColor,
+                        size: 20,
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
                     Expanded(
                       child: TextField(
                         controller: controller.messageController,
@@ -300,30 +315,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ],
-                ),
-                SizedBox(height: (10)),
-                GestureDetector(
-                  onTap: () {
-                    controller.pickImagesFromGallery();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.camera_alt_outlined,
-                        color: kBlackColor,
-                        size: 20,
-                      ),
-                      SizedBox(width: (10)),
-                      Text(
-                        'Attach  media',
-                        style: AppStyles.blackTextStyle().copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: kGreyColor,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),

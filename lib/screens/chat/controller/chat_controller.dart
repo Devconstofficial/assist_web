@@ -27,6 +27,7 @@ class ChatController extends GetxController {
   var isLoading = false.obs;
   var isError = false.obs;
   var errorMsg = "".obs;
+  StreamSubscription<List<Message>>? _messageSubscription;
   Stream<List<Message>>? messageStream;
   final RxList<String> notificationIds = <String>[].obs;
 
@@ -155,17 +156,17 @@ class ChatController extends GetxController {
       isLoading.value = true;
 
       messageStream = _firebaseService.getChatMessages(chatId);
-      messageStream!.listen((newMessages) {
+      _messageSubscription?.cancel();
+      _messageSubscription = messageStream!.listen((newMessages) {
         messages.assignAll(newMessages);
+        isLoading.value = false;
+        isError(false);
+        errorMsg.value = "";
       });
     } catch (e) {
       isError(true);
       errorMsg.value = e.toString();
       showCustomSnackbar('Error', 'Failed to load messages. $e');
-    } finally {
-      isLoading.value = false;
-      isError(false);
-      errorMsg.value = "";
     }
   }
 
@@ -242,7 +243,7 @@ class ChatController extends GetxController {
 
       tempMessages.remove(tempMessage);
       await _firebaseService.sendMessage(chatId, message, chatInfo, receiverId);
-
+      isSending.value = false;
       await sendNotification(
         fcmTokens: notificationIds,
         senderName: senderName,
@@ -251,14 +252,18 @@ class ChatController extends GetxController {
     } catch (e) {
       isSending.value = false;
       print('Failed to send message: $e');
-
       tempMessages.remove(tempMessage);
-    } finally {
-      isSending.value = false;
     }
   }
 
   void removeImage(int index) {
     selectedImages.removeAt(index);
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    _messageSubscription?.cancel();
+    super.onClose();
   }
 }

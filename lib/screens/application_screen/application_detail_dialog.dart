@@ -303,8 +303,14 @@ class _ApplicationDetailDialogState extends State<ApplicationDetailDialog> {
                             : "Approved",
                     onTap: () {},
                     height: 61,
-                    color: kRedColor.withOpacity(0.8),
-                    borderColor: kRedColor,
+                    color:
+                        widget.application.status == "Denied"
+                            ? kRedColor.withOpacity(0.8)
+                            : kBlackColor,
+                    borderColor:
+                        widget.application.status == "Denied"
+                            ? kRedColor
+                            : kBlackColor,
                     textSize: 16,
                     fontWeight: FontWeight.w700,
                   ),
