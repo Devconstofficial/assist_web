@@ -7,9 +7,9 @@ import 'package:assist_web/screens/chat/chat_utils.dart';
 import 'package:assist_web/services/firebase_services.dart';
 import 'package:assist_web/services/image_picker_service.dart';
 import 'package:assist_web/services/user_service.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart' as jwt;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -31,49 +31,22 @@ class ChatController extends GetxController {
   Stream<List<Message>>? messageStream;
   final RxList<String> notificationIds = <String>[].obs;
 
-  Future<String?> getAccessToken() async {
-    try {
-      final jsonString = await rootBundle.loadString(
-        'assets/assist-app-6c044.json',
-      );
-      final Map<String, dynamic> serviceAccount = json.decode(jsonString);
+  String generateJwt(Map<String, dynamic> serviceAccount) {
+    final String privateKeyPem = serviceAccount['private_key'];
+    final String clientEmail = serviceAccount['client_email'];
 
-      final String privateKey = serviceAccount['private_key'];
-      final String clientEmail = serviceAccount['client_email'];
+    final token = jwt.JWT({
+      'iss': clientEmail,
+      'scope': 'https://www.googleapis.com/auth/firebase.messaging',
+      'aud': 'https://oauth2.googleapis.com/token',
+      'iat': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      'exp': (DateTime.now().millisecondsSinceEpoch ~/ 1000) + 3600,
+    });
 
-      final jwt = JWT({
-        'iss': clientEmail,
-        'scope': 'https://www.googleapis.com/auth/firebase.messaging',
-        'aud': 'https://oauth2.googleapis.com/token',
-        'iat': DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        'exp': (DateTime.now().millisecondsSinceEpoch ~/ 1000) + 3600,
-      });
-
-      final signedJwt = jwt.sign(
-        RSAPrivateKey(privateKey),
-        algorithm: JWTAlgorithm.RS256,
-      );
-
-      final response = await http.post(
-        Uri.parse('https://oauth2.googleapis.com/token'),
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {
-          'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-          'assertion': signedJwt,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final body = json.decode(response.body);
-        return body['access_token'];
-      } else {
-        print("Failed to get access token: ${response.body}");
-        return null;
-      }
-    } catch (e) {
-      print("Error generating access token: $e");
-      return null;
-    }
+    return token.sign(
+      jwt.RSAPrivateKey(privateKeyPem),
+      algorithm: jwt.JWTAlgorithm.RS256,
+    );
   }
 
   Future<void> sendNotification({
@@ -82,10 +55,27 @@ class ChatController extends GetxController {
     required String messageText,
     Map<String, dynamic>? dataPayload,
   }) async {
-    final Uri url = Uri.parse(
-      'https://fcm.googleapis.com/v1/projects/assist-app-6c044/messages:send',
+    final String serviceAccountJson = await rootBundle.loadString(
+      'assets/assist-app-6c044.json',
     );
-    String? accessToken = await getAccessToken();
+    final Map<String, dynamic> serviceAccount = json.decode(serviceAccountJson);
+    print("Loaded==================");
+    final String projectId = serviceAccount['project_id'];
+    final response = await http.post(
+      Uri.parse('https://oauth2.googleapis.com/token'),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: {
+        'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+        'assertion': generateJwt(serviceAccount),
+      },
+    );
+    print(response);
+
+    final String accessToken = json.decode(response.body)['access_token'];
+    print(accessToken);
+    final Uri url = Uri.parse(
+      'https://fcm.googleapis.com/v1/projects/$projectId/messages:send',
+    );
 
     for (String token in fcmTokens) {
       try {
